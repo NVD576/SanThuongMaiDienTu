@@ -1,0 +1,60 @@
+[
+    {
+        "model": "tradings.user",
+        "pk": 1,
+        "fields": {
+            "username": "john_doe",
+            "password": "pbkdf2_sha256$320000$W9pqdC$PasswordHashHere",
+            "role": "seller",
+            "email": "john@example.com",
+            "is_superuser": false,
+            "is_staff": true
+        }
+    },
+    {
+        "model": "tradings.seller",
+        "pk": 1,
+        "fields": {
+            "user": 1,
+            "business_name": "John's Shop",
+            "verified": true
+        }
+    },
+    {
+        "model": "tradings.store",
+        "pk": 1,
+        "fields": {
+            "seller": 1,
+            "name": "John's Store",
+            "description": "A shop selling various items",
+            "rating": 4.5,
+            "active": true,
+            "created_date": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "tradings.product",
+        "pk": 1,
+        "fields": {
+            "store": 1,
+            "name": "Cassava Cake",
+            "description": "Delicious baked cassava cake",
+            "price": "10.50",
+            "category": "Food",
+            "stock_quantity": 100,
+            "active": true,
+            "created_at": "2025-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "tradings.review",
+        "pk": 1,
+        "fields": {
+            "product": 1,
+            "user": 1,
+            "rating": 5,
+            "comment": "Amazing product!",
+            "created_at": "2025-01-01T00:00:00Z"
+        }
+    }
+]
