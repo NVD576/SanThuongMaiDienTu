@@ -3,20 +3,41 @@
         "model": "tradings.user",
         "pk": 1,
         "fields": {
-            "username": "john_doe",
-            "password": "pbkdf2_sha256$320000$W9pqdC$PasswordHashHere",
+            "username": "admin",
+            "password": "adminpassword",
+            "email": "admin@example.com",
+            "role": "admin",
+            "avatar": null
+        }
+    },
+    {
+        "model": "tradings.user",
+        "pk": 2,
+        "fields": {
+            "username": "seller1",
+            "password": "sellerpassword",
+            "email": "seller1@example.com",
             "role": "seller",
-            "email": "john@example.com",
-            "is_superuser": false,
-            "is_staff": true
+            "avatar": null
+        }
+    },
+    {
+        "model": "tradings.user",
+        "pk": 3,
+        "fields": {
+            "username": "buyer1",
+            "password": "buyerpassword",
+            "email": "buyer1@example.com",
+            "role": "buyer",
+            "avatar": null
         }
     },
     {
         "model": "tradings.seller",
         "pk": 1,
         "fields": {
-            "user": 1,
-            "business_name": "John's Shop",
+            "user": 2,
+            "business_name": "Best Seller",
             "verified": true
         }
     },
@@ -25,11 +46,12 @@
         "pk": 1,
         "fields": {
             "seller": 1,
-            "name": "John's Store",
-            "description": "A shop selling various items",
+            "name": "Best Store",
+            "description": "The best store for all your needs.",
             "rating": 4.5,
-            "active": true,
-            "created_date": "2025-01-01T00:00:00Z"
+            "image": null,
+            "created_date": "2023-01-01T00:00:00Z",
+            "active": true
         }
     },
     {
@@ -37,13 +59,14 @@
         "pk": 1,
         "fields": {
             "store": 1,
-            "name": "Cassava Cake",
-            "description": "Delicious baked cassava cake",
-            "price": "10.50",
-            "category": "Food",
+            "name": "Product 1",
+            "description": "Description for product 1.",
+            "price": "19.99",
+            "category": "Category 1",
             "stock_quantity": 100,
-            "active": true,
-            "created_at": "2025-01-01T00:00:00Z"
+            "image": null,
+            "created_at": "2023-01-01T00:00:00Z",
+            "active": true
         }
     },
     {
@@ -51,10 +74,42 @@
         "pk": 1,
         "fields": {
             "product": 1,
-            "user": 1,
+            "user": 3,
             "rating": 5,
-            "comment": "Amazing product!",
-            "created_at": "2025-01-01T00:00:00Z"
+            "comment": "Excellent product!",
+            "created_at": "2023-01-02T00:00:00Z"
+        }
+    },
+    {
+        "model": "tradings.order",
+        "pk": 1,
+        "fields": {
+            "user": 3,
+            "total_price": "19.99",
+            "payment_method": "Credit Card",
+            "status": "pending",
+            "created_at": "2023-01-03T00:00:00Z"
+        }
+    },
+    {
+        "model": "tradings.orderitem",
+        "pk": 1,
+        "fields": {
+            "order": 1,
+            "product": 1,
+            "quantity": 1,
+            "price": "19.99"
+        }
+    },
+    {
+        "model": "tradings.transaction",
+        "pk": 1,
+        "fields": {
+            "order": 1,
+            "amount": "19.99",
+            "method": "Credit Card",
+            "status": "completed",
+            "created_at": "2023-01-04T00:00:00Z"
         }
     }
 ]
