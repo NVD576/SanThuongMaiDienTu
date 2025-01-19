@@ -33,7 +33,7 @@ class Store(models.Model):
     description = models.TextField(null=True, blank=True)
     rating = models.FloatField(default=0.0)
     image = models.ImageField(upload_to='stores/%Y/%m/%d', default=None)
-    created_date = models.DateTimeField(auto_now_add=True)
+    created_at = models.DateTimeField(auto_now_add=True)
     active = models.BooleanField(default=True)
 
     def __str__(self):
