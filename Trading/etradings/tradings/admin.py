@@ -1,18 +1,34 @@
 from django.contrib import admin
 from django.utils.html import mark_safe
+from django import forms
 from .models import Store, Product, User, Review, Order, OrderItem, Transaction, Chat, Seller
+from ckeditor_uploader.widgets import CKEditorUploadingWidget
 # Register your models here.
 
+
+class StoreForm(forms.ModelForm):
+    description = forms.CharField(widget=CKEditorUploadingWidget)
+    class Meta:
+        model = Store
+        fields = '__all__'
+
+class ProductForm(forms.ModelForm):
+    description = forms.CharField(widget=CKEditorUploadingWidget)
+    class Meta:
+        model = Product
+        fields = '__all__'
 
 class LessonStore(admin.ModelAdmin):
     list_display = ["name","rating","created_at","active"]
     search_fields = ["name"]
     list_filter = ["rating"]
+    form = StoreForm
 
 class LessonProduct(admin.ModelAdmin):
     list_display = ["store","name","price","category","stock_quantity","created_at","active"]
     search_fields = ["store","name"]
     list_filter = ["category"]
+    form = ProductForm
 
 class LessonUser(admin.ModelAdmin):
     class Media:

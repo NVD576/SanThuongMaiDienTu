@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 
+from ckeditor_demo.settings import CKEDITOR_UPLOAD_PATH
 from django.conf.global_settings import AUTH_USER_MODEL
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -39,7 +40,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'tradings.apps.TradingsConfig'
+    'tradings.apps.TradingsConfig',
+    'ckeditor',
+    'ckeditor_uploader'
 ]
 
 MIDDLEWARE = [
@@ -126,6 +129,14 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 MEDIA_ROOT = '%s/tradings/static/' % BASE_DIR
+def dynamic_upload_path(instance, filename):
+    if hasattr(instance, 'store_related'):  # Nếu là file liên quan đến store
+        return f'stores/{filename}'
+    elif hasattr(instance, 'product_related'):  # Nếu là file liên quan đến product
+        return f'products/{filename}'
+    return f'others/{filename}'  # Mặc định lưu vào thư mục khác
+
+CKEDITOR_UPLOAD_PATH = dynamic_upload_path
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field

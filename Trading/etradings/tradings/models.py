@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from ckeditor.fields import RichTextField
 
 # User Model
 class User(AbstractUser):
@@ -30,7 +31,7 @@ class Seller(models.Model):
 class Store(models.Model):
     seller = models.ForeignKey(Seller, on_delete=models.CASCADE, related_name='stores')
     name = models.CharField(max_length=255)
-    description = models.TextField(null=True, blank=True)
+    description = RichTextField()
     rating = models.FloatField(default=0.0)
     image = models.ImageField(upload_to='stores/%Y/%m/%d', default=None)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -44,7 +45,7 @@ class Store(models.Model):
 class Product(models.Model):
     store = models.ForeignKey(Store, on_delete=models.CASCADE, related_name='products')
     name = models.CharField(max_length=255)
-    description = models.TextField()
+    description = RichTextField()
     price = models.DecimalField(max_digits=10, decimal_places=2)
     category = models.CharField(max_length=100)
     stock_quantity = models.PositiveIntegerField(default=0)
