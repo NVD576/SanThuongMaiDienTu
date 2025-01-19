@@ -15,17 +15,18 @@ class LessonProduct(admin.ModelAdmin):
     list_filter = ["category"]
 
 class LessonUser(admin.ModelAdmin):
+    class Media:
+        css={
+            'all':('/static/css/main.css',)
+        }
+
     list_display = ["username","role"]
     search_fields = ["username","role"]
     list_filter = ["role"]
-    readonly_fields = ['avatar']
+    readonly_fields = ["avatar"]
 
     def avatar(self, obj):
-        if obj:
-            return mark_safe(
-                '<img src="/static/avatars/{url}" width="120" alt="Avatar"/>' \
-                    .format(url=obj.avatar)
-            )
+            return mark_safe("<img src='/static/avatars/{img_url}' alt='{alt}'/>".format(img_url=obj.avatar.name, alt=obj.avatar))
 
 class LessonSeller(admin.ModelAdmin):
     list_display = ["user","business_name"]
