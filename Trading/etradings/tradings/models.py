@@ -16,28 +16,29 @@ class Seller(User):
     business_name = models.CharField(max_length=255, blank=True, null=True)
     verified = models.BooleanField(default=False)  # Cần sự xác nhận của nhân viên hệ thống
 
-    def __str__(self):
-        return f"Seller: {self.business_name or self.username}"
 
 
 # Buyer Model (Inherits User)
 class Buyer(User):
-    def __str__(self):
-        return f"Buyer: {self.username}"
+    # def __str__(self):
+    #     return f"Buyer: {self.username}"
+    pass
 
 
 # Employee Model (Inherits User)
 class Employee(User):
     department = models.CharField(max_length=100, null=True, blank=True)
 
-    def __str__(self):
-        return f"Employee: {self.username}"
+    # def __str__(self):
+    #     return f"Employee: {self.username}"
+
 
 
 # Admin Model (Inherits User)
 class Admin(User):
-    def __str__(self):
-        return f"Admin: {self.username}"
+    # def __str__(self):
+    #     return f"Admin: {self.username}"
+    pass
 
 
 # Store Model
