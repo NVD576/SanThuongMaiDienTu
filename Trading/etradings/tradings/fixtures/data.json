@@ -3,36 +3,42 @@
         "model": "tradings.user",
         "pk": 1,
         "fields": {
-            "username": "seller1",
-            "email": "seller1@example.com",
-            "avatar": null,
-            "password": "pbkdf2_sha256$260000$...$..."
+            "username": "admin",
+            "password": "adminpassword",
+            "email": "admin@example.com",
+            "role": "admin",
+            "avatar": null
         }
     },
     {
         "model": "tradings.user",
         "pk": 2,
         "fields": {
+            "username": "seller1",
+            "password": "sellerpassword",
+            "email": "seller1@example.com",
+            "role": "seller",
+            "avatar": null
+        }
+    },
+    {
+        "model": "tradings.user",
+        "pk": 3,
+        "fields": {
             "username": "buyer1",
+            "password": "buyerpassword",
             "email": "buyer1@example.com",
-            "avatar": null,
-            "password": "pbkdf2_sha256$260000$...$..."
+            "role": "buyer",
+            "avatar": null
         }
     },
     {
         "model": "tradings.seller",
         "pk": 1,
         "fields": {
-            "user": 1,
-            "business_name": "Seller Business 1",
+            "user": 2,
+            "business_name": "Best Seller",
             "verified": true
-        }
-    },
-    {
-        "model": "tradings.buyer",
-        "pk": 1,
-        "fields": {
-            "user": 2
         }
     },
     {
@@ -40,8 +46,8 @@
         "pk": 1,
         "fields": {
             "seller": 1,
-            "name": "Store 1",
-            "description": "Description for Store 1",
+            "name": "Best Store",
+            "description": "The best store for all your needs.",
             "rating": 4.5,
             "image": null,
             "created_date": "2023-01-01T00:00:00Z",
@@ -54,7 +60,7 @@
         "fields": {
             "store": 1,
             "name": "Product 1",
-            "description": "Description for Product 1",
+            "description": "Description for product 1.",
             "price": "19.99",
             "category": "Category 1",
             "stock_quantity": 100,
@@ -68,20 +74,21 @@
         "pk": 1,
         "fields": {
             "product": 1,
-            "user": 2,
+            "user": 3,
             "rating": 5,
-            "comment": "Great product!",
-            "created_at": "2023-01-01T00:00:00Z"
+            "comment": "Excellent product!",
+            "created_at": "2023-01-02T00:00:00Z"
         }
     },
     {
         "model": "tradings.order",
         "pk": 1,
         "fields": {
-            "user": 2,
+            "user": 3,
             "total_price": "19.99",
             "payment_method": "Credit Card",
-            "created_at": "2023-01-01T00:00:00Z"
+            "status": "pending",
+            "created_at": "2023-01-03T00:00:00Z"
         }
     },
     {
@@ -101,18 +108,8 @@
             "order": 1,
             "amount": "19.99",
             "method": "Credit Card",
-            "status": "Completed",
-            "created_at": "2023-01-01T00:00:00Z"
-        }
-    },
-    {
-        "model": "tradings.chat",
-        "pk": 1,
-        "fields": {
-            "sender": 2,
-            "receiver": 1,
-            "message": "Hello, I am interested in your product.",
-            "timestamp": "2023-01-01T00:00:00Z"
+            "status": "completed",
+            "created_at": "2023-01-04T00:00:00Z"
         }
     }
 ]
