@@ -1,7 +1,6 @@
-from rest_framework.serializers import  ModelSerializer
-from .models import Product
-
+from rest_framework.serializers import ModelSerializer
+from .models import Store
 class StoreSerializer(ModelSerializer):
     class Meta:
-        model= Product
-        fields =["id", ]
+        model = Store
+        fields = ["seller","name","description","rating","image","created_at","active"]
