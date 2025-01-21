@@ -6,6 +6,7 @@ from .serializers import StoreSerializer
 class StoresViewSet(viewsets.ModelViewSet):
     queryset = Store.objects.filter(active=True)
     serializer_class = StoreSerializer
+    permission_classes = [permissions.IsAuthenticated]
 
     def get_permissions(self):
         if self.action=='list':

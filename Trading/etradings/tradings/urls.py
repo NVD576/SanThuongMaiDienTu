@@ -10,6 +10,6 @@ router.register('stores',views.StoresViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),
-    re_path(r'^ckeditor/', include('ckeditor_uploader.urls')),
+    # re_path(r'^ckeditor/', include('ckeditor_uploader.urls')),
     path('admin/',admin_site.urls)
 ]
