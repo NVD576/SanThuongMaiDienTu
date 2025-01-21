@@ -4,7 +4,8 @@ from . import views
 from . admin import admin_site
 
 urlpatterns = [
-    path('', views.index, name=""),
-    re_path(r'^ckeditor/', include('ckeditor_uploader.urls')),
+    path('', views.index, name="index"),
+    # re_path(r'^ckeditor/', include('ckeditor_uploader.urls')),
+    path('welcome/', views.welcome, name="welcome"),
     path('admin/',admin_site.urls)
 ]
