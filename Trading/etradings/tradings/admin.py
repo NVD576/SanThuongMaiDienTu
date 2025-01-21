@@ -3,6 +3,7 @@ from django.db.models import Count
 from django.template.response import TemplateResponse
 from django.utils.html import mark_safe
 from django import forms
+from django.utils.html import format_html
 from .models import Store, Product, User, Review, Order, OrderItem, Transaction, Chat, Seller
 from ckeditor_uploader.widgets import CKEditorUploadingWidget
 from django.urls import path
@@ -45,12 +46,15 @@ class UserAdmin(admin.ModelAdmin):
 
     list_display = ["username","role"]
     search_fields = ["username","role"]
+    readonly_fields = ["image"]
     list_filter = ["role"]
-    readonly_fields = ["avatar"]
 
-    def avatar(self, obj):
-            return mark_safe("<img src='/static/avatars/{img_url}' alt='{alt}'/>".format(img_url=obj.avatar.name, alt=obj.avatar))
-
+    def image(self, obj):
+        return mark_safe("<img src='/static/{img_url}' alt='{alt}'/>".format(img_url=obj.avatar.name, alt=obj.avatar))
+        # if obj.avatar:
+        #     # Hiển thị hình ảnh nhỏ nếu có avatar
+        #     return format_html(f'<img src="static/{obj.avatar.url}" style="height: 50px;"/>')
+        # return "No avatar"
 
 class SellerAdmin(admin.ModelAdmin):
     list_display = ["user","business_name"]

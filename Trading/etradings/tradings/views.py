@@ -24,5 +24,3 @@ def index(request):
 
 # Create your views here.
 
-def welcome(request):
-    return
