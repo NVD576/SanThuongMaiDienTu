@@ -6,5 +6,6 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('', include('tradings.urls')),
     # path('admin/', admin.site.urls),
+    path('o/', include('oauth2_provider.urls', namespace='oauth2_provider')),
     re_path(r'^ckeditor/', include('ckeditor_uploader.urls')),
 ]+ static(settings.STATIC_URL, document_root=settings.MEDIA_ROOT)

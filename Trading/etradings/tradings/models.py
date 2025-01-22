@@ -17,19 +17,14 @@ class User(AbstractUser):
         return self.username
 
 
-# Seller Model (Inherits User)
-class Seller(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='seller_profile')
-    business_name = models.CharField(max_length=255)
-    verified = models.BooleanField(default=False)
-
-    def __str__(self):
-        return self.business_name
-
-
 # Store Model
 class Store(models.Model):
-    seller = models.ForeignKey(Seller, on_delete=models.CASCADE, related_name='stores')
+    seller = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='stores',
+        limit_choices_to={'role': 'seller'}  # Chỉ cho phép chọn users với role 'seller'
+    )
     name = models.CharField(max_length=255)
     description = RichTextField()
     rating = models.FloatField(default=0.0)

@@ -4,7 +4,7 @@ from django.template.response import TemplateResponse
 from django.utils.html import mark_safe
 from django import forms
 from django.utils.html import format_html
-from .models import Store, Product, User, Review, Order, OrderItem, Transaction, Chat, Seller
+from .models import Store, Product, User, Review, Order, OrderItem, Transaction, Chat
 from ckeditor_uploader.widgets import CKEditorUploadingWidget
 from django.urls import path
 # Register your models here.
@@ -29,6 +29,12 @@ class StoreAdmin(admin.ModelAdmin):
     list_display = ["name","rating","created_at","active"]
     search_fields = ["name"]
     list_filter = ["rating"]
+
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name == "seller":
+            kwargs["queryset"] = User.objects.filter(role='seller')
+        return super().formfield_for_foreignkey(db_field, request, **kwargs)
+
     form = StoreForm
     inlines = (ProductInLine,)
 
@@ -55,10 +61,6 @@ class UserAdmin(admin.ModelAdmin):
         #     # Hiển thị hình ảnh nhỏ nếu có avatar
         #     return format_html(f'<img src="static/{obj.avatar.url}" style="height: 50px;"/>')
         # return "No avatar"
-
-class SellerAdmin(admin.ModelAdmin):
-    list_display = ["user","business_name"]
-    search_fields = ["user","business_name"]
 
 class ReviewAdmin(admin.ModelAdmin):
     list_display = ["user","product","rating","created_at"]
@@ -103,7 +105,6 @@ admin_site = StoreAppAdminSite('mystore')
 admin_site.register(Store, StoreAdmin)
 admin_site.register(Product, ProductAdmin)
 admin_site.register(User, UserAdmin)
-admin_site.register(Seller, SellerAdmin)
 admin_site.register(Review, ReviewAdmin)
 admin_site.register(Order, OrderAdmin)
 admin_site.register(OrderItem, OrderItemAdmin)
