@@ -7,6 +7,7 @@
     <list default="true" id="edb1882b-57c9-4d48-900c-3edc62689eda" name="Changes" comment="a">
       <change beforePath="$PROJECT_DIR$/.idea/SanThuongMaiDienTu.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/SanThuongMaiDienTu.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Trading/etradings/tradings/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/Trading/etradings/tradings/admin.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -22,12 +23,12 @@
     &quot;assignee&quot;: &quot;NVD576&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings">{
-  &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/NVD576/SanThuongMaiDienTu.git&quot;,
-    &quot;accountId&quot;: &quot;1494516f-8262-4ae1-87a9-ef8cff7e76ee&quot;
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/NVD576/SanThuongMaiDienTu.git",
+    "accountId": "c5096d6f-7a06-4b19-b4b0-b1944b59c89e"
   }
-}</component>
+}]]></component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 1
 }</component>
@@ -43,7 +44,7 @@
     "RunOnceActivity.git.unshallow": "true",
     "git-widget-placeholder": "main",
     "ignore.virus.scanning.warn.message": "true",
-    "last_opened_file_path": "D:/NVD/LTHD/SanThuongMaiDienTu/Trading",
+    "last_opened_file_path": "D:/NVD/LTHD/SanThuongMaiDienTu",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",

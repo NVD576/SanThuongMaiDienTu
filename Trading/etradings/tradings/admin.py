@@ -57,10 +57,6 @@ class UserAdmin(admin.ModelAdmin):
 
     def image(self, obj):
         return mark_safe("<img src='/static/{img_url}' alt='{alt}'/>".format(img_url=obj.avatar.name, alt=obj.avatar))
-        # if obj.avatar:
-        #     # Hiển thị hình ảnh nhỏ nếu có avatar
-        #     return format_html(f'<img src="static/{obj.avatar.url}" style="height: 50px;"/>')
-        # return "No avatar"
 
 class ReviewAdmin(admin.ModelAdmin):
     list_display = ["user","product","rating","created_at"]
