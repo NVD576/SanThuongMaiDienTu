@@ -40,7 +40,7 @@ class StoreSerializer(ModelSerializer):
         return value
 
 
-class CategorySerializer(serializers.ModelSerializer):
+class CategorySerializer(ModelSerializer):
     class Meta:
         model = Category
         fields = ['id', 'name', 'created_at', 'active']
@@ -53,4 +53,4 @@ class ProductSerializer(ModelSerializer):
 class ReviewSerializer(ModelSerializer):
     class Meta:
         model = Review
-        fields= []
+        fields= ["id","product", "user", "rating", "comment", "created_at"]
