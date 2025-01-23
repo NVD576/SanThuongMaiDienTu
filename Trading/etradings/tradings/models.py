@@ -37,9 +37,7 @@ class Store(models.Model):
 
 
 class Category(models.Model):
-    name = models.CharField(max_length=255,db_index=True)
-    description = RichTextField()
-    image = models.ImageField(upload_to='category/', default=None)
+    name = models.CharField(max_length=255)
     created_at = models.DateTimeField(auto_now_add=True)
     active = models.BooleanField(default=True)
 

@@ -26,13 +26,13 @@ class StoresViewSet(viewsets.ModelViewSet):
     # queryset = Store.objects.filter(active=True)
     queryset = Store.objects.filter(active=True).order_by('id')
     serializer_class = StoreSerializer
-    # permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated]
 
-    def get_permissions(self):
-        if self.action=='list':
-            return [permissions.AllowAny()]
-
-        return [permissions.IsAuthenticated()]
+    # def get_permissions(self):
+    #     if self.action=='list':
+    #         return [permissions.AllowAny()]
+    #
+    #     return [permissions.IsAuthenticated()]
 
 class CategoryViewSet(viewsets.ModelViewSet):
     queryset = Category.objects.filter(active=True).order_by('id')

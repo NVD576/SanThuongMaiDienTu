@@ -28,12 +28,12 @@ class ProductForm(forms.ModelForm):
 class StoreAdmin(admin.ModelAdmin):
     list_display = ["name","rating","created_at","active"]
     search_fields = ["name"]
-    list_filter = ["rating"]
+    list_filter = ["active"]
 
-    def formfield_for_foreignkey(self, db_field, request, **kwargs):
-        if db_field.name == "seller":
-            kwargs["queryset"] = User.objects.filter(role='seller')
-        return super().formfield_for_foreignkey(db_field, request, **kwargs)
+    # def formfield_for_foreignkey(self, db_field, request, **kwargs):
+    #     if db_field.name == "seller":
+    #         kwargs["queryset"] = User.objects.filter(role='seller')
+    #     return super().formfield_for_foreignkey(db_field, request, **kwargs)
 
     form = StoreForm
     inlines = (ProductInLine,)
@@ -46,7 +46,7 @@ class CategoryAdmin(admin.ModelAdmin):
 class ProductAdmin(admin.ModelAdmin):
     list_display = ["store","name","price","category","stock_quantity","created_at","active"]
     search_fields = ["store","name"]
-    list_filter = ["category"]
+    list_filter = ["active"]
     form = ProductForm
 
 class UserAdmin(admin.ModelAdmin):
