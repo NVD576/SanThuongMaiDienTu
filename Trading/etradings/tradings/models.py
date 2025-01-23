@@ -36,13 +36,24 @@ class Store(models.Model):
         return self.name
 
 
+class Category(models.Model):
+    name = models.CharField(max_length=255,db_index=True)
+    description = RichTextField()
+    image = models.ImageField(upload_to='category/', default=None)
+    created_at = models.DateTimeField(auto_now_add=True)
+    active = models.BooleanField(default=True)
+
 # Product Model
 class Product(models.Model):
     store = models.ForeignKey(Store, on_delete=models.CASCADE, related_name='products')
     name = models.CharField(max_length=255)
     description = RichTextField()
     price = models.DecimalField(max_digits=10, decimal_places=2)
-    category = models.CharField(max_length=100)
+    category = models.ForeignKey(
+        Category,
+        on_delete=models.CASCADE,
+        related_name='products',
+    )
     stock_quantity = models.PositiveIntegerField(default=0)
     image = models.ImageField(upload_to='products/%Y/%m/%d', default=None)
     created_at = models.DateTimeField(auto_now_add=True)
