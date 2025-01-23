@@ -8,8 +8,8 @@ from rest_framework.response import Response
 from rest_framework.status import HTTP_400_BAD_REQUEST, HTTP_200_OK
 from rest_framework.parsers import MultiPartParser
 
-from .models import Store, User, Product, Category
-from .serializers import StoreSerializer, UserSerializer, ProductSerializer, CategorySerializer
+from .models import Store, User, Product, Category, Review
+from .serializers import StoreSerializer, UserSerializer, ProductSerializer, CategorySerializer, ReviewSerializer
 
 class UserViewSet(viewsets.ModelViewSet, generics.CreateAPIView, generics.RetrieveAPIView):
     queryset = User.objects.filter(is_active=True)
@@ -71,7 +71,7 @@ class ProductViewSet(viewsets.ModelViewSet):
 
 class ReviewViewSet(viewsets.ModelViewSet):
     queryset = Review.objects.filter().order_by('id')
-    serializer_class = ReviewSerialazier
+    serializer_class = ReviewSerializer
     permission_classes = [permissions.IsAuthenticated]
 
     def get_permissions(self):
