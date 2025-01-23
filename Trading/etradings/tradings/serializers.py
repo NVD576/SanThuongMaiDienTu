@@ -50,7 +50,13 @@ class ProductSerializer(ModelSerializer):
         model = Product
         fields = ["id","store","name","description","price","category","stock_quantity","image"]
 
-class ReviewSerialazier(ModelSerializer):
+class ReviewSerializer(ModelSerializer):
     class Meta:
         model = Review
-        fields= ["id","product", "user", "rating", "comment", "created_at"]
+        fields = "__all__"
+        # fields= ["id","product", "user", "rating", "comment", "created_at"]
+
+class OrderSerializer(ModelSerializer):
+    class Meta:
+        model = Order
+        fields = "__all__"

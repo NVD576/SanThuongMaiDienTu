@@ -80,7 +80,7 @@ class ProductViewSet(viewsets.ModelViewSet):
 
 class ReviewViewSet(viewsets.ModelViewSet):
     queryset = Review.objects.filter().order_by('id')
-    serializer_class = ReviewSerialazier
+    serializer_class = ReviewSerializer
     permission_classes = [permissions.IsAuthenticated]
 
     def get_permissions(self):
@@ -90,5 +90,13 @@ class ReviewViewSet(viewsets.ModelViewSet):
         return [permissions.IsAuthenticated()]
 
 
-# Create your views here.
+class OrderViewSet(viewsets.ModelViewSet):
+    queryset = Order.objects.filter().order_by('id')
+    serializer_class = OrderSerializer
+    permission_classes = [permissions.IsAuthenticated]
 
+    def get_permissions(self):
+        if self.action=='list':
+            return [permissions.AllowAny()]
+
+        return [permissions.IsAuthenticated()]
