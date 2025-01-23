@@ -2,13 +2,25 @@ from contextlib import nullcontext
 
 from MySQLdb.constants.CR import NULL_POINTER
 from django.shortcuts import render
-from rest_framework import viewsets, permissions
+from rest_framework import viewsets, permissions, generics
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.status import HTTP_400_BAD_REQUEST, HTTP_200_OK
+from rest_framework.parsers import MultiPartParser
 
 from .models import Store, User, Product
 from .serializers import StoreSerializer, UserSerializer, ProductSerializer
+
+class UserViewSet(viewsets.ModelViewSet, generics.CreateAPIView, generics.RetrieveAPIView):
+    queryset = User.objects.filter(is_active=True)
+    serializer_class = UserSerializer
+    parser_classes = [MultiPartParser, ]
+
+    def get_permissions(self):
+        if self.action == 'retrieve':
+            return [permissions.IsAuthenticated()]
+
+        return [permissions.AllowAny()]
 
 class StoresViewSet(viewsets.ModelViewSet):
     # queryset = Store.objects.filter(active=True)
@@ -16,22 +28,12 @@ class StoresViewSet(viewsets.ModelViewSet):
     serializer_class = StoreSerializer
     permission_classes = [permissions.IsAuthenticated]
 
-    def get_permissions(self):
-        if self.action=='list':
-            return [permissions.AllowAny()]
+    # def get_permissions(self):
+    #     if self.action=='list':
+    #         return [permissions.AllowAny()]
+    #
+    #     return [permissions.IsAuthenticated()]
 
-        return [permissions.IsAuthenticated()]
-
-class UsersViewSet(viewsets.ModelViewSet):
-    queryset = User.objects.order_by('id')
-    serializer_class = UserSerializer
-    permission_classes = [permissions.IsAuthenticated]
-
-    def get_permissions(self):
-        if self.action=='list':
-            return [permissions.AllowAny()]
-
-        return [permissions.IsAuthenticated()]
 
 class ProductViewSet(viewsets.ModelViewSet):
     queryset = Product.objects.filter(active=True).order_by('id')

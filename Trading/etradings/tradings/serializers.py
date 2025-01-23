@@ -3,17 +3,27 @@ from rest_framework.serializers import ModelSerializer
 from .models import Store, Product, User
 
 class UserSerializer(ModelSerializer):
-    avatar = serializers.SerializerMethodField()
+    # avatar = serializers.SerializerMethodField()
     class Meta:
         model = User
-        fields = ["avatar","role","username"]
+        fields = ['id','first_name','last_name','email','username','password','role','avatar']
+        extra_kwargs = {
+            'password':{'write_only': 'true'}
+        }
 
-    def get_avatar(self, obj):
-        if obj.avatar:
-            # Trả về đường dẫn đầy đủ với STATIC_URL
-            request = self.context.get('request')  # Lấy thông tin request nếu cần
-            return f"{request.scheme}://{request.get_host()}/static/{obj.avatar.name}"
-        return None
+    def create(self, validated_data):
+        user = User(**validated_data)
+        user.set_password(validated_data['password'])
+        user.save()
+
+        return user
+
+    # def get_avatar(self, obj):
+    #     if obj.avatar:
+    #         # Trả về đường dẫn đầy đủ với STATIC_URL
+    #         request = self.context.get('request')  # Lấy thông tin request nếu cần
+    #         return f"{request.scheme}://{request.get_host()}/static/{obj.avatar.name}"
+    #     return None
 
 
 class StoreSerializer(ModelSerializer):
