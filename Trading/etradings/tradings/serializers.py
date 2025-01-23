@@ -60,3 +60,18 @@ class OrderSerializer(ModelSerializer):
     class Meta:
         model = Order
         fields = "__all__"
+
+class OrderItemSerializer(ModelSerializer):
+    class Meta:
+        model = OrderItem
+        fields = "__all__"
+
+class TransactionSerializer(ModelSerializer):
+    class Meta:
+        model = Transaction
+        fields = "__all__"
+
+class ChatSerializer(ModelSerializer):
+    class Meta:
+        model = Chat
+        fields = "__all__"
