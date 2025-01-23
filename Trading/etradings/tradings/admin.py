@@ -4,7 +4,7 @@ from django.template.response import TemplateResponse
 from django.utils.html import mark_safe
 from django import forms
 from django.utils.html import format_html
-from .models import Store, Product, User, Review, Order, OrderItem, Transaction, Chat
+from .models import *
 from ckeditor_uploader.widgets import CKEditorUploadingWidget
 from django.urls import path
 # Register your models here.
@@ -37,6 +37,11 @@ class StoreAdmin(admin.ModelAdmin):
 
     form = StoreForm
     inlines = (ProductInLine,)
+
+class CategoryAdmin(admin.ModelAdmin):
+    list_display = ['name', 'created_at', 'active']
+    search_fields = ['name']
+    list_filter = ['active']
 
 class ProductAdmin(admin.ModelAdmin):
     list_display = ["store","name","price","category","stock_quantity","created_at","active"]
@@ -99,6 +104,7 @@ class StoreAppAdminSite(admin.AdminSite):
 admin_site = StoreAppAdminSite('mystore')
 
 admin_site.register(Store, StoreAdmin)
+admin_site.register(Category, CategoryAdmin)
 admin_site.register(Product, ProductAdmin)
 admin_site.register(User, UserAdmin)
 admin_site.register(Review, ReviewAdmin)

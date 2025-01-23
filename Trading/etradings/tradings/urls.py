@@ -1,5 +1,5 @@
-from django.contrib import admin
-from django.db import router
+# from django.contrib import admin
+# from django.db import router
 from django.urls import path, re_path, include
 from . import views
 from . admin import admin_site
@@ -9,6 +9,7 @@ router = DefaultRouter()
 router.register('stores',views.StoresViewSet)
 router.register('users',views.UserViewSet)
 router.register('products',views.ProductViewSet)
+router.register('categories', views.CategoryViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),

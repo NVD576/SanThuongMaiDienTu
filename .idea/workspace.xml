@@ -5,9 +5,19 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="edb1882b-57c9-4d48-900c-3edc62689eda" name="Changes" comment="a">
-      <change beforePath="$PROJECT_DIR$/.idea/SanThuongMaiDienTu.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/SanThuongMaiDienTu.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Trading/etradings/tradings/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/Trading/etradings/tradings/admin.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Trading/etradings/tradings/static/avatars/220d220bb4fe9189281b91b37e1e36f2_r8S4AZf.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Trading/etradings/tradings/static/avatars/220d220bb4fe9189281b91b37e1e36f2_sCgDA85.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Trading/etradings/tradings/static/avatars/220d220bb4fe9189281b91b37e1e36f2_vonEydh.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Trading/etradings/tradings/static/avatars/89341c0462a28dbe2c755ae593e4c96c_9xNoE8w.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Trading/etradings/tradings/static/products/2025/01/23/325423255_1240684773460283_2162629821836190146_n.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Trading/etradings/tradings/static/stores/2025/01/23/325423255_1240684773460283_2162629821836190146_n.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Trading/etradings/etradings/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/Trading/etradings/etradings/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Trading/etradings/etradings/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/Trading/etradings/etradings/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Trading/etradings/tradings/serializers.py" beforeDir="false" afterPath="$PROJECT_DIR$/Trading/etradings/tradings/serializers.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Trading/etradings/tradings/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/Trading/etradings/tradings/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Trading/etradings/tradings/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/Trading/etradings/tradings/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Trading/requirement.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Trading/requirement.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tradingmobileapp/configs/APIs.js" beforeDir="false" afterPath="$PROJECT_DIR$/tradingmobileapp/configs/APIs.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -23,12 +33,12 @@
     &quot;assignee&quot;: &quot;NVD576&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/NVD576/SanThuongMaiDienTu.git",
-    "accountId": "c5096d6f-7a06-4b19-b4b0-b1944b59c89e"
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/NVD576/SanThuongMaiDienTu.git&quot;,
+    &quot;accountId&quot;: &quot;c5096d6f-7a06-4b19-b4b0-b1944b59c89e&quot;
   }
-}]]></component>
+}</component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 1
 }</component>
@@ -42,7 +52,7 @@
     "Python.main.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "main",
+    "git-widget-placeholder": "Merging main",
     "ignore.virus.scanning.warn.message": "true",
     "last_opened_file_path": "D:/NVD/LTHD/SanThuongMaiDienTu",
     "node.js.detected.package.eslint": "true",
@@ -106,7 +116,23 @@
       <option name="project" value="LOCAL" />
       <updated>1737361949938</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="a">
+      <option name="closed" value="true" />
+      <created>1737547778186</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1737547778186</updated>
+    </task>
+    <task id="LOCAL-00003" summary="a">
+      <option name="closed" value="true" />
+      <created>1737633141860</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1737633141860</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

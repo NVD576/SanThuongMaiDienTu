@@ -8,8 +8,8 @@ from rest_framework.response import Response
 from rest_framework.status import HTTP_400_BAD_REQUEST, HTTP_200_OK
 from rest_framework.parsers import MultiPartParser
 
-from .models import Store, User, Product
-from .serializers import StoreSerializer, UserSerializer, ProductSerializer
+from .models import Store, User, Product, Category
+from .serializers import StoreSerializer, UserSerializer, ProductSerializer, CategorySerializer
 
 class UserViewSet(viewsets.ModelViewSet, generics.CreateAPIView, generics.RetrieveAPIView):
     queryset = User.objects.filter(is_active=True)
@@ -34,6 +34,16 @@ class StoresViewSet(viewsets.ModelViewSet):
 
         return [permissions.IsAuthenticated()]
 
+class CategoryViewSet(viewsets.ModelViewSet):
+    queryset = Category.objects.filter(active=True).order_by('id')
+    serializer_class = CategorySerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_permissions(self):
+        if self.action=='list':
+            return [permissions.AllowAny()]
+
+        return [permissions.IsAuthenticated()]
 
 class ProductViewSet(viewsets.ModelViewSet):
     queryset = Product.objects.filter(active=True).order_by('id')
