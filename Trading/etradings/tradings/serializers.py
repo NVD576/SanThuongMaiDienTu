@@ -3,6 +3,7 @@ from rest_framework.serializers import ModelSerializer
 from .models import *
 
 class UserSerializer(ModelSerializer):
+    avatar = serializers.SerializerMethodField()
     class Meta:
         model = User
         fields = ['id','first_name','last_name','email','username','password','role','avatar']
@@ -17,12 +18,12 @@ class UserSerializer(ModelSerializer):
 
         return user
 
-    # def get_avatar(self, obj):
-    #     if obj.avatar:
-    #         # Trả về đường dẫn đầy đủ với STATIC_URL
-    #         request = self.context.get('request')  # Lấy thông tin request nếu cần
-    #         return f"{request.scheme}://{request.get_host()}/static/{obj.avatar.name}"
-    #     return None
+    def get_avatar(self, obj):
+        if obj.avatar:
+            # Trả về đường dẫn đầy đủ với STATIC_URL
+            request = self.context.get('request')  # Lấy thông tin request nếu cần
+            return f"{request.scheme}://{request.get_host()}/static/{obj.avatar.name}"
+        return None
 
 
 class StoreSerializer(ModelSerializer):
