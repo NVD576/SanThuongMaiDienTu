@@ -23,7 +23,6 @@ class UserSerializer(ModelSerializer):
     #         request = self.context.get('request')  # Lấy thông tin request nếu cần
     #         return f"{request.scheme}://{request.get_host()}/static/{obj.avatar.name}"
     #     return None
-        fields = ["id","avatar","role","username"]
 
 
 class StoreSerializer(ModelSerializer):
