@@ -81,5 +81,45 @@ class ReviewViewSet(viewsets.ModelViewSet):
         return [permissions.IsAuthenticated()]
 
 
-# Create your views here.
+class OrderViewSet(viewsets.ModelViewSet):
+    queryset = Order.objects.filter().order_by('id')
+    serializer_class = OrderSerializer
+    permission_classes = [permissions.IsAuthenticated]
 
+    def get_permissions(self):
+        if self.action=='list':
+            return [permissions.AllowAny()]
+
+        return [permissions.IsAuthenticated()]
+
+
+class OrderItemViewSet(viewsets.ModelViewSet):
+    queryset = OrderItem.objects.filter().order_by('id')
+    serializer_class = OrderItemSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_permissions(self):
+        if self.action=='list':
+            return [permissions.AllowAny()]
+
+        return [permissions.IsAuthenticated()]
+
+class TransactionViewSet(viewsets.ModelViewSet):
+    queryset = Transaction.objects.filter().order_by('id')
+    serializer_class = TransactionSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_permissions(self):
+        if self.action=='list':
+            return [permissions.AllowAny()]
+        return [permissions.IsAuthenticated()]
+
+class ChatViewSet(viewsets.ModelViewSet):
+    queryset = Chat.objects.filter().order_by('id')
+    serializer_class = TransactionSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_permissions(self):
+        if self.action=='list':
+            return [permissions.AllowAny()]
+        return [permissions.IsAuthenticated()]
