@@ -7,9 +7,7 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.status import HTTP_400_BAD_REQUEST, HTTP_200_OK
 from rest_framework.parsers import MultiPartParser
-
-from .models import Store, User, Product, Category, Review
-from .serializers import StoreSerializer, UserSerializer, ProductSerializer, CategorySerializer, ReviewSerializer
+from .serializers import *
 
 class UserViewSet(viewsets.ModelViewSet, generics.CreateAPIView, generics.RetrieveAPIView):
     queryset = User.objects.filter(is_active=True)
