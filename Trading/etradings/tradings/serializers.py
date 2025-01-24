@@ -27,7 +27,7 @@ class UserSerializer(ModelSerializer):
 
 
 class StoreSerializer(ModelSerializer):
-    seller = UserSerializer()
+    # seller = UserSerializer()
 
     class Meta:
         model = Store
