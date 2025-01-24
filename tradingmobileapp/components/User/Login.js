@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Text, View, TextInput, TouchableOpacity, StyleSheet } from "react-native";
+import APIs, { endpoints } from "../../configs/APIs";
 
 const Login = () => {
     const [email, setEmail] = useState("");
@@ -45,7 +46,7 @@ const Login = () => {
         </View>
     );
 };
-
+export default Login;
 const styles = StyleSheet.create({
     container: {
         flex: 1,
