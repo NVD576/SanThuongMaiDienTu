@@ -4,7 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="edb1882b-57c9-4d48-900c-3edc62689eda" name="Changes" comment="a" />
+    <list default="true" id="edb1882b-57c9-4d48-900c-3edc62689eda" name="Changes" comment="a">
+      <change beforePath="$PROJECT_DIR$/Trading/etradings/etradings/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/Trading/etradings/etradings/settings.py" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
