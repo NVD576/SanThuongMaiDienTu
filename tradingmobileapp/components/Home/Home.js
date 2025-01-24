@@ -8,9 +8,14 @@ const Home = () => {
     const [stores, setStores] = useState([]);
 
     const loadStores = async () => {
-        let res = await APIs.get(endpoints['stores']);
-        setStores(res.data);
-    }
+        try {
+            let res = await APIs.get(endpoints['stores']);
+            setStores(res.data.results)
+        } catch (error) {
+            console.error("Error loading stores:", error);
+        }
+    };
+    
 
     useEffect(() => {
         loadStores();
@@ -18,8 +23,8 @@ const Home = () => {
 
     return (
         <View style={Styles.container}>
-            <Text style={Styles.title_login}>Danh sách cửa hàng</Text>
-            {stores.map(s => <Chip key={s.id} icon="label">{s.name}</Chip>)}
+            <Text>Danh sách cửa hàng</Text>
+            {stores.map((s) => <Chip key={s.id} icon="label">{s.name}</Chip>)}
         </View>
     ) 
 };
