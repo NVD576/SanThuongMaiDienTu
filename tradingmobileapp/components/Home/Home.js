@@ -23,7 +23,7 @@ const Home = () => {
 
     return (
         <View style={Styles.container}>
-            <Text>Danh sách cửa hàng</Text>
+            <Text style ={Styles.text_style}>Danh sách cửa hàng</Text>
             {stores.map((s) => <Chip key={s.id} icon="label">{s.name}</Chip>)}
         </View>
     ) 
