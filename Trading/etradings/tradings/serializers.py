@@ -1,15 +1,17 @@
 from rest_framework import serializers
-from rest_framework.serializers import ModelSerializer
+from rest_framework.serializers import ModelSerializer, ImageField
 from .models import *
 
 class UserSerializer(ModelSerializer):
-    avatar = serializers.SerializerMethodField()
+    # avatar = serializers.SerializerMethodField(source='avatar')
+    # avatar = ImageField(required=False)
     class Meta:
         model = User
         fields = ['id','first_name','last_name','email','username','password','role','avatar']
         # extra_kwargs = {
         #     'password':{'write_only': 'true'}
         # }
+
 
     def create(self, validated_data):
         user = User(**validated_data)
@@ -22,7 +24,10 @@ class UserSerializer(ModelSerializer):
         if obj.avatar:
             # Trả về đường dẫn đầy đủ với STATIC_URL
             request = self.context.get('request')  # Lấy thông tin request nếu cần
-            return f"{request.scheme}://{request.get_host()}/static/{obj.avatar.name}"
+            if request and obj.avatar:
+                # return request.build_absolute_uri('/static/' % obj.avatar)
+                return request.build_absolute_uri(f'/static/{obj.avatar.name}')
+            # return f"{request.scheme}://{request.get_host()}/static/{obj.avatar.name}"
         return None
 
 

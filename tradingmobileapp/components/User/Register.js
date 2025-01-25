@@ -74,9 +74,8 @@ const Register = () => {
             console.info(form);
 
             if (avatar) {
-                // In case avatar is a URL string
                 form.append('avatar', {
-                    uri: avatar.uri || avatar,  // Check if it's an object with uri or just a URL string
+                    uri: avatar.uri || avatar, 
                     name: avatar.name || 'avatar.jpg',
                     type: avatar.type || 'image/jpeg'
                 });

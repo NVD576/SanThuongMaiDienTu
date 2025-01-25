@@ -14,7 +14,7 @@ from .serializers import StoreSerializer, UserSerializer, ProductSerializer, Cat
 class UserViewSet(viewsets.ModelViewSet, generics.CreateAPIView, generics.RetrieveAPIView):
     queryset = User.objects.filter(is_active=True)
     serializer_class = UserSerializer
-    parser_classes = [MultiPartParser, ]
+    parser_classes = [MultiPartParser ]
 
     def get_permissions(self):
         if self.action == 'retrieve':
