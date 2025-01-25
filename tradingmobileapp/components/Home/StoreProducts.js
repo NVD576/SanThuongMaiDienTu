@@ -20,7 +20,10 @@ const StoreProducts = ({ route }) => {
   const loadProducts = async () => {
     try {
       const res = await APIs.get(endpoints["products"]); // Giả sử API này trả về sản phẩm của cửa hàng
-      setProducts(res.data.results);
+      const filteredProducts = res.data.results.filter(
+        (product) => product.store === storeId // Lọc sản phẩm theo storeId
+      );
+      setProducts(filteredProducts);
     } catch (error) {
       console.error("Error loading products:", error);
     } finally {
