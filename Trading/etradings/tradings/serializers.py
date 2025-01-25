@@ -46,9 +46,18 @@ class CategorySerializer(ModelSerializer):
         fields = ['id', 'name', 'created_at', 'active']
 
 class ProductSerializer(ModelSerializer):
+    image = serializers.SerializerMethodField()
+
     class Meta:
         model = Product
         fields = ["id","store","name","description","price","category","stock_quantity","image"]
+
+    def get_image(self, obj):
+        if obj.image:
+            # Trả về đường dẫn đầy đủ với STATIC_URL
+            request = self.context.get('request')  # Lấy thông tin request nếu cần
+            return f"{request.scheme}://{request.get_host()}/static/{obj.image.name}"
+        return None
 
 class ReviewSerializer(ModelSerializer):
     class Meta:

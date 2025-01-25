@@ -34,21 +34,27 @@ const Login = ({ navigation }) => {
                     "Content-Type": "application/x-www-form-urlencoded",
                 }
             });
-    
+
             console.info("Login response:", res.data);
-    
+
             await AsyncStorage.setItem('token', res.data.access_token);
-    
+
             const authAPI = await authApis();
             const userRes = await authAPI.get(endpoints['current-user']);
             console.info("Current user:", userRes.data);
-    
+
             dispatch({
                 type: "login",
                 payload: userRes.data,
             });
-    
+
             navigation.navigate("Home");
+
+            console.info(res.data);
+            navigation.reset({
+                index: 0,
+                routes: [{ name: "Home" }]
+            });
         } catch (ex) {
             console.error("Login failed:", ex.response ? ex.response.data : ex.message);
             Alert.alert("Đăng nhập thất bại", "Tên đăng nhập hoặc mật khẩu không đúng.");
@@ -56,8 +62,12 @@ const Login = ({ navigation }) => {
             setLoading(false);
         }
     };
-    
 
+
+
+    const register=()=>{
+
+    }
     return (
         <View style={styles.container}>
             <Text style={styles.title}>Đăng nhập</Text>
@@ -91,7 +101,7 @@ const Login = ({ navigation }) => {
 
             <TouchableOpacity style={styles.row}>
                 <Text style={styles.forgotPassword}>Quên mật khẩu?</Text>
-                <Text style={styles.register}>Đăng ký</Text>
+                <Text onPress={() => navigation.navigate("Register")} style={styles.register}>Đăng ký</Text>
             </TouchableOpacity>
         </View>
     );
