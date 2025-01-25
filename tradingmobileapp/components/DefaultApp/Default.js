@@ -6,6 +6,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Home from '../Home/Home';
 import Login from '../User/Login';
+import Search from '../Home/Search';
 import UserProfile from '../User/UserProfile';
 import { MyUserContext } from '../../configs/UserContexts';
 
@@ -62,7 +63,6 @@ export default function Default() {
           tabBarStyle: styles.tabBar,
         }}
       >
-        {/* Tab Home luôn luôn có mặt */}
         <Tab.Screen
           name="Home"
           component={Home}
@@ -71,8 +71,16 @@ export default function Default() {
             tabBarButton: (props) => <TabButton {...props} item={{ route: 'Home', type: 'Ionicons', activeIcon: 'home', inActiveIcon: 'home-outline' }} />,
           }}
         />
+
+        <Tab.Screen
+          name="Search"
+          component={Search}
+          options={{
+            tabBarShowLabel: false,
+            tabBarButton: (props) => <TabButton {...props} item={{ route: 'Search', type: 'Ionicons', activeIcon: 'search', inActiveIcon: 'search-sharp' }} />,
+          }}
+        />
         
-        {/* Tab Login hoặc UserProfile tùy thuộc vào user */}
         <Tab.Screen
           name="Login"
           component={user === null ? Login : UserProfile}
