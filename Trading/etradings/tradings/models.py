@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import AbstractUser, UserManager
 from ckeditor.fields import RichTextField
 from django.core.validators import MinValueValidator, MaxValueValidator
 
@@ -21,6 +21,13 @@ class User(AbstractUser):
 
 # Store Model
 class Store(models.Model):
+    RATING_CHOICES = [
+        (1, '1'),
+        (2, '2'),
+        (3, '3'),
+        (4, '4'),
+        (5, '5'),
+    ]
     seller = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
@@ -29,7 +36,7 @@ class Store(models.Model):
     )
     name = models.CharField(max_length=255)
     description = RichTextField()
-    rating = models.FloatField(default=0.0)
+    rating = models.PositiveSmallIntegerField(choices=RATING_CHOICES)
     image = models.ImageField(upload_to='stores/%Y/%m/%d', default=None)
     created_at = models.DateTimeField(auto_now_add=True)
     active = models.BooleanField(default=True)
