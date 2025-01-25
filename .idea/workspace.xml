@@ -7,10 +7,35 @@
     <list default="true" id="edb1882b-57c9-4d48-900c-3edc62689eda" name="Changes" comment="a">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Trading/etradings/etradings/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/Trading/etradings/etradings/settings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Trading/etradings/tradings/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/Trading/etradings/tradings/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tradingmobileapp/components/User/Login.js" beforeDir="false" afterPath="$PROJECT_DIR$/tradingmobileapp/components/User/Login.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tradingmobileapp/components/User/Register.js" beforeDir="false" afterPath="$PROJECT_DIR$/tradingmobileapp/components/User/Register.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tradingmobileapp/configs/APIs.js" beforeDir="false" afterPath="$PROJECT_DIR$/tradingmobileapp/configs/APIs.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Trading/etradings/tradings/serializers.py" beforeDir="false" afterPath="$PROJECT_DIR$/Trading/etradings/tradings/serializers.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Trading/etradings/tradings/static/avatars/1000000033.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Trading/etradings/tradings/static/avatars/220d220bb4fe9189281b91b37e1e36f2.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Trading/etradings/tradings/static/avatars/220d220bb4fe9189281b91b37e1e36f2_eOB1h7O.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Trading/etradings/tradings/static/avatars/220d220bb4fe9189281b91b37e1e36f2_fTUTlsS.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Trading/etradings/tradings/static/avatars/220d220bb4fe9189281b91b37e1e36f2_r8S4AZf.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Trading/etradings/tradings/static/avatars/220d220bb4fe9189281b91b37e1e36f2_sCgDA85.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Trading/etradings/tradings/static/avatars/220d220bb4fe9189281b91b37e1e36f2_vonEydh.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Trading/etradings/tradings/static/avatars/325423255_1240684773460283_2162629821836190146_n.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Trading/etradings/tradings/static/avatars/345325375_614164800773055_1752320221137727736_n.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Trading/etradings/tradings/static/avatars/89341c0462a28dbe2c755ae593e4c96c.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Trading/etradings/tradings/static/avatars/89341c0462a28dbe2c755ae593e4c96c_9xNoE8w.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Trading/etradings/tradings/static/avatars/89341c0462a28dbe2c755ae593e4c96c_bEUUga7.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Trading/etradings/tradings/static/avatars/89341c0462a28dbe2c755ae593e4c96c_w5s4ZpZ.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Trading/etradings/tradings/static/avatars/Screenshot_2024-11-23_094109.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Trading/etradings/tradings/static/avatars/Screenshot_2024-11-26_185251.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Trading/etradings/tradings/static/avatars/Screenshot_2024-11-26_185251_TO7p9Ku.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Trading/etradings/tradings/static/products/2025/01/03/220d220bb4fe9189281b91b37e1e36f2.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Trading/etradings/tradings/static/products/2025/01/19/345325375_614164800773055_1752320221137727736_n.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Trading/etradings/tradings/static/products/2025/01/22/345325375_614164800773055_1752320221137727736_n.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Trading/etradings/tradings/static/products/2025/01/22/89341c0462a28dbe2c755ae593e4c96c.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Trading/etradings/tradings/static/products/2025/01/22/89341c0462a28dbe2c755ae593e4c96c_ypY5Yhy.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Trading/etradings/tradings/static/products/2025/01/23/325423255_1240684773460283_2162629821836190146_n.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Trading/etradings/tradings/static/products/2025/01/23/89341c0462a28dbe2c755ae593e4c96c.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Trading/etradings/tradings/static/products/2025/01/25/220d220bb4fe9189281b91b37e1e36f2.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Trading/etradings/tradings/static/products/2025/01/25/Screenshot_2024-11-23_110548.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Trading/etradings/tradings/static/products/2025/01/25/Screenshot_2024-11-28_000249.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Trading/etradings/tradings/static/products/2025/01/25/Screenshot_2024-12-13_223457.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Trading/etradings/tradings/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/Trading/etradings/tradings/urls.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

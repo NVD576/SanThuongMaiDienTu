@@ -3,8 +3,7 @@ from rest_framework.serializers import ModelSerializer, ImageField
 from .models import *
 
 class UserSerializer(ModelSerializer):
-    # avatar = serializers.SerializerMethodField(source='avatar')
-    # avatar = ImageField(required=False)
+
     class Meta:
         model = User
         fields = ['id','first_name','last_name','email','username','password','role','avatar']
@@ -20,15 +19,15 @@ class UserSerializer(ModelSerializer):
 
         return user
 
-    def get_avatar(self, obj):
-        if obj.avatar:
-            # Trả về đường dẫn đầy đủ với STATIC_URL
-            request = self.context.get('request')  # Lấy thông tin request nếu cần
-            if request and obj.avatar:
-                # return request.build_absolute_uri('/static/' % obj.avatar)
-                return request.build_absolute_uri(f'/static/{obj.avatar.name}')
-            # return f"{request.scheme}://{request.get_host()}/static/{obj.avatar.name}"
-        return None
+    # def get_avatar(self, obj):
+    #     if obj.avatar:
+    #         # Trả về đường dẫn đầy đủ với STATIC_URL
+    #         request = self.context.get('request')  # Lấy thông tin request nếu cần
+    #         if request and obj.avatar:
+    #             # return request.build_absolute_uri('/static/' % obj.avatar)
+    #             return request.build_absolute_uri(f'/static/{obj.avatar.name}')
+    #         # return f"{request.scheme}://{request.get_host()}/static/{obj.avatar.name}"
+    #     return None
 
 
 class StoreSerializer(ModelSerializer):
@@ -51,18 +50,18 @@ class CategorySerializer(ModelSerializer):
         fields = ['id', 'name', 'created_at', 'active']
 
 class ProductSerializer(ModelSerializer):
-    image = serializers.SerializerMethodField()
+    # image = serializers.SerializerMethodField()
 
     class Meta:
         model = Product
         fields = ["id","store","name","description","price","category","stock_quantity","image"]
 
-    def get_image(self, obj):
-        if obj.image:
-            # Trả về đường dẫn đầy đủ với STATIC_URL
-            request = self.context.get('request')  # Lấy thông tin request nếu cần
-            return f"{request.scheme}://{request.get_host()}/static/{obj.image.name}"
-        return None
+    # def get_image(self, obj):
+    #     if obj.image:
+    #         # Trả về đường dẫn đầy đủ với STATIC_URL
+    #         request = self.context.get('request')  # Lấy thông tin request nếu cần
+    #         return f"{request.scheme}://{request.get_host()}/static/{obj.image.name}"
+    #     return None
 
 class ReviewSerializer(ModelSerializer):
     class Meta:
