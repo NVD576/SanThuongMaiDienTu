@@ -28,7 +28,7 @@ SECRET_KEY = 'django-insecure-ms8yi3wxs(w-f*jr4^=*aksmt_l$u+wq*31l1*gu##je^b)*38
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['192.168.1.3','192.168.1.14','192.168.1.109']
+ALLOWED_HOSTS = ['192.168.1.3','192.168.1.12','192.168.1.109']
 
 
 # Application definition
@@ -144,7 +144,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/avatars/'
 MEDIA_ROOT = '%s/tradings/static' % BASE_DIR
 def dynamic_upload_path(instance, filename):
     if hasattr(instance, 'store_related'):  # Nếu là file liên quan đến store

@@ -75,13 +75,14 @@ const Register = () => {
 
             if (avatar) {
                 form.append('avatar', {
-                    uri: avatar.uri || avatar, 
-                    name: avatar.name || 'avatar.jpg',
-                    type: avatar.type || 'image/jpeg'
+                    uri: avatar.uri , 
+                    name: avatar.fileName  || 'avatar.jpg',
+                    type: avatar.mimeType  || 'image/jpeg'
                 });
             }
 
-            
+            console.log("Avatar Info:", avatar);
+
             await APIs.post(endpoints['register'],form, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
