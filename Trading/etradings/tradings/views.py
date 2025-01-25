@@ -17,10 +17,15 @@ class UserViewSet(viewsets.ModelViewSet, generics.CreateAPIView, generics.Retrie
     parser_classes = [MultiPartParser, ]
 
     def get_permissions(self):
-        if self.action == 'retrieve':
+        if self.action in ['get_current_user']:
             return [permissions.IsAuthenticated()]
 
         return [permissions.AllowAny()]
+
+    @action(methods=['get'],url_path='current-user',detail=False)
+    def get_current_user(self, request):
+        return Response(UserSerializer(request.user).data)
+
 
 class StoresViewSet(viewsets.ModelViewSet):
     # queryset = Store.objects.filter(active=True)

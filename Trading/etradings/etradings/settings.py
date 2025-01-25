@@ -28,7 +28,7 @@ SECRET_KEY = 'django-insecure-ms8yi3wxs(w-f*jr4^=*aksmt_l$u+wq*31l1*gu##je^b)*38
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['192.168.1.3','192.168.1.14']
+ALLOWED_HOSTS = ['192.168.1.3','192.168.1.14','192.168.1.109']
 
 
 # Application definition
@@ -45,8 +45,7 @@ INSTALLED_APPS = [
     'ckeditor_uploader',
     'rest_framework',
     'oauth2_provider',
-    'drf_yasg',
-    'corsheaders'
+    'drf_yasg'
 ]
 
 REST_FRAMEWORK = {
@@ -71,11 +70,6 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'corsheaders.middleware.CorsMiddleware',
-]
-
-CORS_ALLOWED_ORIGINS = [
-    "http://192.168.1.7:8000",  # React Native dev server
-    "http://localhost:8000",    # Nếu chạy trên localhost
 ]
 
 ROOT_URLCONF = 'etradings.urls'

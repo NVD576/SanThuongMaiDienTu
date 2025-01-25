@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Text, View, TextInput, TouchableOpacity, StyleSheet, Alert } from "react-native";
-import APIs, { endpoints } from "../../configs/APIs";
+import APIs, { authApis, endpoints } from "../../configs/APIs";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { MyDispatchContext } from "../../configs/UserContexts";
 
-const Login = () => {
+const Login = ({ navigation }) => {
     const [user, setUser] = useState({
         "username": "",
         "password": "",
@@ -10,17 +12,7 @@ const Login = () => {
 
     const [loading, setLoading] = useState(false);
 
-    const users = {
-        "username":{
-            "title":"Tên đăng nhập",
-            "field":"username",
-            "secure":false
-        }, "password":{
-            "title":"Mật khẩu",
-            "field":"password",
-            "secure":true
-        }
-    }
+    const dispatch = useContext(MyDispatchContext);
 
     const updateUser = (value, field) => {
         setUser({ ...user, [field]: value });
@@ -42,23 +34,35 @@ const Login = () => {
                     "Content-Type": "application/x-www-form-urlencoded",
                 }
             });
-
-            console.info(res.data);
+    
+            console.info("Login response:", res.data);
+    
+            await AsyncStorage.setItem('token', res.data.access_token);
+    
+            const authAPI = await authApis();
+            const userRes = await authAPI.get(endpoints['current-user']);
+            console.info("Current user:", userRes.data);
+    
+            dispatch({
+                type: "login",
+                payload: userRes.data,
+            });
+    
+            navigation.navigate("Home");
         } catch (ex) {
-            console.log("Login endpoint:", endpoints['login']);
+            console.error("Login failed:", ex.response ? ex.response.data : ex.message);
+            Alert.alert("Đăng nhập thất bại", "Tên đăng nhập hoặc mật khẩu không đúng.");
         } finally {
             setLoading(false);
         }
     };
+    
 
     return (
         <View style={styles.container}>
             <Text style={styles.title}>Đăng nhập</Text>
 
-            {Object.values(users).map(u=><TextInput key={u.field} secureTextEntry={u.secure} style={styles.input} placeholder={u.title}
-             value={user[u.field]} onChange={t=>updateUser(t.field)} />)}
-
-            {/* <TextInput
+            <TextInput
                 style={styles.input}
                 placeholder="Tên đăng nhập"
                 placeholderTextColor="#888"
@@ -75,7 +79,7 @@ const Login = () => {
                 secureTextEntry={true}
                 value={user.password}
                 onChangeText={t => updateUser(t, "password")}
-            /> */}
+            />
 
             <TouchableOpacity
                 style={[styles.button, loading && { backgroundColor: "#999" }]}
