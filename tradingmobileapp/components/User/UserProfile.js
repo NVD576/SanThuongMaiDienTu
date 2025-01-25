@@ -18,7 +18,7 @@ const UserProfile = () => {
         await AsyncStorage.removeItem('token');
 
         dispatch({"type": "logout"});
-        
+
         nav.navigate("index");
     }
 

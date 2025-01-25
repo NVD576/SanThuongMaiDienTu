@@ -1,6 +1,8 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Text, View, TextInput, TouchableOpacity, StyleSheet, Alert } from "react-native";
-import APIs, { endpoints } from "../../configs/APIs";
+import APIs, { authApis, endpoints } from "../../configs/APIs";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { MyDispatchContext } from "../../configs/UserContexts";
 
 const Login = ({ navigation }) => {
     const [user, setUser] = useState({
@@ -9,6 +11,8 @@ const Login = ({ navigation }) => {
     });
 
     const [loading, setLoading] = useState(false);
+
+    const dispatch = useContext(MyDispatchContext);
 
     const updateUser = (value, field) => {
         setUser({ ...user, [field]: value });
@@ -20,8 +24,8 @@ const Login = ({ navigation }) => {
             console.log("Trying to login...");
     
             const res = await APIs.post(endpoints['login'], {
-                client_id: "BqB1mSaAebT0Q3BYUPnk8jsbK0Iugi73pcCtP4Il",
-                client_secret: "S6UxZrRPqZ0sFzwPmHOxbu1unSSoPnyrQXkcmfRbZTwMsDbafYJct7gZr8jO3BaVA22L4BBbH0QMzaEHQvaSQd6BwKk3BhGXkuhWDiovvKqVycWZ3wR1KJqrRntpZ8QP",
+                client_id: "ge59pWUzpzowHvx2jPtVvkv0Eps9O91sDOSspEzg",
+                client_secret: "IH6sHyRX6F2CrQrVnjUPlRLR8Baa44LybMKe118IrbcWbyk9lsqm0kJje5uL24U9uPVTMTSJGw67jrx4g4zxuRniQRbLFjX0Y3jgzQ5FPvULqjgmsu4k8nqDRvQQwEFr",
                 grant_type: "password",
                 username: user.username,
                 password: user.password,
@@ -31,10 +35,24 @@ const Login = ({ navigation }) => {
                 }
             });
 
-            console.info(res.data);
+            console.info("Login response:", res.data);
+
+            await AsyncStorage.setItem('token', res.data.access_token);
+
+            const authAPI = await authApis();
+            const userRes = await authAPI.get(endpoints['current-user']);
+            console.info("Current user:", userRes.data);
+
+            dispatch({
+                type: "login",
+                payload: userRes.data,
+            });
+
+            navigation.navigate("Home");
+
             navigation.reset({
-                index: 0, 
-                routes: [{ name: "Home" }] 
+                index: 0,
+                routes: [{ name: "Home" }]
             });
         } catch (ex) {
             console.error("Login failed:", ex.response ? ex.response.data : ex.message);
@@ -43,6 +61,7 @@ const Login = ({ navigation }) => {
             setLoading(false);
         }
     };
+
 
 
     const register=()=>{
