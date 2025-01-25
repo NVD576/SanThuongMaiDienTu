@@ -7,7 +7,7 @@ import { MyDispatchContext, MyUserContext } from "../../configs/UserContexts";
 import Styles from "../../styles/Styles";
 
 const UserProfile = () => {
-    const user = useContext(MyUserContext);
+    const { user } = useContext(MyUserContext);
     const dispatch = useContext(MyDispatchContext)
     const nav = useNavigation();
 
@@ -19,13 +19,13 @@ const UserProfile = () => {
 
         dispatch({"type": "logout"});
 
-        nav.navigate("index");
+        nav.navigate("Home");
     }
 
     return (
         <>
-            <Text style={Styles.subject}>Chào {user.username}</Text>
-            <Button onPress={logout} style={Styles.margin} mode="outlined">Đăng xuất</Button>
+            <Text>Chào {user ? user.username : "Khách"}</Text>
+            <Button onPress={logout} mode="outlined">Đăng xuất</Button>
         </>
     );
 }

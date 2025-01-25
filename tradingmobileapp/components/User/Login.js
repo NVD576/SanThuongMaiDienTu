@@ -2,7 +2,7 @@ import React, { useContext, useState } from "react";
 import { Text, View, TextInput, TouchableOpacity, StyleSheet, Alert } from "react-native";
 import APIs, { authApis, endpoints } from "../../configs/APIs";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { MyDispatchContext } from "../../configs/UserContexts";
+import { MyDispatchContext, MyUserContext } from "../../configs/UserContexts";
 
 const Login = ({ navigation }) => {
     const [user, setUser] = useState({
@@ -13,6 +13,8 @@ const Login = ({ navigation }) => {
     const [loading, setLoading] = useState(false);
 
     const dispatch = useContext(MyDispatchContext);
+
+    const { loginInfo } = useContext(MyUserContext); 
 
     const updateUser = (value, field) => {
         setUser({ ...user, [field]: value });
@@ -47,6 +49,8 @@ const Login = ({ navigation }) => {
                 type: "login",
                 payload: userRes.data,
             });
+
+            loginInfo(userRes.data);
 
             navigation.navigate("Home");
 
