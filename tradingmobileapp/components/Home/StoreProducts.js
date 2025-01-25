@@ -2,15 +2,34 @@ import React, { useEffect, useState } from "react";
 import {
   Text,
   View,
-  ScrollView,
   ActivityIndicator,
   Image,
   FlatList,
 } from "react-native";
-import Styles from "../../styles/Styles";
+import StoreProductStyles from "../Home/StoreProductStyles";
 import APIs, { endpoints } from "../../configs/APIs";
 import { useNavigation } from "@react-navigation/native";
-import { Chip, Button } from "react-native-paper";
+import { TouchableOpacity } from "react-native-gesture-handler";
+
+// Component cho từng sản phẩm
+const ProductCard = ({ product }) => {
+  return (
+    <TouchableOpacity style={StoreProductStyles.productCard}>
+      <Image
+        source={{ uri: product.image }}
+        style={StoreProductStyles.productImage}
+        resizeMode="cover"
+      />
+      <View style={StoreProductStyles.productInfo}>
+        <Text style={StoreProductStyles.productName}>{product.name}</Text>
+        <Text style={StoreProductStyles.productPrice}>Price: ${product.price}</Text>
+        <Text style={StoreProductStyles.productStock}>
+          In Stock: {product.stock_quantity}
+        </Text>
+      </View>
+    </TouchableOpacity>
+  );
+};
 
 const StoreProducts = ({ route }) => {
   const { storeId } = route.params; // Lấy storeId từ tham số
@@ -19,7 +38,7 @@ const StoreProducts = ({ route }) => {
 
   const loadProducts = async () => {
     try {
-      const res = await APIs.get(endpoints["products"]); // Giả sử API này trả về sản phẩm của cửa hàng
+      const res = await APIs.get(endpoints["products"]);
       const filteredProducts = res.data.results.filter(
         (product) => product.store === storeId // Lọc sản phẩm theo storeId
       );
@@ -33,11 +52,11 @@ const StoreProducts = ({ route }) => {
 
   useEffect(() => {
     loadProducts();
-  }, [storeId]); // Khi storeId thay đổi, gọi lại loadProducts
+  }, [storeId]);
 
   return (
-    <View style={Styles.container}>
-      <Text style={Styles.title}>Sản phẩm của cửa hàng</Text>
+    <View style={StoreProductStyles.container}>
+      <Text style={StoreProductStyles.title}>Sản phẩm của cửa hàng</Text>
 
       {loading ? (
         <ActivityIndicator
@@ -46,24 +65,16 @@ const StoreProducts = ({ route }) => {
           style={{ marginTop: 20 }}
         />
       ) : (
-        <ScrollView contentContainerStyle={Styles.scrollViewContainer}>
-          <View style={Styles.productList}>
-            {products.map((product) => (
-              <View key={product.id} style={Styles.productContainer}>
-                <Image
-                  source={{ uri: product.image }} // Đảm bảo sản phẩm có trường `image` chứa URL hình ảnh
-                  style={Styles.productImage}
-                  resizeMode="contain"
-                />
-                <Text style={Styles.productName}>{product.name}</Text>
-                <Text style={Styles.productName}>Price: {product.price}</Text>
-                <Text style={Styles.productName}>Quantity: {product.stock_quantity}</Text>
-              </View>
-            ))}
-          </View>
-        </ScrollView>
+        <FlatList
+          data={products}
+          keyExtractor={(item) => item.id.toString()}
+          renderItem={({ item }) => <ProductCard product={item} />}
+          numColumns={2} // Hiển thị sản phẩm theo dạng lưới
+          contentContainerStyle={StoreProductStyles.productList}
+        />
       )}
     </View>
   );
 };
+
 export default StoreProducts;
