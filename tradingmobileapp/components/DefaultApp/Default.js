@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useContext, useEffect, useRef } from 'react';
 import { SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import * as Animatable from 'react-native-animatable';
@@ -6,6 +6,8 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Home from '../Home/Home';
 import Login from '../User/Login';
+import UserProfile from '../User/UserProfile';
+import { MyUserContext } from '../../configs/UserContexts';
 
 // Màu sắc sử dụng trong ứng dụng
 const Colors = {
@@ -13,19 +15,6 @@ const Colors = {
   primaryLite: '#BB86FC',
   background: '#f5f5f5',
 };
-
-// Component mẫu cho các màn hình
-const ColorScreen = ({ route }) => (
-  <View style={[styles.screenContainer, { backgroundColor: Colors.background }]}>
-    <Text style={styles.screenText}>{route.name} Screen</Text>
-  </View>
-);
-
-// Dữ liệu cho các tab
-const TabArr = [
-  { route: 'Home', label: 'Home', type: 'Ionicons', activeIcon: 'home', inActiveIcon: 'home-outline', component: Home },
-  { route: 'Login', label: 'Login', type: 'MaterialCommunityIcons', activeIcon: 'account', inActiveIcon: 'account-outline', component: Login },
-];
 
 const Tab = createBottomTabNavigator();
 
@@ -63,6 +52,8 @@ const TabButton = ({ item, onPress, accessibilityState }) => {
 
 // Main Component
 export default function Default() {
+  const { user } = useContext(MyUserContext);
+
   return (
     <SafeAreaView style={styles.safeArea}>
       <Tab.Navigator
@@ -71,17 +62,25 @@ export default function Default() {
           tabBarStyle: styles.tabBar,
         }}
       >
-        {TabArr.map((item, index) => (
-          <Tab.Screen
-            key={index}
-            name={item.route}
-            component={item.component}
-            options={{
-              tabBarShowLabel: false,
-              tabBarButton: (props) => <TabButton {...props} item={item} />,
-            }}
-          />
-        ))}
+        {/* Tab Home luôn luôn có mặt */}
+        <Tab.Screen
+          name="Home"
+          component={Home}
+          options={{
+            tabBarShowLabel: false,
+            tabBarButton: (props) => <TabButton {...props} item={{ route: 'Home', type: 'Ionicons', activeIcon: 'home', inActiveIcon: 'home-outline' }} />,
+          }}
+        />
+        
+        {/* Tab Login hoặc UserProfile tùy thuộc vào user */}
+        <Tab.Screen
+          name="Login"
+          component={user === null ? Login : UserProfile}
+          options={{
+            tabBarShowLabel: false,
+            tabBarButton: (props) => <TabButton {...props} item={{ route: 'Login', type: 'MaterialCommunityIcons', activeIcon: 'account', inActiveIcon: 'account-outline' }} />,
+          }}
+        />
       </Tab.Navigator>
     </SafeAreaView>
   );
@@ -109,15 +108,5 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  screenContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  screenText: {
-    fontSize: 24,
-    color: '#333',
-    fontWeight: 'bold',
   },
 });

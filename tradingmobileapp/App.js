@@ -11,6 +11,7 @@ import { MyDispatchContext, MyUserContext } from './configs/UserContexts';
 import { useReducer } from 'react';
 import MyUserReducer from './configs/UserReducers';
 import Register from './components/User/Register'
+import UserProfile from './components/User/UserProfile';
 // import Component from 'react-native-paper/lib/typescript/components/List/ListItem';
 
 const Stack = createStackNavigator();
@@ -21,17 +22,18 @@ export default function App() {
   return (
 
         <NavigationContainer>
-          <MyUserContext.Provider value={user}>
+          <MyUserContext.Provider value={{ user, loginInfo: (userData) => dispatch({ type: "login", payload: userData }) }}>
             <MyDispatchContext.Provider value={dispatch}>
-              <Stack.Navigator  screenOptions={{
-                headerShown: false,
-            }} initialRouteName="Default">
-                <Stack.Screen name="Default" component={Default}/>
+            <View style={{ flex: 1, marginTop: 25 }}>
+              <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName="Default">
+                <Stack.Screen name="Default" component={Default} />
                 <Stack.Screen name="Home" component={Home} />
                 <Stack.Screen name="Login" component={Login} />
                 <Stack.Screen name="StoreProducts" component={StoreProducts} />
                 <Stack.Screen name="Register" component={Register} />
+                <Stack.Screen name="UserProfile" component={UserProfile} />
               </Stack.Navigator>
+            </View>
             </MyDispatchContext.Provider>
           </MyUserContext.Provider>
         </NavigationContainer>
