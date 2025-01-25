@@ -6,6 +6,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import Home from './components/Home/Home';
 import StoreProducts from './components/Home/StoreProducts';
 import Login from './components/User/Login'
+import Default from './components/DefaultApp/Default';
 import { MyDispatchContext, MyUserContext } from './configs/UserContexts';
 import { useReducer } from 'react';
 import MyUserReducer from './configs/UserReducers';
@@ -22,7 +23,10 @@ export default function App() {
         <NavigationContainer>
           <MyUserContext.Provider value={user}>
             <MyDispatchContext.Provider value={dispatch}>
-              <Stack.Navigator initialRouteName="Home">
+              <Stack.Navigator  screenOptions={{
+                headerShown: false,
+            }} initialRouteName="Default">
+                <Stack.Screen name="Default" component={Default}/>
                 <Stack.Screen name="Home" component={Home} />
                 <Stack.Screen name="Login" component={Login} />
                 <Stack.Screen name="StoreProducts" component={StoreProducts} />

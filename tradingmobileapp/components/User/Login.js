@@ -50,7 +50,6 @@ const Login = ({ navigation }) => {
 
             navigation.navigate("Home");
 
-            console.info(res.data);
             navigation.reset({
                 index: 0,
                 routes: [{ name: "Home" }]
