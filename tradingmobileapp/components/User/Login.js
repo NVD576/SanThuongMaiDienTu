@@ -10,6 +10,18 @@ const Login = () => {
 
     const [loading, setLoading] = useState(false);
 
+    const users = {
+        "username":{
+            "title":"Tên đăng nhập",
+            "field":"username",
+            "secure":false
+        }, "password":{
+            "title":"Mật khẩu",
+            "field":"password",
+            "secure":true
+        }
+    }
+
     const updateUser = (value, field) => {
         setUser({ ...user, [field]: value });
     };
@@ -43,7 +55,10 @@ const Login = () => {
         <View style={styles.container}>
             <Text style={styles.title}>Đăng nhập</Text>
 
-            <TextInput
+            {Object.values(users).map(u=><TextInput key={u.field} secureTextEntry={u.secure} style={styles.input} placeholder={u.title}
+             value={user[u.field]} onChange={t=>updateUser(t.field)} />)}
+
+            {/* <TextInput
                 style={styles.input}
                 placeholder="Tên đăng nhập"
                 placeholderTextColor="#888"
@@ -60,7 +75,7 @@ const Login = () => {
                 secureTextEntry={true}
                 value={user.password}
                 onChangeText={t => updateUser(t, "password")}
-            />
+            /> */}
 
             <TouchableOpacity
                 style={[styles.button, loading && { backgroundColor: "#999" }]}
