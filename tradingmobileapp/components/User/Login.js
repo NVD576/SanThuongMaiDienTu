@@ -44,6 +44,10 @@ const Login = ({ navigation }) => {
         }
     };
 
+
+    const register=()=>{
+
+    }
     return (
         <View style={styles.container}>
             <Text style={styles.title}>Đăng nhập</Text>
@@ -77,7 +81,7 @@ const Login = ({ navigation }) => {
 
             <TouchableOpacity style={styles.row}>
                 <Text style={styles.forgotPassword}>Quên mật khẩu?</Text>
-                <Text style={styles.register}>Đăng ký</Text>
+                <Text onPress={() => navigation.navigate("Register")} style={styles.register}>Đăng ký</Text>
             </TouchableOpacity>
         </View>
     );

@@ -7,7 +7,8 @@ export const endpoints = {
     'products':'/products/',
     'categorys':'/categorys/',
     'login':'/o/token/',
-    'current-user':'/users/current-user/'
+    'current-user':'/users/current-user/',
+    'register': '/users/'
 }
 
 export default axios.create({

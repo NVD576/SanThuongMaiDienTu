@@ -6,6 +6,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import Home from './components/Home/Home';
 import StoreProducts from './components/Home/StoreProducts';
 import Login from './components/User/Login'
+import Register from './components/User/Register'
 // import Component from 'react-native-paper/lib/typescript/components/List/ListItem';
 
 const Stack = createStackNavigator();
@@ -20,6 +21,7 @@ export default function App() {
           <Stack.Screen name="Home" component={Home} />
           <Stack.Screen name="Login" component={Login} />
           <Stack.Screen name="StoreProducts" component={StoreProducts} />
+          <Stack.Screen name="Register" component={Register} />
       </Stack.Navigator>
     </NavigationContainer>
 
