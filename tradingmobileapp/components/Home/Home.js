@@ -29,9 +29,6 @@ const Home = () => {
         <View style={Styles.container}>
             <Text style={Styles.title}>Danh sách cửa hàng</Text>
 
-
-
-
             {loading ? (
                 <ActivityIndicator size="large" color="#6200ee" style={{ marginTop: 20 }} />
             ) : (
@@ -44,7 +41,7 @@ const Home = () => {
                             key={store.id}
                             icon="storefront"
                             style={Styles.chip}
-                            onPress={() => console.log(`Clicked ${store.name}`)}
+                            onPress={() => navigation.navigate("StoreProducts", { storeId: store.id })}
                         >
                             {store.name}
                         </Chip>

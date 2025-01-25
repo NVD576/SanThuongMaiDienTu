@@ -4,6 +4,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 
 import Home from './components/Home/Home';
+import StoreProducts from './components/Home/StoreProducts';
 import Login from './components/User/Login'
 // import Component from 'react-native-paper/lib/typescript/components/List/ListItem';
 
@@ -18,6 +19,7 @@ export default function App() {
       <Stack.Navigator initialRouteName="Home">
           <Stack.Screen name="Home" component={Home} />
           <Stack.Screen name="Login" component={Login} />
+          <Stack.Screen name="StoreProducts" component={StoreProducts} />
       </Stack.Navigator>
     </NavigationContainer>
 

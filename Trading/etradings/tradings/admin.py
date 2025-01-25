@@ -48,7 +48,11 @@ class ProductAdmin(admin.ModelAdmin):
     list_display = ["store","name","price","category","stock_quantity","created_at","active"]
     search_fields = ["store","name"]
     list_filter = ["active"]
+    readonly_fields = ["images"]
     form = ProductForm
+    def images(self, obj):
+        return mark_safe("<img src='/static/{img_url}' alt='{alt}'/>".format(img_url=obj.image.name, alt=obj.image))
+
 
 class UserAdmin(admin.ModelAdmin):
     class Media:

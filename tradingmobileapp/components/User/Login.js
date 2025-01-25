@@ -32,7 +32,10 @@ const Login = ({ navigation }) => {
             });
 
             console.info(res.data);
-            navigation.navigate("Home"); 
+            navigation.reset({
+                index: 0, 
+                routes: [{ name: "Home" }] 
+            });
         } catch (ex) {
             console.error("Login failed:", ex.response ? ex.response.data : ex.message);
             Alert.alert("Đăng nhập thất bại", "Tên đăng nhập hoặc mật khẩu không đúng.");
