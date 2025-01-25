@@ -14,6 +14,13 @@ export default StyleSheet.create({
         marginBottom: 20,
         // color: "#333",
     },
+    loginButton: {
+        backgroundColor: "#3498db", 
+        borderRadius: 50, 
+        paddingVertical: 12, 
+        paddingHorizontal: 20, 
+        elevation: 5, 
+    },
     scrollViewContainer: {
         flexGrow: 1,
         alignItems: "center",

@@ -6,10 +6,17 @@
   <component name="ChangeListManager">
     <list default="true" id="edb1882b-57c9-4d48-900c-3edc62689eda" name="Changes" comment="a">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Trading/etradings/etradings/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/Trading/etradings/etradings/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Trading/etradings/tradings/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/Trading/etradings/tradings/admin.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Trading/etradings/tradings/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/Trading/etradings/tradings/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Trading/etradings/tradings/serializers.py" beforeDir="false" afterPath="$PROJECT_DIR$/Trading/etradings/tradings/serializers.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Trading/etradings/tradings/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/Trading/etradings/tradings/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/tradingmobileapp/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/tradingmobileapp/App.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/tradingmobileapp/components/Home/Home.js" beforeDir="false" afterPath="$PROJECT_DIR$/tradingmobileapp/components/Home/Home.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/tradingmobileapp/components/User/Login.js" beforeDir="false" afterPath="$PROJECT_DIR$/tradingmobileapp/components/User/Login.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tradingmobileapp/configs/APIs.js" beforeDir="false" afterPath="$PROJECT_DIR$/tradingmobileapp/configs/APIs.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tradingmobileapp/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/tradingmobileapp/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tradingmobileapp/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/tradingmobileapp/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/tradingmobileapp/styles/Styles.js" beforeDir="false" afterPath="$PROJECT_DIR$/tradingmobileapp/styles/Styles.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />

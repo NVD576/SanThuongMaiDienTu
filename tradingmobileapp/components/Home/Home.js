@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { Text, View, ScrollView, ActivityIndicator } from "react-native";
 import Styles from "../../styles/Styles";
-import { Chip } from "react-native-paper";
+import { Chip, Button  } from "react-native-paper";
 import APIs, { endpoints } from "../../configs/APIs";
+import { useNavigation } from "@react-navigation/native"; // Import useNavigation
 
 const Home = () => {
     const [stores, setStores] = useState([]);
     const [loading, setLoading] = useState(true);
+    const navigation = useNavigation(); 
 
     const loadStores = async () => {
         try {
@@ -26,6 +28,10 @@ const Home = () => {
     return (
         <View style={Styles.container}>
             <Text style={Styles.title}>Danh sách cửa hàng</Text>
+
+
+
+
             {loading ? (
                 <ActivityIndicator size="large" color="#6200ee" style={{ marginTop: 20 }} />
             ) : (
@@ -45,6 +51,15 @@ const Home = () => {
                     ))}
                 </ScrollView>
             )}
+
+
+            <Button
+                mode="contained"
+                onPress={() => navigation.navigate("Login")}
+                style={Styles.loginButton} 
+                >
+                Go to Login
+            </Button>
         </View>
     );
 };

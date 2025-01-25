@@ -2,6 +2,7 @@ from django.contrib import admin
 from django.db.models import Count
 from django.template.response import TemplateResponse
 from django.utils.html import mark_safe
+from django.contrib.auth import get_user_model
 from django import forms
 from django.utils.html import format_html
 from .models import *
@@ -62,6 +63,13 @@ class UserAdmin(admin.ModelAdmin):
 
     def image(self, obj):
         return mark_safe("<img src='/static/{img_url}' alt='{alt}'/>".format(img_url=obj.avatar.name, alt=obj.avatar))
+
+    def save_model(self, request, obj, form, change):
+        # Ensure the password is hashed if it's changed or a new user is created
+        if obj.password:
+            obj.set_password(obj.password)
+        obj.save()
+
 
 class ReviewAdmin(admin.ModelAdmin):
     list_display = ["user","product","rating","created_at"]

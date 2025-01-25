@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Text, View, TextInput, TouchableOpacity, StyleSheet, Alert } from "react-native";
 import APIs, { endpoints } from "../../configs/APIs";
 
-const Login = () => {
+const Login = ({ navigation }) => {
     const [user, setUser] = useState({
         "username": "",
         "password": "",
@@ -20,8 +20,8 @@ const Login = () => {
             console.log("Trying to login...");
     
             const res = await APIs.post(endpoints['login'], {
-                client_id: "ge59pWUzpzowHvx2jPtVvkv0Eps9O91sDOSspEzg",
-                client_secret: "IH6sHyRX6F2CrQrVnjUPlRLR8Baa44LybMKe118IrbcWbyk9lsqm0kJje5uL24U9uPVTMTSJGw67jrx4g4zxuRniQRbLFjX0Y3jgzQ5FPvULqjgmsu4k8nqDRvQQwEFr",
+                client_id: "BqB1mSaAebT0Q3BYUPnk8jsbK0Iugi73pcCtP4Il",
+                client_secret: "S6UxZrRPqZ0sFzwPmHOxbu1unSSoPnyrQXkcmfRbZTwMsDbafYJct7gZr8jO3BaVA22L4BBbH0QMzaEHQvaSQd6BwKk3BhGXkuhWDiovvKqVycWZ3wR1KJqrRntpZ8QP",
                 grant_type: "password",
                 username: user.username,
                 password: user.password,
@@ -32,8 +32,10 @@ const Login = () => {
             });
 
             console.info(res.data);
+            navigation.navigate("Home"); 
         } catch (ex) {
-            console.log("Login endpoint:", endpoints['login']);
+            console.error("Login failed:", ex.response ? ex.response.data : ex.message);
+            Alert.alert("Đăng nhập thất bại", "Tên đăng nhập hoặc mật khẩu không đúng.");
         } finally {
             setLoading(false);
         }
@@ -77,7 +79,6 @@ const Login = () => {
         </View>
     );
 };
-export default Login;
 
 const styles = StyleSheet.create({
     container: {
