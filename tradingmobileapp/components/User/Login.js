@@ -37,13 +37,15 @@ const Login = ({ navigation }) => {
                 }
             });
 
-            console.info("Login response:", res.data);
+            // console.info("Login response:", res.data);
 
             await AsyncStorage.setItem('token', res.data.access_token);
+            
 
             const authAPI = await authApis();
             const userRes = await authAPI.get(endpoints['current-user']);
             console.info("Current user:", userRes.data);
+            await AsyncStorage.setItem("user_id", userRes.data.id.toString());
 
             dispatch({
                 type: "login",

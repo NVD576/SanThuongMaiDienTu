@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from rest_framework.serializers import ModelSerializer, ImageField
+from rest_framework.serializers import ModelSerializer, ImageField,StringRelatedField
 from .models import *
 
 class UserSerializer(ModelSerializer):
@@ -49,12 +49,34 @@ class CategorySerializer(ModelSerializer):
         model = Category
         fields = ['id', 'name', 'created_at', 'active']
 
+
+class ReviewSerializer(ModelSerializer):
+    user = serializers.PrimaryKeyRelatedField(queryset=User.objects.all())  # Cung cấp queryset cho user
+    # product = serializers.PrimaryKeyRelatedField(queryset=Product.objects.all())
+    # user = serializers.SerializerMethodField()
+    class Meta:
+        model = Review
+        fields = "__all__"
+        # fields= ["id","product", "user", "rating", "comment", "created_at"]
+    # def get_user(self, obj):
+    #     # Trả về tên người dùng hoặc bất kỳ thuộc tính nào của đối tượng User
+    #     return obj.user.username
+
+    def to_representation(self, instance):
+        """
+        Override the to_representation method to display the user's username
+        instead of the user ID.
+        """
+        representation = super().to_representation(instance)
+        representation['user'] = instance.user.username  # Hiển thị tên người dùng thay vì ID
+        return representation
+
 class ProductSerializer(ModelSerializer):
     # image = serializers.SerializerMethodField()
-
+    reviews = ReviewSerializer(many=True, read_only=True)
     class Meta:
         model = Product
-        fields = ["id","store","name","description","price","category","stock_quantity","rating","image"]
+        fields = ["id","store","name","description","price","category","stock_quantity","rating","image", 'reviews']
 
     # def get_image(self, obj):
     #     if obj.image:
@@ -63,11 +85,6 @@ class ProductSerializer(ModelSerializer):
     #         return f"{request.scheme}://{request.get_host()}/static/{obj.image.name}"
     #     return None
 
-class ReviewSerializer(ModelSerializer):
-    class Meta:
-        model = Review
-        fields = "__all__"
-        # fields= ["id","product", "user", "rating", "comment", "created_at"]
 
 class OrderSerializer(ModelSerializer):
     class Meta:

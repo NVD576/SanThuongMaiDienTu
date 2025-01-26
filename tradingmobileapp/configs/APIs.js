@@ -10,7 +10,8 @@ export const endpoints = {
     'categories':'/categories/',
     'login':'/o/token/',
     'current-user':'/users/current-user/',
-    'register': '/users/'
+    'register': '/users/',
+    'reviews':'/reviews/'
 }
 
 export const authApis = async () => {
