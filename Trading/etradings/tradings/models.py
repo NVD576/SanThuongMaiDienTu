@@ -52,6 +52,13 @@ class Category(models.Model):
 
 # Product Model
 class Product(models.Model):
+    RATING_CHOICES = [
+        (1, '1'),
+        (2, '2'),
+        (3, '3'),
+        (4, '4'),
+        (5, '5'),
+    ]
     store = models.ForeignKey(Store, on_delete=models.CASCADE, related_name='products')
     name = models.CharField(max_length=255)
     description = RichTextField()
@@ -62,6 +69,7 @@ class Product(models.Model):
         related_name='products',
     )
     stock_quantity = models.PositiveIntegerField(default=0)
+    rating = models.PositiveSmallIntegerField(choices=RATING_CHOICES)
     image = models.ImageField(upload_to='products/%Y/%m/%d', default=None)
     created_at = models.DateTimeField(auto_now_add=True)
     active = models.BooleanField(default=True)

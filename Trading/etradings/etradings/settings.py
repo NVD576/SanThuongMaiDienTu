@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/5.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
-
+import os
 from pathlib import Path
 
 from ckeditor_demo.settings import CKEDITOR_UPLOAD_PATH
@@ -28,7 +28,7 @@ SECRET_KEY = 'django-insecure-ms8yi3wxs(w-f*jr4^=*aksmt_l$u+wq*31l1*gu##je^b)*38
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['192.168.1.3','192.168.1.12','192.168.1.109']
+ALLOWED_HOSTS = ['192.168.1.3','192.168.1.12','192.168.1.109','localhost']
 
 
 # Application definition
@@ -45,7 +45,8 @@ INSTALLED_APPS = [
     'ckeditor_uploader',
     'rest_framework',
     'oauth2_provider',
-    'drf_yasg'
+    'drf_yasg',
+    'django_filters'
 ]
 
 REST_FRAMEWORK = {
@@ -144,7 +145,8 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-STATIC_URL = '/static/avatars/'
+STATIC_URL = '/static/avatar/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 MEDIA_ROOT = '%s/tradings/static' % BASE_DIR
 def dynamic_upload_path(instance, filename):
     if hasattr(instance, 'store_related'):  # Nếu là file liên quan đến store

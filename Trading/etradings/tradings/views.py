@@ -2,12 +2,15 @@ from contextlib import nullcontext
 
 from MySQLdb.constants.CR import NULL_POINTER
 from django.shortcuts import render
+from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets, permissions, generics, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.status import HTTP_400_BAD_REQUEST, HTTP_200_OK
 from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.views import APIView
+import django_filters
+
 
 from .models import Store, User, Product, Category, Review, Transaction, Order, Chat, OrderItem
 from .serializers import StoreSerializer, UserSerializer, ProductSerializer, CategorySerializer, ReviewSerializer, TransactionSerializer, OrderSerializer, OrderItemSerializer, ChatSerializer
@@ -61,10 +64,19 @@ class CategoryViewSet(viewsets.ModelViewSet):
     #
     #     return [permissions.IsAuthenticated()]
 
+class ProductFilter(django_filters.FilterSet):
+    category = django_filters.NumberFilter(field_name='category__id', lookup_expr='exact')
+
+    class Meta:
+        model = Product
+        fields = ['category']
+
 class ProductViewSet(viewsets.ModelViewSet):
     queryset = Product.objects.filter(active=True).order_by('id')
     serializer_class = ProductSerializer
     permission_classes = [permissions.AllowAny]
+    filterset_class = ProductFilter
+    filter_backends = (DjangoFilterBackend, )
 
     @action(methods=['post'], detail=True, url_path="hide-product", url_name="hide-product")
     def hide_product(self, request, pk):
@@ -72,7 +84,7 @@ class ProductViewSet(viewsets.ModelViewSet):
             p = Product.objects.get(pk=pk)
             p.active = False
             p.save()
-        except Product.DoesNotExit:
+        except Product.DoesNotExist:
             return Response(status=HTTP_400_BAD_REQUEST)
 
         return Response(data=ProductSerializer(p, context={'request': request}).data,status=HTTP_200_OK)

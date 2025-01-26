@@ -45,7 +45,7 @@ class CategoryAdmin(admin.ModelAdmin):
     list_filter = ['active']
 
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ["store","name","price","category","stock_quantity","created_at","active"]
+    list_display = ["store","name","price","category","stock_quantity","rating","created_at","active"]
     search_fields = ["store","name"]
     list_filter = ["active"]
     readonly_fields = ["images"]
@@ -113,7 +113,7 @@ class StoreAppAdminSite(admin.AdminSite):
             'stats' : stats
         })
 
-admin_site = StoreAppAdminSite('mystore')
+admin_site = StoreAppAdminSite('MyApp')
 
 admin_site.register(Store, StoreAdmin)
 admin_site.register(Category, CategoryAdmin)

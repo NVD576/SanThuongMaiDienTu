@@ -1,5 +1,3 @@
-# from django.contrib import admin
-# from django.db import router
 from django.urls import path, re_path, include
 from . import views
 from . admin import admin_site

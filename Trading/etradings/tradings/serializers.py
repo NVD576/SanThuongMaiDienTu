@@ -54,7 +54,7 @@ class ProductSerializer(ModelSerializer):
 
     class Meta:
         model = Product
-        fields = ["id","store","name","description","price","category","stock_quantity","image"]
+        fields = ["id","store","name","description","price","category","stock_quantity","rating","image"]
 
     # def get_image(self, obj):
     #     if obj.image:
