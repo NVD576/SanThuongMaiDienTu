@@ -1,105 +1,129 @@
 import React, { useEffect, useState } from "react";
-import { Text, View, ScrollView, ActivityIndicator, StyleSheet } from "react-native";
-import { Chip, Button } from "react-native-paper";
+import {
+  Text,
+  View,
+  ScrollView,
+  ActivityIndicator,
+  FlatList,
+  Image,
+  TouchableOpacity,
+} from "react-native";
+import { Chip } from "react-native-paper";
+import HomeStyles from "../Home/HomeStyles";
 import APIs, { endpoints } from "../../configs/APIs";
 import { useNavigation } from "@react-navigation/native";
+import { FontAwesome } from "@expo/vector-icons";
 
 const Home = () => {
-    const [stores, setStores] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const navigation = useNavigation();
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [categories, setCategories] = useState([]);
+  const [cateId, setCateId] = useState(null);
+  const navigation = useNavigation();
 
-    const loadStores = async () => {
-        try {
-            let res = await APIs.get(endpoints["stores"]);
-            setStores(res.data.results);
-        } catch (error) {
-            console.error("Error loading stores:", error);
-        } finally {
-            setLoading(false);
+  const loadProducts = async () => {
+    try {
+        let url = endpoints["products"];
+
+        if (cateId !== null) {
+            url = `${url}?category=${cateId}`;
         }
-    };
 
-    useEffect(() => {
-        loadStores();
-    }, []);
+        let res = await APIs.get(url);
+        setProducts(res.data.results);
+    } catch (error) {
+        console.error("Error loading products:", error);
+    } finally {
+        setLoading(false);
+    }
+  };
 
-    return (
-        <View style={styles.container}>
-            <Text style={styles.title}>Danh Sách Cửa Hàng</Text>
+  const loadCategories = async () => {
+    try {
+      let res = await APIs.get(endpoints["categories"]);
+      setCategories(res.data.results);
+    } catch (error) {
+      console.error("Error loading categories:", error);
+    }
+  };
 
-            {loading ? (
-                <ActivityIndicator size="large" color="#6200ee" style={styles.loading} />
-            ) : (
-                <ScrollView
-                    contentContainerStyle={styles.scrollViewContainer}
-                    showsVerticalScrollIndicator={false}
-                >
-                    {stores.map((store) => (
-                        <Chip
-                            key={store.id}
-                            icon="storefront"
-                            style={styles.chip}
-                            textStyle={styles.chipText}
-                            onPress={() => navigation.navigate("StoreProducts", { storeId: store.id })}
-                        >
-                            {store.name}
-                        </Chip>
-                    ))}
-                </ScrollView>
-            )}
-        </View>
-    );
+  useEffect(() => {
+    loadProducts();
+  }, [cateId]);
+
+  useEffect(() => {
+    loadCategories();
+  }, []);
+
+  return (
+    <View style={HomeStyles.container}>
+      <Text style={HomeStyles.title}>🛍️ Danh Sách Sản Phẩm</Text>
+
+      {/* Categories */}
+      <ScrollView
+        horizontal
+        style={HomeStyles.categoryScroll}
+        showsHorizontalScrollIndicator={false}
+      >
+        <TouchableOpacity onPress={() => setCateId(null)}>
+            <Chip
+                icon="label-outline"
+                style={HomeStyles.categoryChip}
+                textStyle={HomeStyles.categoryChipText}>
+                Tất cả
+            </Chip>
+        </TouchableOpacity>
+        {categories.map((c) => (
+            <TouchableOpacity key={c.id} onPress={() => setCateId(c.id)}>
+                <Chip
+                    icon="label-outline"
+                    style={HomeStyles.categoryChip}
+                    textStyle={HomeStyles.categoryChipText}>
+                    {c.name}
+                </Chip>
+            </TouchableOpacity>
+        ))}
+      </ScrollView>
+
+      {/* Products */}
+      {loading ? (
+        <ActivityIndicator size="large" color="#4CAF50" style={HomeStyles.loading} />
+      ) : (
+        <FlatList
+          data={products}
+          keyExtractor={(item) => item.id.toString()}
+          contentContainerStyle={HomeStyles.productList}
+          renderItem={({ item }) => (
+            <TouchableOpacity
+              style={HomeStyles.productCard}
+              onPress={() => navigation.navigate("ProductDetails", { productId: item.id })}
+            >
+              <Image
+                source={{ uri: item.image}}
+                style={HomeStyles.productImage}
+                resizeMode="cover"
+              />
+              <View style={HomeStyles.productInfo}>
+                <Text style={HomeStyles.productName} numberOfLines={1}>
+                  {item.name}
+                </Text>
+                <View style={HomeStyles.ratingContainer}>
+                  {[...Array(5)].map((_, index) => (
+                    <FontAwesome
+                      key={index}
+                      name={index < Math.floor(item.rating) ? "star" : "star-o"}
+                      size={16}
+                      color="#FFD700"
+                    />
+                  ))}
+                </View>
+              </View>
+            </TouchableOpacity>
+          )}
+        />
+      )}
+    </View>
+  );
 };
 
 export default Home;
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: "#f9f9f9",
-        paddingHorizontal: 16,
-        paddingTop: 20,
-    },
-    title: {
-        fontSize: 24,
-        fontWeight: "bold",
-        color: "#333",
-        marginBottom: 16,
-        textAlign: "center",
-    },
-    loading: {
-        marginTop: 20,
-    },
-    scrollViewContainer: {
-        paddingVertical: 10,
-    },
-    chip: {
-        marginVertical: 8,
-        paddingVertical: 10,
-        paddingHorizontal: 16,
-        borderRadius: 16,
-        backgroundColor: "#fff",
-        elevation: 2, // Shadow for Android
-        shadowColor: "#000", // Shadow for iOS
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.2,
-        shadowRadius: 3,
-    },
-    chipText: {
-        fontSize: 16,
-        color: "#6200ee",
-    },
-    button: {
-        marginTop: 20,
-        backgroundColor: "#6200ee",
-        borderRadius: 8,
-        alignSelf: "center",
-        paddingVertical: 8,
-        paddingHorizontal: 16,
-    },
-    buttonText: {
-        fontSize: 16,
-        color: "#fff",
-    },
-});

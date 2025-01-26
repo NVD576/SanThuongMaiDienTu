@@ -4,7 +4,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 
 import Home from './components/Home/Home';
-import StoreProducts from './components/Home/StoreProducts';
+import StoreProducts from './components/Home/ProductDetails';
 import Login from './components/User/Login'
 import Default from './components/DefaultApp/Default';
 import { MyDispatchContext, MyUserContext } from './configs/UserContexts';
@@ -12,6 +12,7 @@ import { useReducer } from 'react';
 import MyUserReducer from './configs/UserReducers';
 import Register from './components/User/Register'
 import UserProfile from './components/User/UserProfile';
+import ProductDetails from './components/Home/ProductDetails';
 // import Component from 'react-native-paper/lib/typescript/components/List/ListItem';
 
 const Stack = createStackNavigator();
@@ -29,7 +30,7 @@ export default function App() {
                 <Stack.Screen name="Default" component={Default} />
                 <Stack.Screen name="Home" component={Home} />
                 <Stack.Screen name="Login" component={Login} />
-                <Stack.Screen name="StoreProducts" component={StoreProducts} />
+                <Stack.Screen name="ProductDetails" component={ProductDetails} />
                 <Stack.Screen name="Register" component={Register} />
                 <Stack.Screen name="UserProfile" component={UserProfile} />
               </Stack.Navigator>
