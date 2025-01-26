@@ -6,8 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="edb1882b-57c9-4d48-900c-3edc62689eda" name="Changes" comment="a">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Trading/etradings/tradings/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/Trading/etradings/tradings/admin.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Trading/etradings/tradings/serializers.py" beforeDir="false" afterPath="$PROJECT_DIR$/Trading/etradings/tradings/serializers.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
