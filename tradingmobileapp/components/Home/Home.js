@@ -117,6 +117,7 @@ const Home = () => {
                     />
                   ))}
                 </View>
+                <Text>Giá: {item.price} </Text>
               </View>
             </TouchableOpacity>
           )}
