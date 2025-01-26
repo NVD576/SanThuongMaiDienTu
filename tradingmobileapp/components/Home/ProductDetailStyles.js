@@ -74,7 +74,6 @@ const ProductDetailStyles = StyleSheet.create({
     textAlign: "center",
   },
 
-
   reviewsContainer: {
     marginTop: 20,
     paddingHorizontal: 16,
@@ -108,7 +107,11 @@ const ProductDetailStyles = StyleSheet.create({
     textAlign: "center",
   },
 
-
+  reviewsScrollView: {
+    maxHeight:300,
+    marginTop: 10,
+    paddingHorizontal: 10,
+  },
   addReviewContainer: {
     marginTop: 20,
     padding: 15,
@@ -141,8 +144,6 @@ const ProductDetailStyles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "bold",
   },
-  
-
 });
 
 export default ProductDetailStyles;
