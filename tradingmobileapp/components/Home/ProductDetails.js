@@ -155,22 +155,14 @@ const ProductDetails = ({ route }) => {
 
       <View style={ProductDetailStyles.addReviewContainer}>
         <Text style={ProductDetailStyles.addReviewHeader}>Viết đánh giá</Text>
-{/* 
-        <StarRating
-          disabled={false}
-          maxStars={5}
+
+        <AirbnbRating
+          count={5}
           rating={rating}
+          size={30}
+          onFinishRating={(rate) => setRating(rate)}
           fullStarColor="gold"
-          starSize={30}
-          selectedStar={(rate) => setRating(rate)}
-        /> */}
-<AirbnbRating
-  count={5}
-  rating={rating}
-  size={30}
-  onFinishRating={(rate) => setRating(rate)}
-  fullStarColor="gold"
-/>
+        />
         <TextInput
           style={ProductDetailStyles.commentInput}
           placeholder="Nhập bình luận của bạn..."
