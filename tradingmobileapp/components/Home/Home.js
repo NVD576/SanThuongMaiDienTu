@@ -19,22 +19,21 @@ const Home = () => {
   const [loading, setLoading] = useState(true);
   const [categories, setCategories] = useState([]);
   const [cateId, setCateId] = useState(null);
+  const [stores, setStores] = useState({});
   const navigation = useNavigation();
 
   const loadProducts = async () => {
     try {
-        let url = endpoints["products"];
-
-        if (cateId !== null) {
-            url = `${url}?category=${cateId}`;
-        }
-
-        let res = await APIs.get(url);
-        setProducts(res.data.results);
+      let url = endpoints["products"];
+      if (cateId !== null) {
+        url = `${url}?category=${cateId}`;
+      }
+      let res = await APIs.get(url);
+      setProducts(res.data.results);
     } catch (error) {
-        console.error("Error loading products:", error);
+      console.error("Error loading products:", error);
     } finally {
-        setLoading(false);
+      setLoading(false);
     }
   };
 
@@ -47,12 +46,26 @@ const Home = () => {
     }
   };
 
+  const loadStores = async () => {
+    try {
+      let res = await APIs.get(endpoints["stores"]);
+      const storeData = {};
+      res.data.results.forEach((store) => {
+        storeData[store.id] = store.name;
+      });
+      setStores(storeData);
+    } catch (error) {
+      console.error("Error loading stores:", error);
+    }
+  };
+
   useEffect(() => {
     loadProducts();
   }, [cateId]);
 
   useEffect(() => {
     loadCategories();
+    loadStores();
   }, []);
 
   return (
@@ -66,40 +79,49 @@ const Home = () => {
         showsHorizontalScrollIndicator={false}
       >
         <TouchableOpacity onPress={() => setCateId(null)}>
-            <Chip
-                icon="label-outline"
-                style={HomeStyles.categoryChip}
-                textStyle={HomeStyles.categoryChipText}>
-                Tất cả
-            </Chip>
+          <Chip
+            icon="label-outline"
+            style={HomeStyles.categoryChip}
+            textStyle={HomeStyles.categoryChipText}
+          >
+            Tất cả
+          </Chip>
         </TouchableOpacity>
         {categories.map((c) => (
-            <TouchableOpacity key={c.id} onPress={() => setCateId(c.id)}>
-                <Chip
-                    icon="label-outline"
-                    style={HomeStyles.categoryChip}
-                    textStyle={HomeStyles.categoryChipText}>
-                    {c.name}
-                </Chip>
-            </TouchableOpacity>
+          <TouchableOpacity key={c.id} onPress={() => setCateId(c.id)}>
+            <Chip
+              icon="label-outline"
+              style={HomeStyles.categoryChip}
+              textStyle={HomeStyles.categoryChipText}
+            >
+              {c.name}
+            </Chip>
+          </TouchableOpacity>
         ))}
       </ScrollView>
 
       {/* Products */}
       {loading ? (
-        <ActivityIndicator size="large" color="#4CAF50" style={HomeStyles.loading} />
+        <ActivityIndicator
+          size="large"
+          color="#4CAF50"
+          style={HomeStyles.loading}
+        />
       ) : (
         <FlatList
           data={products}
+          numColumns={2}
           keyExtractor={(item) => item.id.toString()}
           contentContainerStyle={HomeStyles.productList}
           renderItem={({ item }) => (
             <TouchableOpacity
               style={HomeStyles.productCard}
-              onPress={() => navigation.navigate("ProductDetails", { productId: item.id })}
+              onPress={() =>
+                navigation.navigate("ProductDetails", { productId: item.id })
+              }
             >
               <Image
-                source={{ uri: item.image}}
+                source={{ uri: item.image }}
                 style={HomeStyles.productImage}
                 resizeMode="cover"
               />
@@ -117,7 +139,10 @@ const Home = () => {
                     />
                   ))}
                 </View>
-                <Text>Giá: {item.price} </Text>
+                <Text>Giá: {item.price} VND</Text>
+                <Text style={HomeStyles.storeName}>
+                  {stores[item.store] || "Cửa hàng không xác định"}
+                </Text>
               </View>
             </TouchableOpacity>
           )}

@@ -2,9 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { FlatList, TextInput, View, Text, Image, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons'; // Thư viện icon
 import SearchStyles from "../Home/SearchStyles";
+import { useNavigation } from '@react-navigation/native';
 import APIs, { endpoints } from '../../configs/APIs';
 
 const Search = () => {
+  const navigation = useNavigation();
   const [products, setProducts] = useState([]);
   const [stores, setStores] = useState({});
   const [filters, setFilters] = useState({
@@ -131,7 +133,7 @@ const Search = () => {
         data={paginatedProducts}
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => (
-          <View style={SearchStyles.productItem}>
+          <TouchableOpacity style={SearchStyles.productItem} onPress={() => navigation.navigate("ProductDetails", { productId: item.id })} >
             <Image
               source={{ uri: item.image }}
               style={SearchStyles.productImage}
@@ -143,7 +145,7 @@ const Search = () => {
                 {stores[item.store] || 'Cửa hàng không xác định'}
               </Text>
             </View>
-          </View>
+          </TouchableOpacity>
         )}
       />
 

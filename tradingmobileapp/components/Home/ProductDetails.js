@@ -1,30 +1,29 @@
 import React, { useEffect, useState } from "react";
-import {
-  Text,
-  View,
-  ActivityIndicator,
-  Image,
-  ScrollView,
-  TouchableOpacity,
-  Alert,
-  TextInput,
-} from "react-native";
+import { LogBox, Text, View, ActivityIndicator, Image, TouchableOpacity, Alert, TextInput, FlatList } from "react-native";
 import ProductDetailStyles from "./ProductDetailStyles";
 import APIs, { endpoints } from "../../configs/APIs";
 import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { AirbnbRating } from 'react-native-ratings'; 
+import { AirbnbRating } from "react-native-ratings";
+
+// Ignore specific log warnings
+LogBox.ignoreLogs([
+  "Warning: Star: Support for defaultProps will be removed from function components in a future major release. Use JavaScript default parameters instead.",
+  "Warning: TapRating: Support for defaultProps will be removed from function components in a future major release. Use JavaScript default parameters instead." // Bỏ qua cảnh báo này
+]);
 
 const ProductDetails = ({ route }) => {
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [reviews, setReviews] = useState([]);
   const [comment, setComment] = useState("");
-  const [userId, setUserId] = useState(null);
+  const [userId, setUserId] = useState(null); // User ID state
   const [rating, setRating] = useState(5);
+  const [isLoggedIn, setIsLoggedIn] = useState(false); // Track login status
   const navigation = useNavigation();
   const { productId } = route.params;
 
+  // Load product details
   const loadProductDetails = async () => {
     try {
       const res = await APIs.get(endpoints["product-details"](productId));
@@ -38,13 +37,16 @@ const ProductDetails = ({ route }) => {
     }
   };
 
+  // Load user ID from AsyncStorage
   const loadUserId = async () => {
     try {
       const storedUserId = await AsyncStorage.getItem("user_id");
-      if (!storedUserId) {
-        navigation.navigate("Login"); // Redirect to login if no user ID found
+      console.log(storedUserId)
+      if (storedUserId) {
+        setUserId(storedUserId);
+        setIsLoggedIn(true);
       } else {
-        setUserId(storedUserId); // Store user ID if it exists
+        setIsLoggedIn(false);
       }
     } catch (error) {
       console.error("Error loading user ID:", error);
@@ -57,31 +59,20 @@ const ProductDetails = ({ route }) => {
     loadProductDetails();
   }, [productId]);
 
+  // Handle buy now action
   const handleBuyNow = () => {
+    if (!isLoggedIn) {
+      // If not logged in, show login prompt and navigate to login page
+      Alert.alert("Đăng nhập", "Bạn cần đăng nhập để mua sản phẩm.");
+      navigation.navigate("Login");
+      return;
+    }
     Alert.alert("Mua hàng", `Bạn đã chọn mua ${product?.name}!`);
   };
 
-  if (loading) {
-    return (
-      <View style={ProductDetailStyles.loadingContainer}>
-        <ActivityIndicator size="large" color="#4CAF50" />
-        <Text style={ProductDetailStyles.loadingText}>Đang tải...</Text>
-      </View>
-    );
-  }
-
-  if (!product) {
-    return (
-      <View style={ProductDetailStyles.errorContainer}>
-        <Text style={ProductDetailStyles.errorText}>
-          Không tìm thấy sản phẩm. Vui lòng thử lại sau.
-        </Text>
-      </View>
-    );
-  }
-
+  // Post a review
   const postReview = async () => {
-    if (!userId) {
+    if (!isLoggedIn) {
       navigation.navigate("Login");
       return;
     }
@@ -109,75 +100,127 @@ const ProductDetails = ({ route }) => {
     }
   };
 
+  const renderReviewItem = ({ item }) => (
+    <View style={ProductDetailStyles.reviewItem}>
+      <Text style={ProductDetailStyles.reviewUser}>
+        {item.user} ({item.rating}★)
+      </Text>
+      <Text style={ProductDetailStyles.reviewComment}>
+        {item.comment}
+      </Text>
+    </View>
+  );
+
+  if (loading) {
+    return (
+      <View style={ProductDetailStyles.loadingContainer}>
+        <ActivityIndicator size="large" color="#4CAF50" />
+        <Text style={ProductDetailStyles.loadingText}>Đang tải...</Text>
+      </View>
+    );
+  }
+
+  if (!product) {
+    return (
+      <View style={ProductDetailStyles.errorContainer}>
+        <Text style={ProductDetailStyles.errorText}>
+          Không tìm thấy sản phẩm. Vui lòng thử lại sau.
+        </Text>
+      </View>
+    );
+  }
+
   return (
-    <ScrollView style={ProductDetailStyles.container}>
-      <Image
-        source={{ uri: product.image }}
-        style={ProductDetailStyles.productImage}
-        resizeMode="cover"
-      />
-      <View style={ProductDetailStyles.infoContainer}>
-        <Text style={ProductDetailStyles.productName}>{product.name}</Text>
-        <Text style={ProductDetailStyles.productPrice}>${product.price}</Text>
-        <Text style={ProductDetailStyles.productStock}>
-          Số lượng còn: {product.stock_quantity}
-        </Text>
-        <Text style={ProductDetailStyles.productDescription}>
-          {product.description || "Mô tả sản phẩm chưa được cập nhật."}
-        </Text>
-      </View>
-      <TouchableOpacity
-        style={ProductDetailStyles.buyButton}
-        onPress={handleBuyNow}
-      >
-        <Text style={ProductDetailStyles.buyButtonText}>Mua ngay</Text>
-      </TouchableOpacity>
+    <FlatList
+      data={[product]} // Wrap product details in an array to use with FlatList
+      keyExtractor={(item) => item.id.toString()}
+      renderItem={({ item }) => (
+        <View style={ProductDetailStyles.container}>
+          <Image
+            source={{ uri: item.image }}
+            style={ProductDetailStyles.productImage}
+            resizeMode="cover"
+          />
+          <View style={ProductDetailStyles.infoContainer}>
+            <Text style={ProductDetailStyles.productName}>{item.name}</Text>
+            <Text style={ProductDetailStyles.productPrice}>${item.price}</Text>
+            <Text style={ProductDetailStyles.productStock}>
+              Số lượng còn: {item.stock_quantity}
+            </Text>
+            <Text style={ProductDetailStyles.productDescription}>
+              {item.description || "Mô tả sản phẩm chưa được cập nhật."}
+            </Text>
+          </View>
 
-      <View style={ProductDetailStyles.reviewsContainer}>
-        <Text style={ProductDetailStyles.reviewsHeader}>Đánh giá sản phẩm</Text>
-        {reviews.length > 0 ? (
-          reviews.map((review, index) => (
-            <View key={index} style={ProductDetailStyles.reviewItem}>
-              <Text style={ProductDetailStyles.reviewUser}>
-                {review.user} ({review.rating}★)
+          {/* Button for buying product */}
+          <TouchableOpacity
+            style={ProductDetailStyles.buyButton}
+            onPress={handleBuyNow}
+          >
+            <Text style={ProductDetailStyles.buyButtonText}>Mua ngay</Text>
+          </TouchableOpacity>
+
+          {/* Reviews Section */}
+          <View style={ProductDetailStyles.reviewsContainer}>
+            <Text style={ProductDetailStyles.reviewsHeader}>Đánh giá sản phẩm</Text>
+            {reviews.length > 0 ? (
+              <FlatList
+                data={reviews}
+                renderItem={renderReviewItem}
+                keyExtractor={(item, index) => index.toString()}
+              />
+            ) : (
+              <Text style={ProductDetailStyles.noReviewsText}>
+                Chưa có đánh giá nào.
               </Text>
-              <Text style={ProductDetailStyles.reviewComment}>
-                {review.comment}
-              </Text>
+            )}
+          </View>
+
+          {/* Add review form */}
+          {isLoggedIn && (
+            <View style={ProductDetailStyles.addReviewContainer}>
+              <Text style={ProductDetailStyles.addReviewHeader}>Viết đánh giá</Text>
+
+              <AirbnbRating
+                count={5}
+                rating={rating}
+                size={30}
+                onFinishRating={(rate) => setRating(rate)}
+                fullStarColor="gold"
+              />
+              <TextInput
+                style={ProductDetailStyles.commentInput}
+                placeholder="Nhập bình luận của bạn..."
+                value={comment}
+                onChangeText={(text) => setComment(text)}
+                multiline
+              />
+              <TouchableOpacity
+                style={ProductDetailStyles.submitButton}
+                onPress={postReview}
+              >
+                <Text style={ProductDetailStyles.submitButtonText}>Gửi</Text>
+              </TouchableOpacity>
             </View>
-          ))
-        ) : (
-          <Text style={ProductDetailStyles.noReviewsText}>
-            Chưa có đánh giá nào.
-          </Text>
-        )}
-      </View>
+          )}
 
-      <View style={ProductDetailStyles.addReviewContainer}>
-        <Text style={ProductDetailStyles.addReviewHeader}>Viết đánh giá</Text>
-
-        <AirbnbRating
-          count={5}
-          rating={rating}
-          size={30}
-          onFinishRating={(rate) => setRating(rate)}
-          fullStarColor="gold"
-        />
-        <TextInput
-          style={ProductDetailStyles.commentInput}
-          placeholder="Nhập bình luận của bạn..."
-          value={comment}
-          onChangeText={(text) => setComment(text)}
-          multiline
-        />
-        <TouchableOpacity
-          style={ProductDetailStyles.submitButton}
-          onPress={postReview}
-        >
-          <Text style={ProductDetailStyles.submitButtonText}>Gửi</Text>
-        </TouchableOpacity>
-      </View>
-    </ScrollView>
+          {/* If the user is not logged in, display a message and a button to navigate to login */}
+          {!isLoggedIn && (
+            <View style={ProductDetailStyles.notLoggedInContainer}>
+              <Text style={ProductDetailStyles.notLoggedInText}>
+                Bạn cần đăng nhập để thực hiện hành động này. Vui lòng đăng nhập.
+              </Text>
+              <TouchableOpacity
+                style={ProductDetailStyles.loginButton}
+                onPress={() => navigation.navigate("Login")}
+              >
+                <Text style={ProductDetailStyles.loginButtonText}>Đăng nhập</Text>
+              </TouchableOpacity>
+            </View>
+          )}
+        </View>
+      )}
+    />
   );
 };
 
