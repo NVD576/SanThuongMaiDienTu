@@ -108,7 +108,7 @@ const ProductDetailStyles = StyleSheet.create({
   },
 
   reviewsScrollView: {
-    maxHeight:300,
+    maxHeight: 300,
     marginTop: 10,
     paddingHorizontal: 10,
   },
@@ -143,6 +143,31 @@ const ProductDetailStyles = StyleSheet.create({
     color: "#fff",
     fontSize: 16,
     fontWeight: "bold",
+  },
+
+  // New styles for not logged in state
+  notLoggedInContainer: {
+    marginTop: 20,
+    alignItems: "center",
+    paddingHorizontal: 20,
+  },
+  notLoggedInText: {
+    fontSize: 16,
+    color: "#333",
+    textAlign: "center",
+    marginBottom: 10,
+  },
+  loginButton: {
+    backgroundColor: "#4CAF50",
+    paddingVertical: 10,
+    paddingHorizontal: 30,
+    borderRadius: 5,
+    elevation: 2,
+  },
+  loginButtonText: {
+    color: "#fff",
+    fontSize: 16,
+    fontWeight: "600",
   },
 });
 
