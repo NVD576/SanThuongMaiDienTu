@@ -5,73 +5,95 @@ const { width } = Dimensions.get("window");
 const HomeStyles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#f9f9f9",
-    paddingHorizontal: 16, // Thêm padding toàn bộ màn hình để không bị chặt
+    backgroundColor: "#f5f5f5",
+    paddingHorizontal: 16,
+    paddingTop: 20, // Đảm bảo khoảng cách ở trên
   },
   title: {
-    fontSize: 28, // Tăng kích thước chữ cho tiêu đề
+    fontSize: 28,
     fontWeight: "bold",
-    color: "#333",
+    color: "#4CAF50",
     textAlign: "center",
-    marginVertical: 16,
+    marginBottom: 16,
+    textShadowColor: "rgba(0, 0, 0, 0.2)",
+    textShadowOffset: { width: 0, height: 2 },
+    textShadowRadius: 4,
   },
   categoryScroll: {
-    paddingVertical: 8, // Tăng khoảng cách trên và dưới cho danh sách danh mục
+    paddingVertical: 10,
     marginBottom: 16,
   },
   categoryChip: {
-    backgroundColor: "#E0F7FA",
-    marginRight: 12, // Tăng khoảng cách giữa các chip danh mục
-    marginBottom: 8, // Thêm khoảng cách giữa các chip theo chiều dọc
-    borderRadius: 16, // Làm bo tròn các góc của chip
+    marginRight: 12,
+    marginBottom: 8,
+    borderRadius: 20,
+    backgroundColor: "#fff",
+    borderColor: "#4CAF50",
+    borderWidth: 1,
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    elevation: 2,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.2,
+    shadowRadius: 2,
   },
   categoryChipText: {
-    color: "#00796B",
-    fontSize: 14, // Tăng kích thước chữ cho chip
+    color: "#4CAF50",
+    fontWeight: "600",
   },
   loading: {
     marginTop: 20,
+    alignSelf: "center",
   },
   productList: {
-    paddingHorizontal: 4, // Giảm padding xung quanh danh sách sản phẩm
+    flexDirection: "row", // Điều chỉnh để sản phẩm nằm ngang
+    flexWrap: "wrap", // Cho phép các sản phẩm xuống hàng
+    justifyContent: "space-between", // Tạo khoảng cách giữa các sản phẩm
+    paddingBottom: 16,
+    marginTop: 16, // Đảm bảo sản phẩm bắt đầu từ trên
   },
   productCard: {
     backgroundColor: "#fff",
-    borderRadius: 8,
-    marginBottom: 16,
+    borderRadius: 12,
+    marginBottom: 16, // Tăng khoảng cách dưới mỗi sản phẩm
+    width: (width - 48) / 2, // Đảm bảo 2 sản phẩm mỗi hàng
     overflow: "hidden",
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
-    paddingBottom: 12, // Thêm khoảng cách dưới cùng để tạo không gian giữa card và text
+    shadowRadius: 6,
+    elevation: 4,
+    borderWidth: 1,
+    borderColor: "#f0f0f0",
   },
   productImage: {
     width: "100%",
-    height: 220, // Tăng chiều cao của hình ảnh sản phẩm
-    borderTopLeftRadius: 8, // Bo tròn góc trên trái của hình ảnh
-    borderTopRightRadius: 8, // Bo tròn góc trên phải của hình ảnh
+    height: 160,
+    borderTopLeftRadius: 12,
+    borderTopRightRadius: 12,
   },
   productInfo: {
     paddingHorizontal: 12,
-    paddingTop: 8, // Tăng khoảng cách giữa hình ảnh và thông tin
+    paddingTop: 8,
+    paddingBottom: 12,
   },
   productName: {
-    fontSize: 18,
-    fontWeight: "bold",
+    fontSize: 16,
+    fontWeight: "600",
     color: "#333",
     marginBottom: 4,
-    numberOfLines: 1,
   },
   ratingContainer: {
     flexDirection: "row",
     alignItems: "center",
+    marginBottom: 6,
   },
-  productCardTouchable: {
-    borderRadius: 8,
-    overflow: "hidden",
-    marginBottom: 16,
+  storeName: {
+    fontSize: 14,
+    color: "#777",
+    marginTop: 4,
+    fontStyle: "italic",
   },
 });
 
