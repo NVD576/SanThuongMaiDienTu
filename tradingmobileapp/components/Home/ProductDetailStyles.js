@@ -73,6 +73,77 @@ const ProductDetailStyles = StyleSheet.create({
     color: "#d32f2f",
     textAlign: "center",
   },
+
+  reviewsContainer: {
+    marginTop: 20,
+    paddingHorizontal: 16,
+    backgroundColor: "#f9f9f9",
+    borderRadius: 8,
+    paddingVertical: 16,
+  },
+  reviewsHeader: {
+    fontSize: 18,
+    fontWeight: "bold",
+    marginBottom: 10,
+    color: "#333",
+  },
+  reviewItem: {
+    marginBottom: 12,
+    borderBottomWidth: 1,
+    borderBottomColor: "#ddd",
+    paddingBottom: 8,
+  },
+  reviewUser: {
+    fontWeight: "bold",
+    color: "#555",
+  },
+  reviewComment: {
+    color: "#666",
+    marginTop: 4,
+  },
+  noReviewsText: {
+    fontStyle: "italic",
+    color: "#888",
+    textAlign: "center",
+  },
+
+  reviewsScrollView: {
+    maxHeight:300,
+    marginTop: 10,
+    paddingHorizontal: 10,
+  },
+  addReviewContainer: {
+    marginTop: 20,
+    padding: 15,
+    backgroundColor: "#f9f9f9",
+    borderRadius: 10,
+  },
+  addReviewHeader: {
+    fontSize: 16,
+    fontWeight: "bold",
+    marginBottom: 10,
+  },
+  commentInput: {
+    borderWidth: 1,
+    borderColor: "#ccc",
+    borderRadius: 8,
+    padding: 10,
+    marginBottom: 10,
+    height: 80,
+    textAlignVertical: "top",
+    backgroundColor: "#fff",
+  },
+  submitButton: {
+    backgroundColor: "#4CAF50",
+    padding: 12,
+    borderRadius: 8,
+    alignItems: "center",
+  },
+  submitButtonText: {
+    color: "#fff",
+    fontSize: 16,
+    fontWeight: "bold",
+  },
 });
 
 export default ProductDetailStyles;
