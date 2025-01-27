@@ -62,9 +62,7 @@ const ProductDetails = ({ route }) => {
   // Handle buy now action
   const handleBuyNow = () => {
     if (!isLoggedIn) {
-      // If not logged in, show login prompt and navigate to login page
-      Alert.alert("Đăng nhập", "Bạn cần đăng nhập để mua sản phẩm.");
-      navigation.navigate("Login");
+      Alert.alert("Thông báo","Bạn cần đăng nhập để sử dụng tính năng này");
       return;
     }
     Alert.alert("Mua hàng", `Bạn đã chọn mua ${product?.name}!`);
@@ -72,10 +70,6 @@ const ProductDetails = ({ route }) => {
 
   // Post a review
   const postReview = async () => {
-    if (!isLoggedIn) {
-      navigation.navigate("Login");
-      return;
-    }
     if (!comment.trim()) {
       Alert.alert("Lỗi", "Vui lòng nhập nội dung bình luận!");
       return;
@@ -157,7 +151,9 @@ const ProductDetails = ({ route }) => {
             style={ProductDetailStyles.buyButton}
             onPress={handleBuyNow}
           >
-            <Text style={ProductDetailStyles.buyButtonText}>Mua ngay</Text>
+            <Text style={ProductDetailStyles.buyButtonText}>
+              Mua ngay
+            </Text>
           </TouchableOpacity>
 
           {/* Reviews Section */}
@@ -203,19 +199,11 @@ const ProductDetails = ({ route }) => {
               </TouchableOpacity>
             </View>
           )}
-
-          {/* If the user is not logged in, display a message and a button to navigate to login */}
           {!isLoggedIn && (
             <View style={ProductDetailStyles.notLoggedInContainer}>
               <Text style={ProductDetailStyles.notLoggedInText}>
                 Bạn cần đăng nhập để thực hiện hành động này. Vui lòng đăng nhập.
               </Text>
-              <TouchableOpacity
-                style={ProductDetailStyles.loginButton}
-                onPress={() => navigation.navigate("Login")}
-              >
-                <Text style={ProductDetailStyles.loginButtonText}>Đăng nhập</Text>
-              </TouchableOpacity>
             </View>
           )}
         </View>
