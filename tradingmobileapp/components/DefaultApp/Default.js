@@ -80,6 +80,7 @@ export default function Default() {
             tabBarButton: (props) => <TabButton {...props} item={{ route: 'Login', type: 'MaterialCommunityIcons', activeIcon: 'account', inActiveIcon: 'account-outline' }} />,
           }}
         />
+        
       </Tab.Navigator>
     </SafeAreaView>
   );
