@@ -58,29 +58,25 @@ export default function Default() {
           tabBarStyle: styles.tabBar,
         }}
       >
+        {/* Các Tab khác */}
         <Tab.Screen
           name="Home"
           component={Home}
           options={{
-            tabBarShowLabel: false,
             tabBarButton: (props) => <TabButton {...props} item={{ route: 'Home', type: 'Ionicons', activeIcon: 'home', inActiveIcon: 'home-outline' }} />,
           }}
         />
-
         <Tab.Screen
           name="Search"
           component={Search}
           options={{
-            tabBarShowLabel: false,
             tabBarButton: (props) => <TabButton {...props} item={{ route: 'Search', type: 'Ionicons', activeIcon: 'search', inActiveIcon: 'search-sharp' }} />,
           }}
         />
-        
         <Tab.Screen
           name="Login"
           component={user === null ? Login : UserProfile}
           options={{
-            tabBarShowLabel: false,
             tabBarButton: (props) => <TabButton {...props} item={{ route: 'Login', type: 'MaterialCommunityIcons', activeIcon: 'account', inActiveIcon: 'account-outline' }} />,
           }}
         />
@@ -89,5 +85,4 @@ export default function Default() {
   );
 }
 
-// Styles
 

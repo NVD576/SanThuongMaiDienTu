@@ -16,7 +16,7 @@ const UserProfile = () => {
   console.log(BASE_URL)
 
   const logout = async () => {
-    await AsyncStorage.removeItem("token");
+    await AsyncStorage.removeItem("user_id");
     dispatch({ type: "logout" });
     nav.navigate("Home");
   };
