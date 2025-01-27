@@ -73,7 +73,7 @@ const ProductDetails = ({ route }) => {
   // Post a review
   const postReview = async () => {
     if (!isLoggedIn) {
-      navigation.navigate("Login");
+      Alert.alert("", "Vui lòng đăng nhậpnhập!");
       return;
     }
     if (!comment.trim()) {

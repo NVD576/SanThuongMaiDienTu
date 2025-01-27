@@ -10,19 +10,41 @@ from rest_framework.status import HTTP_400_BAD_REQUEST, HTTP_200_OK
 from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.views import APIView
 import django_filters
-
+from rest_framework.permissions import BasePermission
 
 from .models import Store, User, Product, Category, Review, Transaction, Order, Chat, OrderItem
 from .serializers import StoreSerializer, UserSerializer, ProductSerializer, CategorySerializer, ReviewSerializer, TransactionSerializer, OrderSerializer, OrderItemSerializer, ChatSerializer
 
+
+class IsSeller(BasePermission):
+    def has_permission(self, request, view):
+        return request.user.role == 'seller' and request.user.is_seller_approved
+
+
 class RegisterUserView(APIView):
     parser_classes = (MultiPartParser, FormParser)
 
+    # def post(self, request, *args, **kwargs):
+    #     serializer = UserSerializer(data=request.data)
+    #     if serializer.is_valid():
+    #         serializer.save()
+    #         return Response(serializer.data, status=status.HTTP_201_CREATED)
+    #     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     def post(self, request, *args, **kwargs):
-        serializer = UserSerializer(data=request.data)
+        data = request.data
+        role = data.get('role', 'Buyer')  # Lấy role từ request
+        serializer = UserSerializer(data=data)
+
         if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+            user = serializer.save()
+            if role == 'Seller':
+                user.is_seller_approved = False  # Mặc định cần phê duyệt
+                user.save()
+                return Response(
+                    {"message": "Đăng ký thành công! Vui lòng chờ phê duyệt để đăng bán sản phẩm."},
+                    status=status.HTTP_201_CREATED
+                )
+            return Response({"message": "Đăng ký thành công!"}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class UserViewSet(viewsets.ModelViewSet, generics.CreateAPIView, generics.RetrieveAPIView):
@@ -74,7 +96,7 @@ class ProductFilter(django_filters.FilterSet):
 class ProductViewSet(viewsets.ModelViewSet):
     queryset = Product.objects.filter(active=True).order_by('id')
     serializer_class = ProductSerializer
-    permission_classes = [permissions.AllowAny]
+    permission_classes = [permissions.IsAuthenticated]
     filterset_class = ProductFilter
     filter_backends = (DjangoFilterBackend, )
 
@@ -89,12 +111,21 @@ class ProductViewSet(viewsets.ModelViewSet):
 
         return Response(data=ProductSerializer(p, context={'request': request}).data,status=HTTP_200_OK)
 
+    def get_permissions(self):
+        if self.action in ['list', 'retrieve']:  # Cho phép mọi người xem sản phẩm
+            return [permissions.AllowAny()]
+        elif self.action in ['create', 'hide_product']:  # Chỉ seller được phép
+            return [permissions.IsAuthenticated(), IsSeller()]
+        return [permissions.IsAuthenticated()]
 
-    # def get_permissions(self):
-    #     if self.action == 'list':
-    #         return [permissions.AllowAny()]
-    #
-    #     return [permissions.IsAuthenticated()]
+    @action(methods=['post'], detail=True, url_path="hide-product", url_name="hide-product")
+    def hide_product(self, request, pk):
+        try:
+            p = Product.objects.get(pk=pk, seller=request.user)  # Kiểm tra quyền sở hữu
+            p.active = False
+            p.save()
+        except Product.DoesNotExist:
+            return Response(status=HTTP_400_BAD_REQUEST)
 
 
 class ReviewViewSet(viewsets.ModelViewSet):
@@ -114,11 +145,12 @@ class OrderViewSet(viewsets.ModelViewSet):
     serializer_class = OrderSerializer
     permission_classes = [permissions.AllowAny]
 
-    # def get_permissions(self):
-    #     if self.action=='list':
-    #         return [permissions.AllowAny()]
-    #
-    #     return [permissions.IsAuthenticated()]
+    def get_permissions(self):
+        if self.action in ['list', 'retrieve']:  # Người dùng có thể xem đơn hàng của họ
+            return [permissions.IsAuthenticated()]
+        elif self.action in ['create', 'update', 'destroy']:  # Chỉ seller được chỉnh sửa
+            return [permissions.IsAuthenticated(), IsSeller()]
+        return [permissions.IsAuthenticated()]
 
 
 class OrderItemViewSet(viewsets.ModelViewSet):
@@ -144,7 +176,7 @@ class TransactionViewSet(viewsets.ModelViewSet):
 
 class ChatViewSet(viewsets.ModelViewSet):
     queryset = Chat.objects.filter().order_by('id')
-    serializer_class = TransactionSerializer
+    serializer_class = ChatSerializer
     permission_classes = [permissions.AllowAny]
 
     # def get_permissions(self):
