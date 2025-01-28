@@ -181,6 +181,28 @@ const ProductDetailStyles = StyleSheet.create({
     fontWeight: "bold",
     color: "#fff",
   },
+  quantityContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    marginVertical: 16,
+  },
+  quantityButton: {
+    backgroundColor: "#ddd",
+    padding: 10,
+    borderRadius: 5,
+    marginHorizontal: 8,
+  },
+  quantityButtonText: {
+    fontSize: 18,
+    fontWeight: "bold",
+    color: "#333",
+  },
+  quantityText: {
+    fontSize: 16,
+    fontWeight: "bold",
+    color: "#333",
+  },
 });
 
 export default ProductDetailStyles;

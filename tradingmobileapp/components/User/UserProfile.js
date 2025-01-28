@@ -17,6 +17,7 @@ const UserProfile = () => {
 
   const logout = async () => {
     await AsyncStorage.removeItem("user_id");
+    await AsyncStorage.removeItem(`shoppingCart_${user.id}`);
     dispatch({ type: "logout" });
     nav.navigate("Home");
   };

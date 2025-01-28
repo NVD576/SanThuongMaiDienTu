@@ -1,15 +1,38 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useFocusEffect } from "@react-navigation/native";
-import React, { useState } from "react";
-import { Button, FlatList, Image, Text, TouchableOpacity, View } from "react-native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
+import React, { useState, useContext } from "react";
+import { Alert, FlatList, Image, Text, TouchableOpacity, View } from "react-native";
 import styles from "../Home/ShoppingCartStyles";
+import { MyUserContext } from "../../configs/UserContexts";
+import APIs, { endpoints } from "../../configs/APIs";
 
 const ShoppingCart = () => {
   const [cartItems, setCartItems] = useState([]);
+  const [userId, setUserId] = useState(null);
+  const { user } = useContext(MyUserContext);
+  const navigation = useNavigation();
+
+  const loadUserId = async () => {
+    try {
+      const storedUserId = await AsyncStorage.getItem("user_id");
+      if (storedUserId) {
+        setUserId(storedUserId);
+      } else {
+        setUserId(null);
+      }
+    } catch (error) {
+      console.error("Error loading user ID:", error);
+      Alert.alert("Lỗi", "Không thể xác định người dùng. Vui lòng thử lại!");
+    }
+  };
 
   const loadCartItems = async () => {
+    if (!userId) {
+      return;
+    }
+
     try {
-      const storedCart = await AsyncStorage.getItem("shoppingCart");
+      const storedCart = await AsyncStorage.getItem(`shoppingCart_${userId}`);
       setCartItems(storedCart ? JSON.parse(storedCart) : []);
     } catch (error) {
       console.error("Error loading cart items:", error);
@@ -21,18 +44,72 @@ const ShoppingCart = () => {
     try {
       const updatedCart = cartItems.filter((item) => item.id !== itemId);
       setCartItems(updatedCart);
-      await AsyncStorage.setItem("shoppingCart", JSON.stringify(updatedCart));
+      await AsyncStorage.setItem(`shoppingCart_${userId}`, JSON.stringify(updatedCart));
     } catch (error) {
       console.error("Error removing item:", error);
       Alert.alert("Lỗi", "Không thể xóa sản phẩm. Vui lòng thử lại!");
     }
   };
 
-  // Tự động tải giỏ hàng khi màn hình được focus
+  const handleCreateBill = async () => {
+    const storedCart = await AsyncStorage.getItem(`shoppingCart_${userId}`);
+    if (storedCart) {
+      const cartItems = JSON.parse(storedCart);
+      if (cartItems.length > 0) {
+        const totalPrice = cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
+        const form = new FormData();
+        form.append('user', user.id.toString());
+        form.append('total_price', totalPrice);
+        form.append('payment_method', 'money');
+        form.append('status', 'pending');
+  
+        try {
+          const orderResponse = await APIs.post(endpoints['order'], form, {
+            headers: { 'Content-Type': 'multipart/form-data' }
+          });
+  
+          if (orderResponse && orderResponse.data.id) {
+            const orderId = orderResponse.data.id;
+            const orderItemsForm = new FormData();
+            cartItems.forEach((item) => {
+              orderItemsForm.append('order', orderId);
+              orderItemsForm.append('product', item.id);
+              orderItemsForm.append('quantity', item.quantity);
+              orderItemsForm.append('price', parseFloat(item.price).toFixed(2));
+            });
+            
+            await APIs.post(endpoints["order-item"], orderItemsForm, {
+              headers: { 'Content-Type': 'multipart/form-data' }
+            });
+  
+            navigation.navigate("Bill",{ orderId : orderId });
+          } else {
+            Alert.alert("Lỗi", "Không thể tạo đơn hàng!");
+          }
+        } catch (error) {
+          console.error("Error creating order:", error);
+          Alert.alert("Lỗi", "Không thể tạo đơn hàng!");
+        }
+      } else {
+        Alert.alert("Thông báo", "Chưa có sản phẩm trong giỏ hàng!");
+      }
+    } else {
+      Alert.alert("Thông báo", "Chưa có sản phẩm trong giỏ hàng!");
+    }
+  };
+  
   useFocusEffect(
     React.useCallback(() => {
-      loadCartItems();
+      loadUserId();
     }, [])
+  );
+
+  useFocusEffect(
+    React.useCallback(() => {
+      if (userId) {
+        loadCartItems();
+      }
+    }, [userId])
   );
 
   const getTotalPrice = () => {
@@ -68,7 +145,7 @@ const ShoppingCart = () => {
         <Text style={styles.totalPrice}>Tổng cộng: {getTotalPrice()} VND</Text>
         <TouchableOpacity
           style={styles.checkoutButton}
-          onPress={() => console.log("Proceeding to Checkout")}
+          onPress={() => handleCreateBill()}
         >
           <Text style={styles.checkoutButtonText}>Thanh Toán</Text>
         </TouchableOpacity>

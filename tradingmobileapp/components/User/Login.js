@@ -46,6 +46,12 @@ const Login = ({ navigation }) => {
             const userRes = await authAPI.get(endpoints['current-user']);
             console.info("Current user:", userRes.data);
             await AsyncStorage.setItem("user_id", userRes.data.id.toString());
+            const storedCart = await AsyncStorage.getItem(`shoppingCart_${userRes.data.id}`);
+            if (storedCart) {
+                await AsyncStorage.setItem(`shoppingCart_${userRes.data.id}`, storedCart);
+            } else {
+                await AsyncStorage.setItem(`shoppingCart_${userRes.data.id}`, JSON.stringify([]));
+            }
 
             dispatch({
                 type: "login",

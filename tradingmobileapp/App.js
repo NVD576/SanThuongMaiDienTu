@@ -15,6 +15,7 @@ import UserProfile from './components/User/UserProfile';
 import ProductDetails from './components/Home/ProductDetails';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import ShoppingCart from './components/Home/ShoppingCart';
+import Bill from './components/Home/Bill';
 
 const Stack = createStackNavigator();
 
@@ -49,6 +50,7 @@ export default function App() {
               <Stack.Screen name="Register" component={Register} />
               <Stack.Screen name="UserProfile" component={UserProfile} />
               <Stack.Screen name="ShoppingCart" component={ShoppingCart}/>
+              <Stack.Screen name="Bill" component={Bill}/>
             </Stack.Navigator>
           </View>
         </MyDispatchContext.Provider>

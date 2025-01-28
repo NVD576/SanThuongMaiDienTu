@@ -11,7 +11,9 @@ export const endpoints = {
     'login':'/o/token/',
     'current-user':'/users/current-user/',
     'register': '/users/',
-    'reviews':'/reviews/'
+    'reviews':'/reviews/',
+    'order':'/orders/',
+    'order-item':'/orderItems/',
 }
 
 export const authApis = async () => {
