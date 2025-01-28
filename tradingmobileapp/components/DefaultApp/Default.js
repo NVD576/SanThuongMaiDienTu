@@ -10,11 +10,11 @@ import Search from '../Home/Search';
 import UserProfile from '../User/UserProfile';
 import styles from './DefaultStyles';
 import Colors from '../../colors/Colors';
+import ShoppingCart from '../Home/ShoppingCart'
 import { MyUserContext } from '../../configs/UserContexts';
 
 const Tab = createBottomTabNavigator();
 
-// Custom Button cho từng tab
 const TabButton = ({ item, onPress, accessibilityState }) => {
   const focused = accessibilityState.selected;
   const viewRef = useRef(null);
@@ -58,7 +58,6 @@ export default function Default() {
           tabBarStyle: styles.tabBar,
         }}
       >
-        {/* Các Tab khác */}
         <Tab.Screen
           name="Home"
           component={Home}
@@ -74,13 +73,19 @@ export default function Default() {
           }}
         />
         <Tab.Screen
+          name="ShoppingCart"
+          component={ShoppingCart}
+          options={{
+            tabBarButton: (props) => <TabButton {...props} item ={{ route: 'ShoppingCart', type: 'Ionicons', activeIcon: 'cart', inActiveIcon: 'cart-outline' }} />,
+          }}
+        />
+        <Tab.Screen
           name="Login"
           component={user === null ? Login : UserProfile}
           options={{
             tabBarButton: (props) => <TabButton {...props} item={{ route: 'Login', type: 'MaterialCommunityIcons', activeIcon: 'account', inActiveIcon: 'account-outline' }} />,
           }}
         />
-        
       </Tab.Navigator>
     </SafeAreaView>
   );
