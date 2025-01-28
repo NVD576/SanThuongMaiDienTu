@@ -10,7 +10,7 @@ const Bill = ({ route }) => {
   const { orderId } = route.params;
   const [order, setOrder] = useState(null);
   const [orderItems, setOrderItems] = useState([]);
-  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState("money"); // Default payment method
+  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState("money");
   const navigation = useNavigation();
 
   const loadOrderDetails = async () => {
@@ -23,7 +23,8 @@ const Bill = ({ route }) => {
 
       const orderItemsRes = await authAPI.get(endpoints["order-item"]);
       const orderItemsData = orderItemsRes.data.results;
-
+      console.log(orderItemsData)
+      console.log(orderId)
       const filteredOrderItems = orderItemsData.filter(item => item.order === orderId);
       setOrderItems(filteredOrderItems);
     } catch (error) {

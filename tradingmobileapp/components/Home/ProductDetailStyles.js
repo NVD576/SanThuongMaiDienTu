@@ -203,6 +203,61 @@ const ProductDetailStyles = StyleSheet.create({
     fontWeight: "bold",
     color: "#333",
   },
+  storeContainer: {
+    padding: 16,
+    backgroundColor: "#fff",
+    borderRadius: 10,
+    marginVertical: 16,
+  },
+  storeHeader: {
+    fontSize: 18,
+    fontWeight: "bold",
+    marginBottom: 12,
+    color: "#333",
+  },
+  storeImage: {
+    width: "100%",
+    height: 150,
+    borderRadius: 10,
+    marginBottom: 12,
+  },
+  storeName: {
+    fontSize: 16,
+    fontWeight: "bold",
+    color: "#333",
+    marginBottom: 4,
+  },
+  storeDescription: {
+    fontSize: 14,
+    color: "#555",
+    marginBottom: 8,
+  },
+  storeAddress: {
+    fontSize: 14,
+    color: "#777",
+    marginBottom: 4,
+  },
+  storeContact: {
+    fontSize: 14,
+    color: "#777",
+    marginBottom: 4,
+  },
+  storeRating: {
+    fontSize: 14,
+    color: "#4CAF50",
+    fontWeight: "bold",
+  },
+  compareButton: {
+    backgroundColor: "#4CAF50",
+    padding: 10,
+    borderRadius: 5,
+    marginTop: 10,
+  },
+  compareButtonText: {
+    color: "white",
+    textAlign: "center",
+    fontWeight: "bold",
+  },
 });
 
 export default ProductDetailStyles;

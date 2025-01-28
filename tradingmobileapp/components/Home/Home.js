@@ -20,23 +20,44 @@ const Home = () => {
   const [categories, setCategories] = useState([]);
   const [cateId, setCateId] = useState(null);
   const [stores, setStores] = useState({});
+  const [page, setPage] = useState(1);
   const navigation = useNavigation();
 
   const loadProducts = async () => {
-    try {
-      let url = endpoints["products"];
-      if (cateId !== null) {
-        url = `${url}?category=${cateId}`;
+    if (page > 0) {
+      try {
+        setLoading(true);
+        let url = `${endpoints["products"]}?page=${page}`;
+        if (cateId !== null) {
+          url = `${endpoints["products"]}?category=${cateId}&page=${page}`;
+        }
+        let res = await APIs.get(url);
+  
+        if (res.data.results.length > 0) {
+          if (page > 1) {
+            setProducts((current) => [...current, ...res.data.results]);
+          } else {
+            setProducts(res.data.results);
+          }
+  
+          if (res.data.next === null) {
+            setPage(0);
+          }
+        } else {
+          setPage(0);
+        }
+      } catch (error) {
+        if (error.response?.status === 404) {
+          setPage(0);
+        } else {
+          console.error("Error loading products:", error.message);
+        }
+      } finally {
+        setLoading(false);
       }
-      let res = await APIs.get(url);
-      setProducts(res.data.results);
-    } catch (error) {
-      console.error("Error loading products:", error);
-    } finally {
-      setLoading(false);
     }
   };
-
+  
   const loadCategories = async () => {
     try {
       let res = await APIs.get(endpoints["categories"]);
@@ -59,14 +80,20 @@ const Home = () => {
     }
   };
 
+
   useEffect(() => {
     loadProducts();
-  }, [cateId]);
+  }, [cateId, page]);
 
   useEffect(() => {
     loadCategories();
     loadStores();
   }, []);
+
+  const loadMore = () => {
+    if (page > 0 && !loading)
+      setPage(page+1)
+  }
 
   return (
     <View style={HomeStyles.container}>
@@ -78,20 +105,41 @@ const Home = () => {
         style={HomeStyles.categoryScroll}
         showsHorizontalScrollIndicator={false}
       >
-        <TouchableOpacity onPress={() => setCateId(null)}>
+        <TouchableOpacity
+          onPress={() => {
+            setCateId(null); // Cập nhật danh mục là 'Tất cả'
+            setPage(1); // Reset về trang đầu
+            setProducts([]); // Xóa danh sách sản phẩm cũ
+          }}
+        >
           <Chip
             icon="label-outline"
-            style={HomeStyles.categoryChip}
+            selected={cateId === null} // Đánh dấu Chip được chọn
+            style={[
+              HomeStyles.categoryChip,
+              cateId === null ? HomeStyles.selectedChip : null,
+            ]}
             textStyle={HomeStyles.categoryChipText}
           >
             Tất cả
           </Chip>
         </TouchableOpacity>
         {categories.map((c) => (
-          <TouchableOpacity key={c.id} onPress={() => setCateId(c.id)}>
+          <TouchableOpacity
+            key={c.id}
+            onPress={() => {
+              setCateId(c.id); // Cập nhật cateId khi nhấn
+              setPage(1); // Reset về trang đầu
+              setProducts([]); // Xóa danh sách sản phẩm cũ
+            }}
+          >
             <Chip
               icon="label-outline"
-              style={HomeStyles.categoryChip}
+              selected={cateId === c.id} // Đánh dấu Chip được chọn
+              style={[
+                HomeStyles.categoryChip,
+                cateId === c.id ? HomeStyles.selectedChip : null,
+              ]}
               textStyle={HomeStyles.categoryChipText}
             >
               {c.name}
@@ -109,6 +157,7 @@ const Home = () => {
         />
       ) : (
         <FlatList
+          onEndReached={loadMore}
           data={products}
           numColumns={2}
           keyExtractor={(item) => item.id.toString()}

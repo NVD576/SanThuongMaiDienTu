@@ -7,10 +7,9 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { AirbnbRating } from "react-native-ratings";
 import { MyUserContext } from "../../configs/UserContexts";
 
-// Ignore specific log warnings
 LogBox.ignoreLogs([
   "Warning: Star: Support for defaultProps will be removed from function components in a future major release. Use JavaScript default parameters instead.",
-  "Warning: TapRating: Support for defaultProps will be removed from function components in a future major release. Use JavaScript default parameters instead." // Bỏ qua cảnh báo này
+  "Warning: TapRating: Support for defaultProps will be removed from function components in a future major release. Use JavaScript default parameters instead."
 ]);
 
 const ProductDetails = ({ route }) => {
@@ -23,6 +22,7 @@ const ProductDetails = ({ route }) => {
   const [cartItems, setCartItems] = useState([]);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [quantity, setQuantity] = useState(1);
+  const [store, setStore] = useState(null);
   const navigation = useNavigation();
   const { user } = useContext(MyUserContext);
   const { productId } = route.params;
@@ -32,6 +32,8 @@ const ProductDetails = ({ route }) => {
       const res = await APIs.get(endpoints["product-details"](productId));
       setProduct(res.data);
       setReviews(res.data.reviews || []);
+      const storeRes = await APIs.get(endpoints["stores"] + (res.data.store))
+      setStore(storeRes.data);
     } catch (error) {
       console.error("Error loading product details:", error);
       Alert.alert("Lỗi", "Không thể tải thông tin sản phẩm. Vui lòng thử lại!");
@@ -137,6 +139,48 @@ const ProductDetails = ({ route }) => {
       Alert.alert("Lỗi", "Không thể thêm sản phẩm vào giỏ hàng. Vui lòng thử lại!");
     }
   };
+
+  const handleCompareProduct = async () => {
+    try {
+      let currentPage = 1; // Bắt đầu từ trang 1
+      let allProducts = []; // Tất cả sản phẩm từ mọi trang
+      let hasMore = true; // Kiểm soát khi nào dừng lặp
+  
+      while (hasMore) {
+        const response = await APIs.get(endpoints["products"], {
+          params: {
+            page: currentPage, // Gửi tham số trang
+          },
+        });
+  
+        if (response.data && Array.isArray(response.data.results)) {
+          // Gộp sản phẩm từ trang hiện tại vào danh sách chung
+          allProducts = [...allProducts, ...response.data.results];
+  
+          // Kiểm tra xem có trang tiếp theo không
+          hasMore = response.data.next !== null;
+          currentPage += 1; // Tăng trang để tiếp tục lấy dữ liệu
+        } else {
+          hasMore = false; // Không có dữ liệu hoặc không có trang tiếp theo
+        }
+      }
+  
+      // Lọc sản phẩm có cùng tên nhưng khác ID
+      const filteredProducts = allProducts.filter(
+        (item) => item.name === product.name && item.id !== product.id
+      );
+  
+      if (filteredProducts.length === 0) {
+        Alert.alert("Thông báo", "Không tìm thấy sản phẩm cùng tên từ các cửa hàng khác!");
+      } else {
+        navigation.navigate("ProductComparison", { products: filteredProducts });
+      }
+    } catch (error) {
+      console.error("Error comparing products:", error);
+      Alert.alert("Lỗi", "Không thể tải sản phẩm so sánh. Vui lòng thử lại!");
+    }
+  };
+  
   
   const postReview = async () => {
     if (!comment.trim()) {
@@ -214,6 +258,31 @@ const ProductDetails = ({ route }) => {
               {item.description || "Mô tả sản phẩm chưa được cập nhật."}
             </Text>
           </View>
+
+          {store && (
+            <View style={ProductDetailStyles.storeContainer}>
+              <Text style={ProductDetailStyles.storeHeader}>Thông tin cửa hàng</Text>
+              <Image
+                source={{ uri: store.image }}
+                style={ProductDetailStyles.storeImage}
+                resizeMode="cover"
+              />
+              <Text style={ProductDetailStyles.storeName}>Tên: {store.name}</Text>
+              <Text style={ProductDetailStyles.storeDescription}>
+                Mô tả: {store.description || "Đang cập nhật."}
+              </Text>
+              <Text style={ProductDetailStyles.storeRating}>
+                Đánh giá: {store.rating || "Chưa có đánh giá"}★
+              </Text>
+            </View>
+          )}
+
+          <TouchableOpacity
+            style={ProductDetailStyles.compareButton}
+            onPress={handleCompareProduct}
+          >
+            <Text style={ProductDetailStyles.compareButtonText}>So sánh sản phẩm</Text>
+          </TouchableOpacity>
 
           <View style={ProductDetailStyles.quantityContainer}>
             <TouchableOpacity

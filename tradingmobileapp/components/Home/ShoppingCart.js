@@ -43,8 +43,8 @@ const ShoppingCart = () => {
   const handleRemoveItem = async (itemId) => {
     try {
       const updatedCart = cartItems.filter((item) => item.id !== itemId);
-      setCartItems(updatedCart);
-      await AsyncStorage.setItem(`shoppingCart_${userId}`, JSON.stringify(updatedCart));
+      setCartItems(updatedCart); // Cập nhật hiển thị
+      await AsyncStorage.setItem(`shoppingCart_${userId}`, JSON.stringify(updatedCart)); // Lưu lại AsyncStorage
     } catch (error) {
       console.error("Error removing item:", error);
       Alert.alert("Lỗi", "Không thể xóa sản phẩm. Vui lòng thử lại!");
@@ -53,50 +53,52 @@ const ShoppingCart = () => {
 
   const handleCreateBill = async () => {
     const storedCart = await AsyncStorage.getItem(`shoppingCart_${userId}`);
-    if (storedCart) {
-      const cartItems = JSON.parse(storedCart);
-      if (cartItems.length > 0) {
-        const totalPrice = cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
-        const form = new FormData();
-        form.append('user', user.id.toString());
-        form.append('total_price', totalPrice);
-        form.append('payment_method', 'money');
-        form.append('status', 'pending');
+    const cartItems = storedCart ? JSON.parse(storedCart) : []; // Tải lại giỏ hàng từ AsyncStorage
+    
+    if (cartItems.length > 0) {
+      const totalPrice = cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
+      const form = new FormData();
+      form.append("user", user.id.toString());
+      form.append("total_price", totalPrice);
+      form.append("payment_method", "money");
+      form.append("status", "pending");
   
-        try {
-          const orderResponse = await APIs.post(endpoints['order'], form, {
-            headers: { 'Content-Type': 'multipart/form-data' }
-          });
+      try {
+        // Gửi yêu cầu tạo hóa đơn
+        const orderResponse = await APIs.post(endpoints["order"], form, {
+          headers: { "Content-Type": "multipart/form-data" },
+        });
   
-          if (orderResponse && orderResponse.data.id) {
-            const orderId = orderResponse.data.id;
-            const orderItemsForm = new FormData();
-            cartItems.forEach((item) => {
-              orderItemsForm.append('order', orderId);
-              orderItemsForm.append('product', item.id);
-              orderItemsForm.append('quantity', item.quantity);
-              orderItemsForm.append('price', parseFloat(item.price).toFixed(2));
+        if (orderResponse && orderResponse.data.id) {
+          const orderId = orderResponse.data.id;
+  
+          // Lặp qua từng sản phẩm để tạo từng mục đơn hàng
+          for (const item of cartItems) {
+            const orderItemForm = new FormData();
+            orderItemForm.append("order", orderId);
+            orderItemForm.append("product", item.id);
+            orderItemForm.append("quantity", item.quantity);
+            orderItemForm.append("price", parseFloat(item.price).toFixed(2));
+  
+            await APIs.post(endpoints["order-item"], orderItemForm, {
+              headers: { "Content-Type": "multipart/form-data" },
             });
-            
-            await APIs.post(endpoints["order-item"], orderItemsForm, {
-              headers: { 'Content-Type': 'multipart/form-data' }
-            });
-  
-            navigation.navigate("Bill",{ orderId : orderId });
-          } else {
-            Alert.alert("Lỗi", "Không thể tạo đơn hàng!");
           }
-        } catch (error) {
-          console.error("Error creating order:", error);
+  
+          // Chuyển đến trang hóa đơn
+          navigation.navigate("Bill", { orderId: orderId });
+        } else {
           Alert.alert("Lỗi", "Không thể tạo đơn hàng!");
         }
-      } else {
-        Alert.alert("Thông báo", "Chưa có sản phẩm trong giỏ hàng!");
+      } catch (error) {
+        console.error("Error creating order:", error);
+        Alert.alert("Lỗi", "Không thể tạo đơn hàng!");
       }
     } else {
-      Alert.alert("Thông báo", "Chưa có sản phẩm trong giỏ hàng!");
+      Alert.alert("Thông báo", "Giỏ hàng trống!");
     }
   };
+  
   
   useFocusEffect(
     React.useCallback(() => {
@@ -109,7 +111,7 @@ const ShoppingCart = () => {
       if (userId) {
         loadCartItems();
       }
-    }, [userId])
+    }, [userId, cartItems])
   );
 
   const getTotalPrice = () => {
