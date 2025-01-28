@@ -169,6 +169,18 @@ const ProductDetailStyles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "600",
   },
+  addToCartButton: {
+    backgroundColor: "#2196F3",
+    padding: 15,
+    borderRadius: 50,
+    margin: 16,
+    alignItems: "center",
+  },
+  addToCartButtonText: {
+    fontSize: 18,
+    fontWeight: "bold",
+    color: "#fff",
+  },
 });
 
 export default ProductDetailStyles;

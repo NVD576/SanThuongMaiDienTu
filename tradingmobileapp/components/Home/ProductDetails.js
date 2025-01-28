@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { use, useEffect, useState } from "react";
 import { LogBox, Text, View, ActivityIndicator, Image, TouchableOpacity, Alert, TextInput, FlatList } from "react-native";
 import ProductDetailStyles from "./ProductDetailStyles";
 import APIs, { endpoints } from "../../configs/APIs";
@@ -17,13 +17,12 @@ const ProductDetails = ({ route }) => {
   const [loading, setLoading] = useState(true);
   const [reviews, setReviews] = useState([]);
   const [comment, setComment] = useState("");
-  const [userId, setUserId] = useState(null); // User ID state
+  const [userId, setUserId] = useState(null);
   const [rating, setRating] = useState(5);
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // Track login status
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const navigation = useNavigation();
   const { productId } = route.params;
 
-  // Load product details
   const loadProductDetails = async () => {
     try {
       const res = await APIs.get(endpoints["product-details"](productId));
@@ -37,7 +36,6 @@ const ProductDetails = ({ route }) => {
     }
   };
 
-  // Load user ID from AsyncStorage
   const loadUserId = async () => {
     try {
       const storedUserId = await AsyncStorage.getItem("user_id");
@@ -59,7 +57,6 @@ const ProductDetails = ({ route }) => {
     loadProductDetails();
   }, [productId]);
 
-  // Handle buy now action
   const handleBuyNow = () => {
     if (!isLoggedIn) {
       Alert.alert("Thông báo","Bạn cần đăng nhập để sử dụng tính năng này");
@@ -68,7 +65,40 @@ const ProductDetails = ({ route }) => {
     Alert.alert("Mua hàng", `Bạn đã chọn mua ${product?.name}!`);
   };
 
-  // Post a review
+  const handleAddToCart = async () => {
+    if (!isLoggedIn) {
+      Alert.alert("Thông báo", "Bạn cần đăng nhập để thực hiện hành động này");
+      return;
+    }
+  
+    try {
+      const res = await APIs.get(endpoints["product-details"](productId));
+      const newItem = {
+        id: res.data.id,
+        name: res.data.name,
+        price: res.data.price,
+        quantity: 1,
+        image: res.data.image,
+      };
+  
+      const storedCart = await AsyncStorage.getItem("shoppingCart");
+      const cart = storedCart ? JSON.parse(storedCart) : [];
+  
+      const existingItemIndex = cart.findIndex((item) => item.id === newItem.id);
+      if (existingItemIndex !== -1) {
+        cart[existingItemIndex].quantity += 1;
+      } else {
+        cart.push(newItem);
+      }
+  
+      await AsyncStorage.setItem("shoppingCart", JSON.stringify(cart));
+      Alert.alert("Giỏ hàng", `Đã thêm ${newItem.name} vào giỏ hàng!`);
+    } catch (error) {
+      console.error("Error adding to cart:", error);
+      Alert.alert("Lỗi", "Không thể thêm sản phẩm vào giỏ hàng. Vui lòng thử lại!");
+    }
+  };
+  
   const postReview = async () => {
     if (!comment.trim()) {
       Alert.alert("Lỗi", "Vui lòng nhập nội dung bình luận!");
@@ -153,6 +183,14 @@ const ProductDetails = ({ route }) => {
           >
             <Text style={ProductDetailStyles.buyButtonText}>
               Mua ngay
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={ProductDetailStyles.addToCartButton}
+            onPress={handleAddToCart}
+          >
+            <Text style={ProductDetailStyles.addToCartButtonText}>
+              Thêm vào giỏ hàng
             </Text>
           </TouchableOpacity>
 
