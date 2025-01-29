@@ -1,13 +1,16 @@
-import React, { useEffect, useState } from "react";
-import { View, Text, FlatList, TouchableOpacity} from "react-native";
+import React, { useContext, useEffect, useState } from "react";
+import { View, Text, FlatList, TouchableOpacity, Alert} from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { format } from "date-fns";
-import { authApis, endpoints } from "../../configs/APIs";
+import APIs, { authApis, endpoints } from "../../configs/APIs";
 import { Picker } from '@react-native-picker/picker';
 import styles from "../Home/BillStyles";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { MyUserContext } from "../../configs/UserContexts";
 
 const Bill = ({ route }) => {
   const { orderId } = route.params;
+  const { user } = useContext(MyUserContext);
   const [order, setOrder] = useState(null);
   const [orderItems, setOrderItems] = useState([]);
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState("money");
@@ -18,13 +21,13 @@ const Bill = ({ route }) => {
       const authAPI = await authApis();
       const orderRes = await authAPI.get(endpoints["order"] + orderId);
       const orderData = orderRes.data;
-      console.log("Order Data:", orderData);
+      // console.log("Order Data:", orderData);
       setOrder(orderData);
 
       const orderItemsRes = await authAPI.get(endpoints["order-item"]);
       const orderItemsData = orderItemsRes.data.results;
-      console.log(orderItemsData)
-      console.log(orderId)
+      // console.log(orderItemsData)
+      // console.log(orderId)
       const filteredOrderItems = orderItemsData.filter(item => item.order === orderId);
       setOrderItems(filteredOrderItems);
     } catch (error) {
@@ -51,11 +54,6 @@ const Bill = ({ route }) => {
     </View>
   );
 
-  const handlePayment = () => {
-    alert(`Thanh toán bằng phương thức: ${selectedPaymentMethod}`);
-    // Logic thanh toán có thể được xử lý tại đây
-  };
-
   if (!order) {
     return (
       <View style={styles.loadingContainer}>
@@ -63,6 +61,40 @@ const Bill = ({ route }) => {
       </View>
     );
   }
+
+  const handlePayment = async () => {
+    try {
+      // Gửi thông tin thanh toán
+      const form = new FormData();
+      form.append('order', orderId);
+      form.append('amount', parseFloat(order.total_price).toFixed(2));
+      form.append('method', selectedPaymentMethod);
+      form.append('status', "Đã thanh toán");
+  
+      console.log("🔍 Dữ liệu gửi đi:", form);
+  
+      const response = await APIs.post(endpoints['transactions'], form, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+  
+      console.log("✅ Phản hồi từ API:", response.data);
+  
+      // Xóa giỏ hàng trong AsyncStorage sau khi thanh toán thành công
+      await AsyncStorage.removeItem(`shoppingCart_${user.id}`);
+      
+      // Thông báo thanh toán thành công
+      Alert.alert("Thông báo", "Thanh toán thành công!");
+  
+      // Quay lại màn hình trước
+      navigation.goBack();
+    } catch (ex) {
+      console.error("❌ Failed:", ex.response ? ex.response.data : ex.message);
+      Alert.alert("Thông báo", "Đã xảy ra lỗi, vui lòng thử lại!");
+    }
+  };
+  
 
   return (
     <View style={styles.container}>

@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
+import { useFocusEffect } from "@react-navigation/native";
 import {
   Text,
   View,
@@ -34,29 +35,18 @@ const Home = () => {
         let res = await APIs.get(url);
   
         if (res.data.results.length > 0) {
-          if (page > 1) {
-            setProducts((current) => [...current, ...res.data.results]);
-          } else {
-            setProducts(res.data.results);
-          }
-  
-          if (res.data.next === null) {
-            setPage(0);
-          }
+          setProducts((prev) => (page === 1 ? res.data.results : [...prev, ...res.data.results]));
         } else {
-          setPage(0);
+          setPage(0); // Không có sản phẩm nữa
         }
       } catch (error) {
-        if (error.response?.status === 404) {
-          setPage(0);
-        } else {
-          console.error("Error loading products:", error.message);
-        }
+        console.error("Lỗi tải sản phẩm:", error.message);
       } finally {
         setLoading(false);
       }
     }
   };
+  
   
   const loadCategories = async () => {
     try {
@@ -81,9 +71,13 @@ const Home = () => {
   };
 
 
-  useEffect(() => {
-    loadProducts();
-  }, [cateId, page]);
+  useFocusEffect(
+    useCallback(() => {
+      setProducts([]); // Xóa danh sách cũ trước khi tải mới
+      setPage(1); // Reset về trang đầu
+      loadProducts();
+    }, [cateId])
+  );
 
   useEffect(() => {
     loadCategories();
@@ -91,9 +85,11 @@ const Home = () => {
   }, []);
 
   const loadMore = () => {
-    if (page > 0 && !loading)
-      setPage(page+1)
-  }
+    if (page > 0 && !loading) {
+      setPage((prevPage) => prevPage + 1);
+    }
+  };
+  
 
   return (
     <View style={HomeStyles.container}>

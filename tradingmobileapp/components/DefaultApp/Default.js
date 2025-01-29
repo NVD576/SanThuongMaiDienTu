@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useRef } from 'react';
-import { SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { SafeAreaView, TouchableOpacity } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import * as Animatable from 'react-native-animatable';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -46,7 +46,6 @@ const TabButton = ({ item, onPress, accessibilityState }) => {
   );
 };
 
-// Main Component
 export default function Default() {
   const { user } = useContext(MyUserContext);
 
@@ -56,6 +55,7 @@ export default function Default() {
         screenOptions={{
           headerShown: false,
           tabBarStyle: styles.tabBar,
+          tabBarVisible: true,  // Đảm bảo tab bar luôn hiển thị
         }}
       >
         <Tab.Screen
@@ -76,7 +76,7 @@ export default function Default() {
           name="ShoppingCart"
           component={ShoppingCart}
           options={{
-            tabBarButton: (props) => <TabButton {...props} item ={{ route: 'ShoppingCart', type: 'Ionicons', activeIcon: 'cart', inActiveIcon: 'cart-outline' }} />,
+            tabBarButton: (props) => <TabButton {...props} item={{ route: 'ShoppingCart', type: 'Ionicons', activeIcon: 'cart', inActiveIcon: 'cart-outline' }} />,
           }}
         />
         <Tab.Screen
@@ -90,5 +90,3 @@ export default function Default() {
     </SafeAreaView>
   );
 }
-
-

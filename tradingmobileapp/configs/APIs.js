@@ -14,6 +14,7 @@ export const endpoints = {
     'reviews':'/reviews/',
     'order':'/orders/',
     'order-item':'/orderItems/',
+    'transactions':'/transactions/',
 }
 
 export const authApis = async () => {

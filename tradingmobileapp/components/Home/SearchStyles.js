@@ -1,17 +1,23 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Dimensions } from 'react-native';
+
+const { width } = Dimensions.get('window');
 
 const SearchStyles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 16,
-    backgroundColor: '#f8fafc', // Màu nền nhẹ hơn
+    backgroundColor: "#f5f5f5", // Màu nền giống Home
+    paddingHorizontal: 16,
+    paddingTop: 20,
   },
   title: {
     fontSize: 28,
     fontWeight: 'bold',
-    marginBottom: 20,
+    color: '#4CAF50', // Màu chữ giống Home
     textAlign: 'center',
-    color: '#0f172a', // Màu chữ đậm hơn
+    marginBottom: 20,
+    textShadowColor: 'rgba(0, 0, 0, 0.2)',
+    textShadowOffset: { width: 0, height: 2 },
+    textShadowRadius: 4,
   },
   input: {
     borderWidth: 1,
@@ -49,7 +55,7 @@ const SearchStyles = StyleSheet.create({
     marginLeft: 10,
   },
   searchButton: {
-    backgroundColor: '#3b82f6',
+    backgroundColor: '#3b82f6', // Màu giống Home
     padding: 14,
     borderRadius: 12,
     alignItems: 'center',
