@@ -1,5 +1,5 @@
 from contextlib import nullcontext
-
+from rest_framework.decorators import api_view
 from MySQLdb.constants.CR import NULL_POINTER
 from django.shortcuts import render
 from django_filters.rest_framework import DjangoFilterBackend
@@ -18,10 +18,47 @@ from .serializers import StoreSerializer, UserSerializer, ProductSerializer, Cat
 
 class IsSeller(BasePermission):
     def has_permission(self, request, view):
-        return request.user.role == 'seller' and request.user.is_seller_approved
+        return request.user.role == 'seller' and request.user.approval_status
+
+
+@api_view(['GET', 'POST'])
+def manage_sellers(request):
+    if request.method == 'GET':
+        # Lấy danh sách người bán đang chờ phê duyệt
+        pending_sellers = User.objects.filter(role='seller', approval_status='pending')
+        sellers_data = [
+            {
+                'id': seller.id,
+                'username': seller.username,
+                'email': seller.email,
+                'avatar': seller.avatar.url if seller.avatar else None,
+                'approval_status': seller.approval_status,
+            } for seller in pending_sellers
+        ]
+        return Response(sellers_data)
+
+    elif request.method == 'POST':
+        # Phê duyệt hoặc từ chối người bán
+        user_id = request.data.get('user_id')
+        status = request.data.get('status', 'rejected')  # 'approved' hoặc 'rejected'
+
+        try:
+            seller = User.objects.get(id=user_id, role='seller')
+
+            if status == 'approved':
+                seller.approval_status = 'approved'
+            else:
+                seller.approval_status = 'rejected'
+
+            seller.save()
+            return Response({"message": f"Tài khoản {seller.username} đã được cập nhật trạng thái thành công."})
+
+        except User.DoesNotExist:
+            return Response({"error": "Tài khoản không tồn tại hoặc không phải là tiểu thương."}, status=404)
 
 
 class RegisterUserView(APIView):
+
     parser_classes = (MultiPartParser, FormParser)
 
     # def post(self, request, *args, **kwargs):
@@ -38,7 +75,7 @@ class RegisterUserView(APIView):
         if serializer.is_valid():
             user = serializer.save()
             if role == 'Seller':
-                user.is_seller_approved = False  # Mặc định cần phê duyệt
+                user.approval_status = False  # Mặc định cần phê duyệt
                 user.save()
                 return Response(
                     {"message": "Đăng ký thành công! Vui lòng chờ phê duyệt để đăng bán sản phẩm."},
