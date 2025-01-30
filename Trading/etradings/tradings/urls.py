@@ -13,7 +13,7 @@ router.register('categories', views.CategoryViewSet)
 router.register('reviews', views.ReviewViewSet)
 router.register('orders', views.OrderViewSet)
 router.register('orderItems', views.OrderItemViewSet)
-router.register('transaction', views.TransactionViewSet)
+router.register('transactions', views.TransactionViewSet)
 router.register('chat', views.ChatViewSet)
 from django.conf import settings
 from django.conf.urls.static import static

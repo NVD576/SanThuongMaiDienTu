@@ -84,8 +84,11 @@ const ProductDetails = ({ route }) => {
             const orderId = orderResponse.data.id;
             const orderItemsForm = new FormData();
 
+            console.log(`Gửi đơn hàng với store: ${store.id}`);
+
             orderItemsForm.append('order', orderId);
             orderItemsForm.append('product', productId);
+            orderItemsForm.append('store', store.id);
             orderItemsForm.append('quantity', quantity);
             orderItemsForm.append('price', parseFloat(product.price).toFixed(2));
             
@@ -114,6 +117,7 @@ const ProductDetails = ({ route }) => {
       const newItem = {
         id: res.data.id,
         name: res.data.name,
+        store: res.data.store,
         price: res.data.price,
         quantity: quantity,
         image: res.data.image,

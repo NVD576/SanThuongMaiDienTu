@@ -28,7 +28,7 @@ SECRET_KEY = 'django-insecure-ms8yi3wxs(w-f*jr4^=*aksmt_l$u+wq*31l1*gu##je^b)*38
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['192.168.1.3','192.168.1.12','192.168.1.109','localhost']
+ALLOWED_HOSTS = ['192.168.1.3','192.168.1.12','192.168.1.118','localhost']
 
 
 # Application definition
@@ -51,7 +51,7 @@ INSTALLED_APPS = [
 
 REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
-    'PAGE_SIZE': 10,
+    'PAGE_SIZE': 20,
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.TokenAuthentication',
