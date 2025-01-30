@@ -62,7 +62,6 @@ const Search = () => {
 
     results = results.sort((a, b) => (sortOption === 'name' ? a.name.localeCompare(b.name) : a.price - b.price));
     setFilteredProducts(results);
-    setPage(1);
   };
 
   useEffect(() => {

@@ -68,7 +68,7 @@ const ProductDetails = ({ route }) => {
       Alert.alert("Thông báo","Bạn cần đăng nhập để sử dụng tính năng này");
       return;
     }
-        const totalPrice = cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
+        const totalPrice = product.price * quantity;
         const form = new FormData();
         form.append('user', user.id.toString());
         form.append('total_price', totalPrice);
@@ -142,9 +142,9 @@ const ProductDetails = ({ route }) => {
 
   const handleCompareProduct = async () => {
     try {
-      let currentPage = 1; // Bắt đầu từ trang 1
-      let allProducts = []; // Tất cả sản phẩm từ mọi trang
-      let hasMore = true; // Kiểm soát khi nào dừng lặp
+      let currentPage = 1;
+      let allProducts = [];
+      let hasMore = true;
   
       while (hasMore) {
         const response = await APIs.get(endpoints["products"], {
@@ -154,18 +154,15 @@ const ProductDetails = ({ route }) => {
         });
   
         if (response.data && Array.isArray(response.data.results)) {
-          // Gộp sản phẩm từ trang hiện tại vào danh sách chung
           allProducts = [...allProducts, ...response.data.results];
   
-          // Kiểm tra xem có trang tiếp theo không
           hasMore = response.data.next !== null;
-          currentPage += 1; // Tăng trang để tiếp tục lấy dữ liệu
+          currentPage += 1;
         } else {
-          hasMore = false; // Không có dữ liệu hoặc không có trang tiếp theo
+          hasMore = false;
         }
       }
   
-      // Lọc sản phẩm có cùng tên nhưng khác ID
       const filteredProducts = allProducts.filter(
         (item) => item.name === product.name && item.id !== product.id
       );
@@ -173,7 +170,7 @@ const ProductDetails = ({ route }) => {
       if (filteredProducts.length === 0) {
         Alert.alert("Thông báo", "Không tìm thấy sản phẩm cùng tên từ các cửa hàng khác!");
       } else {
-        navigation.navigate("ProductComparison", { products: filteredProducts });
+        navigation.navigate("ProductComparison", { products: filteredProducts, product: product });
       }
     } catch (error) {
       console.error("Error comparing products:", error);
@@ -198,9 +195,9 @@ const ProductDetails = ({ route }) => {
 
       await APIs.post(endpoints["reviews"], payload);
       Alert.alert("Thành công", "Bình luận của bạn đã được gửi!");
-      setComment(""); // Clear comment input after submission
+      setComment("");
       setRating(5);
-      loadProductDetails(); // Reload product details to update reviews
+      loadProductDetails();
     } catch (error) {
       console.error("Error posting review:", error);
       Alert.alert("Lỗi", "Không thể gửi bình luận. Vui lòng thử lại!");

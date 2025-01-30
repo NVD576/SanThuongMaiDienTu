@@ -1,18 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { FlatList, Text, View, Image, ActivityIndicator } from "react-native";
-import APIs, { endpoints } from "../../configs/APIs"; // Thêm APIs để gọi thông tin cửa hàng
+import APIs, { endpoints } from "../../configs/APIs";
 import styles from "../Home/ProductComparisonStyles";
 
 const ProductComparison = ({ route }) => {
-  const { products } = route.params;
+  const { products, product } = route.params;
   const [stores, setStores] = useState({});
   const [loading, setLoading] = useState(true);
 
-  // Hàm tải thông tin cửa hàng
   const loadStoreDetails = async () => {
     try {
       const storePromises = products.map((product) =>
-        APIs.get(endpoints["stores"] + product.store) // Gọi API lấy thông tin cửa hàng
+        APIs.get(endpoints["stores"] + product.store) 
       );
 
       const storeResponses = await Promise.all(storePromises);
@@ -28,14 +27,26 @@ const ProductComparison = ({ route }) => {
       setLoading(false);
     }
   };
+  
 
   useEffect(() => {
     loadStoreDetails();
   }, [products]);
 
-  // Hàm định dạng giá tiền
   const formatPrice = (price) => {
     return price.toLocaleString("vi-VN", { style: "currency", currency: "VND" });
+  };
+
+  const getPriceComparison = (itemPrice) => {
+    if (itemPrice < product.price) return "Rẻ hơn";
+    if (itemPrice > product.price) return "Đắt hơn";
+    return "Giá tương đương";
+  };
+
+  const getRatingComparison = (itemRating) => {
+    if (itemRating < product.rating) return "Đánh giá thấp hơn";
+    if (itemRating > product.rating) return "Đánh giá cao hơn";
+    return "Đánh giá tương đương";
   };
 
   const renderProductItem = ({ item }) => (
@@ -48,6 +59,23 @@ const ProductComparison = ({ route }) => {
       </Text>
       <Text style={styles.storeName}>
         Cửa hàng: {stores[item.store]?.name || "Đang tải..."}
+      </Text>
+      <Text 
+        style={[
+          styles.comparisonText, 
+          { backgroundColor: item.price < product.price ? "#C8E6C9" : item.price > product.price ? "#FFCDD2" : "#FFF9C4" }
+        ]}
+      >
+        {getPriceComparison(item.price)}
+      </Text>
+
+      <Text 
+        style={[
+          styles.comparisonText, 
+          { backgroundColor: item.rating > product.rating ? "#C8E6C9" : item.rating < product.rating ? "#FFCDD2" : "#FFF9C4" }
+        ]}
+      >
+        {getRatingComparison(item.rating)}
       </Text>
     </View>
   );
