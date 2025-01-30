@@ -27,8 +27,8 @@ const Login = ({ navigation }) => {
             console.log("Trying to login...");
     
             const res = await APIs.post(endpoints['login'], {
-                client_id: "BqB1mSaAebT0Q3BYUPnk8jsbK0Iugi73pcCtP4Il",
-                client_secret: "S6UxZrRPqZ0sFzwPmHOxbu1unSSoPnyrQXkcmfRbZTwMsDbafYJct7gZr8jO3BaVA22L4BBbH0QMzaEHQvaSQd6BwKk3BhGXkuhWDiovvKqVycWZ3wR1KJqrRntpZ8QP",
+                client_id: "utwiObUkAqZq7CdZ15JPVegzdGvHqLBZnKXkVfrc",
+                client_secret: "ovUhk6GvUyQB9WNmOfPZ4YJUhBHu8IfXICFgGTANJkxqzG1bcIqfrfF2ARjczzDwwquoGNtn2HglwLieG3ovPxSBtFK8Dfv8tKEhSz2CLbeQPkTFe1CsrvW3q5ASGLhb",
 
                 grant_type: "password",
                 username: user.username,

@@ -137,16 +137,16 @@ class ProductViewSet(viewsets.ModelViewSet):
     filterset_class = ProductFilter
     filter_backends = (DjangoFilterBackend, )
 
-    @action(methods=['post'], detail=True, url_path="hide-product", url_name="hide-product")
-    def hide_product(self, request, pk):
-        try:
-            p = Product.objects.get(pk=pk)
-            p.active = False
-            p.save()
-        except Product.DoesNotExist:
-            return Response(status=HTTP_400_BAD_REQUEST)
-
-        return Response(data=ProductSerializer(p, context={'request': request}).data,status=HTTP_200_OK)
+    # @action(methods=['post'], detail=True, url_path="hide-product", url_name="hide-product")
+    # def hide_product(self, request, pk):
+    #     try:
+    #         p = Product.objects.get(pk=pk)
+    #         p.active = False
+    #         p.save()
+    #     except Product.DoesNotExist:
+    #         return Response(status=HTTP_400_BAD_REQUEST)
+    #
+    #     return Response(data=ProductSerializer(p, context={'request': request}).data,status=HTTP_200_OK)
 
     def get_permissions(self):
         if self.action in ['list', 'retrieve']:  # Cho phép mọi người xem sản phẩm
