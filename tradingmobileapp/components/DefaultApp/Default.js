@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useRef } from 'react';
-import { SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { SafeAreaView, TouchableOpacity } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import * as Animatable from 'react-native-animatable';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -10,11 +10,11 @@ import Search from '../Home/Search';
 import UserProfile from '../User/UserProfile';
 import styles from './DefaultStyles';
 import Colors from '../../colors/Colors';
+import ShoppingCart from '../Home/ShoppingCart'
 import { MyUserContext } from '../../configs/UserContexts';
 
 const Tab = createBottomTabNavigator();
 
-// Custom Button cho từng tab
 const TabButton = ({ item, onPress, accessibilityState }) => {
   const focused = accessibilityState.selected;
   const viewRef = useRef(null);
@@ -46,7 +46,6 @@ const TabButton = ({ item, onPress, accessibilityState }) => {
   );
 };
 
-// Main Component
 export default function Default() {
   const { user } = useContext(MyUserContext);
 
@@ -56,9 +55,9 @@ export default function Default() {
         screenOptions={{
           headerShown: false,
           tabBarStyle: styles.tabBar,
+          tabBarVisible: true,  // Đảm bảo tab bar luôn hiển thị
         }}
       >
-        {/* Các Tab khác */}
         <Tab.Screen
           name="Home"
           component={Home}
@@ -74,6 +73,13 @@ export default function Default() {
           }}
         />
         <Tab.Screen
+          name="ShoppingCart"
+          component={ShoppingCart}
+          options={{
+            tabBarButton: (props) => <TabButton {...props} item={{ route: 'ShoppingCart', type: 'Ionicons', activeIcon: 'cart', inActiveIcon: 'cart-outline' }} />,
+          }}
+        />
+        <Tab.Screen
           name="Login"
           component={user === null ? Login : UserProfile}
           options={{
@@ -84,5 +90,3 @@ export default function Default() {
     </SafeAreaView>
   );
 }
-
-

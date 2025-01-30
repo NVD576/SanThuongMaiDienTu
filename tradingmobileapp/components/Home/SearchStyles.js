@@ -1,59 +1,69 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Dimensions } from 'react-native';
+
+const { width } = Dimensions.get('window');
 
 const SearchStyles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 16,
-    backgroundColor: '#f8fafc', // Màu nền nhẹ hơn
+    backgroundColor: "#f9f9f9", // Lighter background for modern feel
+    paddingHorizontal: 16,
+    paddingTop: 30,
   },
   title: {
-    fontSize: 28,
+    fontSize: 32, // Slightly larger title
     fontWeight: 'bold',
-    marginBottom: 20,
+    color: '#4CAF50', // Primary accent color
     textAlign: 'center',
-    color: '#0f172a', // Màu chữ đậm hơn
+    marginBottom: 24,
+    textShadowColor: 'rgba(0, 0, 0, 0.1)',
+    textShadowOffset: { width: 0, height: 2 },
+    textShadowRadius: 5,
   },
   input: {
-    borderWidth: 1,
+    borderWidth: 1.5,
     borderColor: '#e2e8f0',
-    borderRadius: 15,
-    padding: 14,
-    marginBottom: 16,
+    borderRadius: 20, // More rounded corners for a smoother look
+    padding: 16,
+    marginBottom: 20,
     backgroundColor: '#ffffff',
     shadowColor: '#000',
-    shadowOpacity: 0.1,
+    shadowOpacity: 0.15,
     shadowRadius: 6,
-    elevation: 2,
+    elevation: 3,
   },
   sortContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-around',
-    marginBottom: 20,
+    justifyContent: 'space-between',
+    marginBottom: 24,
   },
   sortButton: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderRadius: 20,
+    paddingVertical: 12,
+    paddingHorizontal: 22,
+    borderRadius: 25,
     backgroundColor: '#f1f5f9',
     shadowColor: '#000',
-    shadowOpacity: 0.08,
-    shadowRadius: 4,
-    elevation: 1,
+    shadowOpacity: 0.1,
+    shadowRadius: 5,
+    elevation: 2,
+    transition: 'background-color 0.2s ease',
+  },
+  sortButtonActive: {
+    backgroundColor: '#3b82f6', // Active button color
   },
   sortText: {
-    fontSize: 14,
+    fontSize: 16,
     fontWeight: '600',
     color: '#1e3a8a',
     marginLeft: 10,
   },
   searchButton: {
-    backgroundColor: '#3b82f6',
-    padding: 14,
-    borderRadius: 12,
+    backgroundColor: '#3b82f6', // Consistent accent color
+    paddingVertical: 14,
+    borderRadius: 50, // Fully rounded button for modern look
     alignItems: 'center',
-    marginTop: 12,
+    marginTop: 16,
     shadowColor: '#3b82f6',
     shadowOpacity: 0.3,
     shadowRadius: 8,
@@ -62,35 +72,42 @@ const SearchStyles = StyleSheet.create({
   searchText: {
     color: '#ffffff',
     fontWeight: '700',
-    fontSize: 16,
+    fontSize: 18,
+    width:100,
+    textAlign: "center",
   },
   productItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 18,
+    marginBottom: 20,
     padding: 18,
     backgroundColor: '#ffffff',
     borderRadius: 16,
     shadowColor: '#000',
     shadowOpacity: 0.1,
-    shadowRadius: 8,
-    elevation: 4,
+    shadowRadius: 10,
+    elevation: 5,
+    transition: 'transform 0.3s ease',
+  },
+  productItemHovered: {
+    transform: [{ scale: 1.05 }],
   },
   productImage: {
-    width: 80,
-    height: 80,
-    borderRadius: 12,
+    width: 90, // Slightly larger image
+    height: 90,
+    borderRadius: 18,
     marginRight: 20,
     backgroundColor: '#f9fafb',
+    transition: 'transform 0.3s ease',
   },
   productInfo: {
     flex: 1,
   },
   productName: {
-    fontSize: 18,
+    fontSize: 20, // Slightly larger product name
     fontWeight: 'bold',
     color: '#0f172a',
-    marginBottom: 6,
+    marginBottom: 8,
   },
   productPrice: {
     fontSize: 16,
@@ -104,14 +121,14 @@ const SearchStyles = StyleSheet.create({
   paginationContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
-    marginTop: 16,
+    marginTop: 20,
     paddingHorizontal: 16,
   },
   pageButton: {
-    marginHorizontal: 5,
-    paddingVertical: 10,
-    paddingHorizontal: 18,
-    borderRadius: 12,
+    marginHorizontal: 8,
+    paddingVertical: 12,
+    paddingHorizontal: 20,
+    borderRadius: 20,
     backgroundColor: '#f1f5f9',
     shadowColor: '#000',
     shadowOpacity: 0.05,

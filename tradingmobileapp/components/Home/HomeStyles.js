@@ -14,7 +14,7 @@ const HomeStyles = StyleSheet.create({
     fontWeight: "bold",
     color: "#4CAF50",
     textAlign: "center",
-    marginBottom: 16,
+    marginBottom: 10,
     textShadowColor: "rgba(0, 0, 0, 0.2)",
     textShadowOffset: { width: 0, height: 2 },
     textShadowRadius: 4,
@@ -24,8 +24,9 @@ const HomeStyles = StyleSheet.create({
     marginBottom: 16,
   },
   categoryChip: {
+    width: "auto",
+    height: 47,
     marginRight: 12,
-    marginBottom: 8,
     borderRadius: 20,
     backgroundColor: "#fff",
     borderColor: "#4CAF50",
@@ -47,8 +48,7 @@ const HomeStyles = StyleSheet.create({
     alignSelf: "center",
   },
   productList: {
-    flexDirection: "row", // Điều chỉnh để sản phẩm nằm ngang
-    flexWrap: "wrap", // Cho phép các sản phẩm xuống hàng
+    flexDirection: "flex", // Điều chỉnh để sản phẩm nằm ngang
     justifyContent: "space-between", // Tạo khoảng cách giữa các sản phẩm
     paddingBottom: 16,
     marginTop: 16, // Đảm bảo sản phẩm bắt đầu từ trên
@@ -96,5 +96,6 @@ const HomeStyles = StyleSheet.create({
     fontStyle: "italic",
   },
 });
+
 
 export default HomeStyles;

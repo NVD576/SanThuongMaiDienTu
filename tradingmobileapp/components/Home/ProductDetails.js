@@ -1,15 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { LogBox, Text, View, ActivityIndicator, Image, TouchableOpacity, Alert, TextInput, FlatList } from "react-native";
 import ProductDetailStyles from "./ProductDetailStyles";
 import APIs, { endpoints } from "../../configs/APIs";
 import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { AirbnbRating } from "react-native-ratings";
+import { MyUserContext } from "../../configs/UserContexts";
 
-// Ignore specific log warnings
 LogBox.ignoreLogs([
   "Warning: Star: Support for defaultProps will be removed from function components in a future major release. Use JavaScript default parameters instead.",
-  "Warning: TapRating: Support for defaultProps will be removed from function components in a future major release. Use JavaScript default parameters instead." // Bỏ qua cảnh báo này
+  "Warning: TapRating: Support for defaultProps will be removed from function components in a future major release. Use JavaScript default parameters instead."
 ]);
 
 const ProductDetails = ({ route }) => {
@@ -17,18 +17,23 @@ const ProductDetails = ({ route }) => {
   const [loading, setLoading] = useState(true);
   const [reviews, setReviews] = useState([]);
   const [comment, setComment] = useState("");
-  const [userId, setUserId] = useState(null); // User ID state
+  const [userId, setUserId] = useState(null);
   const [rating, setRating] = useState(5);
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // Track login status
+  const [cartItems, setCartItems] = useState([]);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [quantity, setQuantity] = useState(1);
+  const [store, setStore] = useState(null);
   const navigation = useNavigation();
+  const { user } = useContext(MyUserContext);
   const { productId } = route.params;
 
-  // Load product details
   const loadProductDetails = async () => {
     try {
       const res = await APIs.get(endpoints["product-details"](productId));
       setProduct(res.data);
       setReviews(res.data.reviews || []);
+      const storeRes = await APIs.get(endpoints["stores"] + (res.data.store))
+      setStore(storeRes.data);
     } catch (error) {
       console.error("Error loading product details:", error);
       Alert.alert("Lỗi", "Không thể tải thông tin sản phẩm. Vui lòng thử lại!");
@@ -37,7 +42,6 @@ const ProductDetails = ({ route }) => {
     }
   };
 
-  // Load user ID from AsyncStorage
   const loadUserId = async () => {
     try {
       const storedUserId = await AsyncStorage.getItem("user_id");
@@ -59,16 +63,122 @@ const ProductDetails = ({ route }) => {
     loadProductDetails();
   }, [productId]);
 
-  // Handle buy now action
-  const handleBuyNow = () => {
+  const handleBuyNow = async () => {
     if (!isLoggedIn) {
       Alert.alert("Thông báo","Bạn cần đăng nhập để sử dụng tính năng này");
       return;
     }
-    Alert.alert("Mua hàng", `Bạn đã chọn mua ${product?.name}!`);
+        const totalPrice = product.price * quantity;
+        const form = new FormData();
+        form.append('user', user.id.toString());
+        form.append('total_price', totalPrice);
+        form.append('payment_method', 'money');
+        form.append('status', 'pending');
+  
+        try {
+          const orderResponse = await APIs.post(endpoints['order'], form, {
+            headers: { 'Content-Type': 'multipart/form-data' }
+          });
+  
+          if (orderResponse && orderResponse.data.id) {
+            const orderId = orderResponse.data.id;
+            const orderItemsForm = new FormData();
+
+            orderItemsForm.append('order', orderId);
+            orderItemsForm.append('product', productId);
+            orderItemsForm.append('quantity', quantity);
+            orderItemsForm.append('price', parseFloat(product.price).toFixed(2));
+            
+            await APIs.post(endpoints["order-item"], orderItemsForm, {
+              headers: { 'Content-Type': 'multipart/form-data' }
+            });
+  
+            navigation.navigate("Bill",{ orderId : orderId });
+          } else {
+            Alert.alert("Lỗi", "Không thể tạo đơn hàng!");
+          }
+        } catch (error) {
+          console.error("Error creating order:", error);
+          Alert.alert("Lỗi", "Không thể tạo đơn hàng!");
+        }
   };
 
-  // Post a review
+  const handleAddToCart = async () => {
+    if (!isLoggedIn) {
+      Alert.alert("Thông báo", "Bạn cần đăng nhập để thực hiện hành động này");
+      return;
+    }
+  
+    try {
+      const res = await APIs.get(endpoints["product-details"](productId));
+      const newItem = {
+        id: res.data.id,
+        name: res.data.name,
+        price: res.data.price,
+        quantity: quantity,
+        image: res.data.image,
+      };
+  
+      const storedUserId = await AsyncStorage.getItem("user_id");
+      const storedCart = await AsyncStorage.getItem(`shoppingCart_${storedUserId}`);
+      const cart = storedCart ? JSON.parse(storedCart) : [];
+  
+      const existingItemIndex = cart.findIndex((item) => item.id === newItem.id);
+      if (existingItemIndex !== -1) {
+        cart[existingItemIndex].quantity += quantity;
+      } else {
+        cart.push(newItem);
+      }
+  
+      await AsyncStorage.setItem(`shoppingCart_${storedUserId}`, JSON.stringify(cart));
+      
+      setCartItems(cart);
+      Alert.alert("Giỏ hàng", `Đã thêm ${newItem.name} vào giỏ hàng!`);
+    } catch (error) {
+      console.error("Error adding to cart:", error);
+      Alert.alert("Lỗi", "Không thể thêm sản phẩm vào giỏ hàng. Vui lòng thử lại!");
+    }
+  };
+
+  const handleCompareProduct = async () => {
+    try {
+      let currentPage = 1;
+      let allProducts = [];
+      let hasMore = true;
+  
+      while (hasMore) {
+        const response = await APIs.get(endpoints["products"], {
+          params: {
+            page: currentPage, // Gửi tham số trang
+          },
+        });
+  
+        if (response.data && Array.isArray(response.data.results)) {
+          allProducts = [...allProducts, ...response.data.results];
+  
+          hasMore = response.data.next !== null;
+          currentPage += 1;
+        } else {
+          hasMore = false;
+        }
+      }
+  
+      const filteredProducts = allProducts.filter(
+        (item) => item.name === product.name && item.id !== product.id
+      );
+  
+      if (filteredProducts.length === 0) {
+        Alert.alert("Thông báo", "Không tìm thấy sản phẩm cùng tên từ các cửa hàng khác!");
+      } else {
+        navigation.navigate("ProductComparison", { products: filteredProducts, product: product });
+      }
+    } catch (error) {
+      console.error("Error comparing products:", error);
+      Alert.alert("Lỗi", "Không thể tải sản phẩm so sánh. Vui lòng thử lại!");
+    }
+  };
+  
+  
   const postReview = async () => {
     if (!isLoggedIn) {
       Alert.alert("", "Vui lòng đăng nhậpnhập!");
@@ -89,9 +199,9 @@ const ProductDetails = ({ route }) => {
 
       await APIs.post(endpoints["reviews"], payload);
       Alert.alert("Thành công", "Bình luận của bạn đã được gửi!");
-      setComment(""); // Clear comment input after submission
+      setComment("");
       setRating(5);
-      loadProductDetails(); // Reload product details to update reviews
+      loadProductDetails();
     } catch (error) {
       console.error("Error posting review:", error);
       Alert.alert("Lỗi", "Không thể gửi bình luận. Vui lòng thử lại!");
@@ -150,6 +260,47 @@ const ProductDetails = ({ route }) => {
             </Text>
           </View>
 
+          {store && (
+            <View style={ProductDetailStyles.storeContainer}>
+              <Text style={ProductDetailStyles.storeHeader}>Thông tin cửa hàng</Text>
+              <Image
+                source={{ uri: store.image }}
+                style={ProductDetailStyles.storeImage}
+                resizeMode="cover"
+              />
+              <Text style={ProductDetailStyles.storeName}>Tên: {store.name}</Text>
+              <Text style={ProductDetailStyles.storeDescription}>
+                Mô tả: {store.description || "Đang cập nhật."}
+              </Text>
+              <Text style={ProductDetailStyles.storeRating}>
+                Đánh giá: {store.rating || "Chưa có đánh giá"}★
+              </Text>
+            </View>
+          )}
+
+          <TouchableOpacity
+            style={ProductDetailStyles.compareButton}
+            onPress={handleCompareProduct}
+          >
+            <Text style={ProductDetailStyles.compareButtonText}>So sánh sản phẩm</Text>
+          </TouchableOpacity>
+
+          <View style={ProductDetailStyles.quantityContainer}>
+            <TouchableOpacity
+              style={ProductDetailStyles.quantityButton}
+              onPress={() => setQuantity((prev) => Math.max(prev - 1, 1))} // Không cho giảm dưới 1
+            >
+              <Text style={ProductDetailStyles.quantityButtonText}>-</Text>
+            </TouchableOpacity>
+            <Text style={ProductDetailStyles.quantityText}>{quantity}</Text>
+            <TouchableOpacity
+              style={ProductDetailStyles.quantityButton}
+              onPress={() => setQuantity((prev) => prev + 1)}
+            >
+              <Text style={ProductDetailStyles.quantityButtonText}>+</Text>
+            </TouchableOpacity>
+          </View>
+
           {/* Button for buying product */}
           <TouchableOpacity
             style={ProductDetailStyles.buyButton}
@@ -157,6 +308,14 @@ const ProductDetails = ({ route }) => {
           >
             <Text style={ProductDetailStyles.buyButtonText}>
               Mua ngay
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={ProductDetailStyles.addToCartButton}
+            onPress={handleAddToCart}
+          >
+            <Text style={ProductDetailStyles.addToCartButtonText}>
+              Thêm vào giỏ hàng
             </Text>
           </TouchableOpacity>
 
