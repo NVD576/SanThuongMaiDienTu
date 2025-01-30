@@ -43,8 +43,8 @@ const ShoppingCart = () => {
   const handleRemoveItem = async (itemId) => {
     try {
       const updatedCart = cartItems.filter((item) => item.id !== itemId);
-      setCartItems(updatedCart); // Cập nhật hiển thị
-      await AsyncStorage.setItem(`shoppingCart_${userId}`, JSON.stringify(updatedCart)); // Lưu lại AsyncStorage
+      setCartItems(updatedCart); 
+      await AsyncStorage.setItem(`shoppingCart_${userId}`, JSON.stringify(updatedCart));
     } catch (error) {
       console.error("Error removing item:", error);
       Alert.alert("Lỗi", "Không thể xóa sản phẩm. Vui lòng thử lại!");
@@ -53,7 +53,7 @@ const ShoppingCart = () => {
 
   const handleCreateBill = async () => {
     const storedCart = await AsyncStorage.getItem(`shoppingCart_${userId}`);
-    const cartItems = storedCart ? JSON.parse(storedCart) : []; // Tải lại giỏ hàng từ AsyncStorage
+    const cartItems = storedCart ? JSON.parse(storedCart) : []; 
     
     if (cartItems.length > 0) {
       const totalPrice = cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
@@ -64,7 +64,6 @@ const ShoppingCart = () => {
       form.append("status", "pending");
   
       try {
-        // Gửi yêu cầu tạo hóa đơn
         const orderResponse = await APIs.post(endpoints["order"], form, {
           headers: { "Content-Type": "multipart/form-data" },
         });
@@ -72,11 +71,11 @@ const ShoppingCart = () => {
         if (orderResponse && orderResponse.data.id) {
           const orderId = orderResponse.data.id;
   
-          // Lặp qua từng sản phẩm để tạo từng mục đơn hàng
           for (const item of cartItems) {
             const orderItemForm = new FormData();
             orderItemForm.append("order", orderId);
             orderItemForm.append("product", item.id);
+            orderItemForm.append("store", item.store);
             orderItemForm.append("quantity", item.quantity);
             orderItemForm.append("price", parseFloat(item.price).toFixed(2));
   

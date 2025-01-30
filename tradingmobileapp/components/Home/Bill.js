@@ -79,6 +79,10 @@ const Bill = ({ route }) => {
         },
       });
   
+      await APIs.patch(`${endpoints['order']}${orderId}/`, { status: "completed" });
+
+      console.log("✅ Order đã được cập nhật thành completed");
+
       console.log("✅ Phản hồi từ API:", response.data);
   
       // Xóa giỏ hàng trong AsyncStorage sau khi thanh toán thành công
