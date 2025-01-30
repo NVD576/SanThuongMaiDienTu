@@ -151,8 +151,8 @@ class ProductViewSet(viewsets.ModelViewSet):
     def get_permissions(self):
         if self.action in ['list', 'retrieve']:  # Cho phép mọi người xem sản phẩm
             return [permissions.AllowAny()]
-        elif self.action in ['create', 'hide_product']:  # Chỉ seller được phép
-            return [permissions.IsAuthenticated(), IsSeller()]
+        # elif self.action in ['create', 'hide_product']:  # Chỉ seller được phép
+        #     return [permissions.IsAuthenticated()]
         return [permissions.IsAuthenticated()]
 
     @action(methods=['post'], detail=True, url_path="hide-product", url_name="hide-product")
@@ -185,8 +185,8 @@ class OrderViewSet(viewsets.ModelViewSet):
     def get_permissions(self):
         if self.action in ['list', 'retrieve']:  # Người dùng có thể xem đơn hàng của họ
             return [permissions.IsAuthenticated()]
-        elif self.action in ['create', 'update', 'destroy']:  # Chỉ seller được chỉnh sửa
-            return [permissions.IsAuthenticated(), IsSeller()]
+        # elif self.action in ['create', 'update', 'destroy']:  # Chỉ seller được chỉnh sửa
+        #     return [permissions.IsAuthenticated(), IsSeller()]
         return [permissions.IsAuthenticated()]
 
 
