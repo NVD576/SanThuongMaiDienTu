@@ -56,7 +56,7 @@ class ProductAdmin(admin.ModelAdmin):
     readonly_fields = ["images"]
     form = ProductForm
     def images(self, obj):
-        return mark_safe("<img src='/{img_url}' alt='{alt}'/>".format(img_url=obj.image.name, alt=obj.image))
+        return mark_safe("<img src='/static/{img_url}' alt='{alt}'/>".format(img_url=obj.image.name, alt=obj.image))
 
 
 class UserAdmin(admin.ModelAdmin):

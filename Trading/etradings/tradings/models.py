@@ -100,8 +100,13 @@ class Review(models.Model):
     rating = models.PositiveSmallIntegerField(choices=RATING_CHOICES)
     comment = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
+    parent_review = models.ForeignKey('self', null=True, blank=True, on_delete=models.CASCADE, related_name='responses')
 
+    def __str__(self):
+        return f"Review for {self.product.name} by {self.user.username}"
 
+    class Meta:
+        ordering = ['created_at']  # Sắp xếp theo thời gian tạo
 
 # Order Model
 class Order(models.Model):

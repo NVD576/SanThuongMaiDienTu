@@ -2,6 +2,7 @@ from contextlib import nullcontext
 from rest_framework.decorators import api_view
 from MySQLdb.constants.CR import NULL_POINTER
 from django.shortcuts import render
+from rest_framework.exceptions import PermissionDenied
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets, permissions, generics, status
 from rest_framework.decorators import action
@@ -169,6 +170,16 @@ class ReviewViewSet(viewsets.ModelViewSet):
     queryset = Review.objects.filter().order_by('id')
     serializer_class = ReviewSerializer
     permission_classes = [permissions.AllowAny]
+
+    # def perform_create(self, serializer):
+    #
+    #     # Kiểm tra nếu người dùng chưa đăng nhập
+    #     if not self.request.user.is_authenticated:
+    #         raise PermissionDenied("You must be logged in to create a review.")
+    #
+    #     # Đảm bảo người dùng đang đăng nhập được tạo review
+    #     serializer.save(user=self.request.user)
+
 
     # def get_permissions(self):
     #     if self.action=='list':
