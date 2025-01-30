@@ -182,12 +182,12 @@ class OrderViewSet(viewsets.ModelViewSet):
     serializer_class = OrderSerializer
     permission_classes = [permissions.AllowAny]
 
-    def get_permissions(self):
-        if self.action in ['list', 'retrieve']:  # Người dùng có thể xem đơn hàng của họ
-            return [permissions.IsAuthenticated()]
-        # elif self.action in ['create', 'update', 'destroy']:  # Chỉ seller được chỉnh sửa
-        #     return [permissions.IsAuthenticated(), IsSeller()]
-        return [permissions.IsAuthenticated()]
+    # def get_permissions(self):
+    #     if self.action in ['list', 'retrieve']:  # Người dùng có thể xem đơn hàng của họ
+    #         return [permissions.IsAuthenticated()]
+    #     elif self.action in ['create', 'update', 'destroy']:  # Chỉ seller được chỉnh sửa
+    #         return [permissions.IsAuthenticated(), IsSeller()]
+    #     return [permissions.IsAuthenticated()]
 
 
 class OrderItemViewSet(viewsets.ModelViewSet):
