@@ -8,8 +8,13 @@ import styles from "../User/RegisterStyles";
 
 const Register = () => {
     const [user, setUser] = useState({
-        "username": "", "password": "", "email": "", "role": "buyer", 
-        "first_name": "", "last_name": "", "confirm": ""
+        "username": "",
+        "password": "",
+        "email": "",
+        "role": "buyer", 
+        "first_name": "",
+        "last_name": "", 
+        "confirm": ""
     });
     const [avatar, setAvatar] = useState(null);
     const [loading, setLoading] = useState(false);
