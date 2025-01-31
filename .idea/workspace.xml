@@ -4,7 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="edb1882b-57c9-4d48-900c-3edc62689eda" name="Changes" comment="a" />
+    <list default="true" id="edb1882b-57c9-4d48-900c-3edc62689eda" name="Changes" comment="a">
+      <change beforePath="$PROJECT_DIR$/tradingmobileapp/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/tradingmobileapp/App.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tradingmobileapp/components/User/UserProfile.js" beforeDir="false" afterPath="$PROJECT_DIR$/tradingmobileapp/components/User/UserProfile.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tradingmobileapp/components/User/UserProfileStyles.js" beforeDir="false" afterPath="$PROJECT_DIR$/tradingmobileapp/components/User/UserProfileStyles.js" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
