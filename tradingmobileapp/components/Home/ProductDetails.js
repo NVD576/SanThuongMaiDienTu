@@ -184,6 +184,10 @@ const ProductDetails = ({ route }) => {
   
   
   const postReview = async () => {
+    if (!isLoggedIn) {
+      Alert.alert("", "Vui lòng đăng nhậpnhập!");
+      return;
+    }
     if (!comment.trim()) {
       Alert.alert("Lỗi", "Vui lòng nhập nội dung bình luận!");
       return;

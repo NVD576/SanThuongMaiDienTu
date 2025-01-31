@@ -6,7 +6,8 @@ class UserSerializer(ModelSerializer):
 
     class Meta:
         model = User
-        fields = ['id','first_name','last_name','email','username','password','role','avatar']
+        fields = ['id','first_name','last_name','email','username','password','role','avatar','approval_status']
+        # fields ="__all__"
         # extra_kwargs = {
         #     'password':{'write_only': 'true'}
         # }
@@ -52,8 +53,8 @@ class CategorySerializer(ModelSerializer):
 
 class ReviewSerializer(ModelSerializer):
     user = serializers.PrimaryKeyRelatedField(queryset=User.objects.all())  # Cung cấp queryset cho user
-    # product = serializers.PrimaryKeyRelatedField(queryset=Product.objects.all())
-    # user = serializers.SerializerMethodField()
+    responses = serializers.SerializerMethodField()
+
     class Meta:
         model = Review
         fields = "__all__"
@@ -61,6 +62,10 @@ class ReviewSerializer(ModelSerializer):
     # def get_user(self, obj):
     #     # Trả về tên người dùng hoặc bất kỳ thuộc tính nào của đối tượng User
     #     return obj.user.username
+    def get_responses(self, obj):
+        # Trả về các phản hồi cho bình luận này nếu có
+        responses = obj.responses.all()
+        return ReviewSerializer(responses, many=True).data
 
     def to_representation(self, instance):
         """

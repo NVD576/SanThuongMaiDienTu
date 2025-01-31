@@ -56,7 +56,7 @@ class ProductAdmin(admin.ModelAdmin):
     readonly_fields = ["images"]
     form = ProductForm
     def images(self, obj):
-        return mark_safe("<img src='/{img_url}' alt='{alt}'/>".format(img_url=obj.image.name, alt=obj.image))
+        return mark_safe("<img src='/static/{img_url}' alt='{alt}'/>".format(img_url=obj.image.name, alt=obj.image))
 
 
 class UserAdmin(admin.ModelAdmin):
@@ -71,7 +71,7 @@ class UserAdmin(admin.ModelAdmin):
     list_filter = ["role"]
 
     def image(self, obj):
-        return mark_safe("<img src='/{img_url}' alt='{alt}'/>".format(img_url=obj.avatar.name, alt=obj.avatar))
+        return mark_safe("<img src='/static/{img_url}' alt='{alt}'/>".format(img_url=obj.avatar.name, alt=obj.avatar))
 
     def save_model(self, request, obj, form, change):
         # Ensure the password is hashed if it's changed or a new user is created

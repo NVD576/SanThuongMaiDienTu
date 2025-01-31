@@ -15,6 +15,8 @@ router.register('orders', views.OrderViewSet)
 router.register('orderItems', views.OrderItemViewSet)
 router.register('transactions', views.TransactionViewSet)
 router.register('chat', views.ChatViewSet)
+
+
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -26,5 +28,8 @@ urlpatterns = [
     # re_path(r'^ckeditor/', include('ckeditor_uploader.urls')),
     path('admin/',admin_site.urls),
     path('o/token/', TokenView.as_view(), name='token'),
+    path('api/register/', views.RegisterUserView.as_view(), name='register'),
+    path('manage_sellers/', views.manage_sellers, name='get-manage_sellers'),
+
 
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
