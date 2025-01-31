@@ -18,7 +18,7 @@ class User(AbstractUser):
         ('rejected', 'Rejected'),
     )
     avatar = models.ImageField(upload_to='avatars/', null=True, blank=True)
-    role = models.CharField(max_length=10, choices=ROLE_CHOICES, default='admin')
+    role = models.CharField(max_length=10, choices=ROLE_CHOICES, default='buyer')
     approval_status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='approved')
 
     def __str__(self):

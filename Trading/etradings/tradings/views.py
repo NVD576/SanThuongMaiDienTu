@@ -22,29 +22,36 @@ class IsSeller(BasePermission):
         return request.user.role == 'seller' and request.user.approval_status
 
 
-@api_view(['GET', 'POST'])
-def manage_sellers(request):
+@api_view(['GET', 'PATCH'])
+def manage_sellers(request, pk=None):
     if request.method == 'GET':
         # Lấy danh sách người bán đang chờ phê duyệt
-        pending_sellers = User.objects.filter(role='seller', approval_status='pending')
-        sellers_data = [
-            {
-                'id': seller.id,
-                'username': seller.username,
-                'email': seller.email,
-                'avatar': seller.avatar.url if seller.avatar else None,
-                'approval_status': seller.approval_status,
-            } for seller in pending_sellers
-        ]
-        return Response(sellers_data)
+        try:
+            pending_sellers = User.objects.filter(role='seller', approval_status='pending')
 
-    elif request.method == 'POST':
-        # Phê duyệt hoặc từ chối người bán
-        user_id = request.data.get('user_id')
+            if not pending_sellers:
+                return Response({"error": "Không có seller nào chờ duyệt."}, status=404)
+
+            sellers_data = [
+                {
+                    'id': seller.id,
+                    'username': seller.username,
+                    'email': seller.email,
+                    'avatar': seller.avatar.url if seller.avatar else None,
+                    'approval_status': seller.approval_status,
+                } for seller in pending_sellers
+            ]
+            return Response(sellers_data)
+
+        except Exception as e:
+            return Response({"error": str(e)}, status=500)
+
+    elif request.method == 'PATCH':
+        # Cập nhật trạng thái của seller
         status = request.data.get('status', 'rejected')  # 'approved' hoặc 'rejected'
 
         try:
-            seller = User.objects.get(id=user_id, role='seller')
+            seller = User.objects.get(id=pk, role='seller')
 
             if status == 'approved':
                 seller.approval_status = 'approved'
@@ -70,13 +77,13 @@ class RegisterUserView(APIView):
     #     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     def post(self, request, *args, **kwargs):
         data = request.data
-        role = data.get('role', 'Buyer')  # Lấy role từ request
+        role = data.get('role', 'buyer')  # Lấy role từ request
         serializer = UserSerializer(data=data)
 
         if serializer.is_valid():
             user = serializer.save()
-            if role == 'Seller':
-                user.approval_status = False  # Mặc định cần phê duyệt
+            if role == 'seller':
+                user.approval_status = 'pending'  # Mặc định cần phê duyệt
                 user.save()
                 return Response(
                     {"message": "Đăng ký thành công! Vui lòng chờ phê duyệt để đăng bán sản phẩm."},

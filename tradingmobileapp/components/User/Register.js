@@ -11,10 +11,11 @@ const Register = () => {
         "username": "",
         "password": "",
         "email": "",
-        "role": "Buyer",
+        "role": "buyer",
         "first_name": "",
         "last_name": "",
         "confirm": "",
+        "approval status": ""
     });
     const [avatar, setAvatar] = useState(null);
     const [loading, setLoading] = useState(false);
@@ -40,9 +41,11 @@ const Register = () => {
     };
 
     const validateInput = () => {
-        if (!user.username || !user.password || !user.email || !user.first_name || !user.last_name) {
+        if (!user.username || !user.password 
+            // || !user.email || !user.first_name || !user.last_name
+        ) {
             Alert.alert("Lỗi", "Vui lòng điền đầy đủ thông tin.");
-            return false;
+            return false;a
         }
         if (user.password !== user.confirm) {
             Alert.alert("Lỗi", "Mật khẩu và xác nhận mật khẩu không khớp.");
@@ -74,14 +77,20 @@ const Register = () => {
             await APIs.post(endpoints['register'], form, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
+                    'Accept': 'application/json',
                 },
             });
 
             Alert.alert("Thành công", "Đăng ký thành công. Vui lòng đăng nhập.");
             nav.navigate("Login");
         } catch (error) {
-            console.error(error);
-            Alert.alert("Lỗi", "Đã xảy ra lỗi trong quá trình đăng ký.");
+            if (error.response) {
+                console.error("Lỗi từ backend:", error.response.data);
+                Alert.alert("Lỗi", error.response.data.message || "Đăng ký thất bại.");
+            } else {
+                console.error(error);
+                Alert.alert("Lỗi", "Đã xảy ra lỗi trong quá trình đăng ký.");
+            }
         } finally {
             setLoading(false);
         }
@@ -135,8 +144,8 @@ const Register = () => {
                     onValueChange={(value) => updateUser(value, 'role')}
                     value={user.role}
                 >
-                    <RadioButton.Item label="Người dùng cá nhân" value="Buyer" />
-                    <RadioButton.Item label="Doanh nghiệp" value="Seller" />
+                    <RadioButton.Item label="Người dùng cá nhân" value="buyer" />
+                    <RadioButton.Item label="Doanh nghiệp" value= "seller" />
                 </RadioButton.Group>
 
                 <TouchableOpacity onPress={pickImage} style={Styles.margin}>

@@ -1,19 +1,30 @@
-import React, { useContext } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
-import { View, Text, Image } from "react-native";
+import { View, Text, Image, FlatList } from "react-native";
 import { Button, Card, Divider } from "react-native-paper";
 import styles from "./UserProfileStyles";
-import { BASE_URL } from "../../configs/APIs"
+import { BASE_URL } from "../../configs/APIs";
 import { MyDispatchContext, MyUserContext } from "../../configs/UserContexts";
+// import {
+//   Text,
+//   View,
+//   ScrollView,
+//   ActivityIndicator,
 
+//   Image,
+//   TouchableOpacity,
+// } from "react-native";
 
 const UserProfile = () => {
   const { user } = useContext(MyUserContext);
   const dispatch = useContext(MyDispatchContext);
   const nav = useNavigation();
 
-  console.log(BASE_URL)
+  console.log(BASE_URL);
+
+  const [pendingSellers, setPendingSellers] = useState([]);
+  const [showPendingSellers, setShowPendingSellers] = useState(false);
 
   const logout = async () => {
     await AsyncStorage.removeItem("user_id");
@@ -21,6 +32,71 @@ const UserProfile = () => {
     dispatch({ type: "logout" });
     nav.navigate("Home");
   };
+
+  // Lấy danh sách seller có approval_status = "pending"
+  const fetchPendingSellers = async () => {
+    try {
+      const token = await AsyncStorage.getItem("token"); // Lấy token từ AsyncStorage
+      if (!token) {
+        console.error("Không tìm thấy token, vui lòng đăng nhập lại.");
+        return;
+      }
+
+      const response = await fetch(`${BASE_URL}/manage_sellers/`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`, // Thêm token vào header
+        },
+      });
+
+      const data = await response.json();
+      if (response.ok) {
+        setPendingSellers(data);
+      } else {
+        console.log("Lỗi khi lấy danh sách seller:", data);
+      }
+    } catch (error) {
+      console.error("Lỗi kết nối:", error);
+    }
+  };
+
+  const approveSeller = async (sellerId) => {
+    try {
+      const token = await AsyncStorage.getItem("token");
+      if (!token) {
+        console.error("Không tìm thấy token, vui lòng đăng nhập lại.");
+        return;
+      }
+
+      const response = await fetch(`${BASE_URL}/manage_sellers/${sellerId}/`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ status: "approved" }),
+      });
+
+      if (response.ok) {
+        setPendingSellers((prevSellers) =>
+          prevSellers.filter((seller) => seller.id !== sellerId)
+        );
+        console.log(`Seller ${sellerId} đã được duyệt.`);
+      } else {
+        const errorData = await response.json();
+        console.error("Lỗi khi duyệt seller:", errorData);
+      }
+    } catch (error) {
+      console.error("Lỗi kết nối:", error);
+    }
+  };
+
+  useEffect(() => {
+    if (user?.role === "employee") {
+      fetchPendingSellers();
+    }
+  }, [user]);
 
   return (
     <View style={styles.container}>
@@ -65,6 +141,44 @@ const UserProfile = () => {
           </View>
         </Card.Content>
       </Card>
+
+      {user?.role === "employee" && (
+        <Button
+          mode="contained"
+          onPress={() => setShowPendingSellers(!showPendingSellers)}
+          style={styles.pendingSellersButton}
+        >
+          {showPendingSellers
+            ? "Ẩn danh sách chờ duyệt"
+            : "Xem seller chờ duyệt"}
+        </Button>
+      )}
+
+      {showPendingSellers && (
+        <Card style={styles.card}>
+          <Card.Content>
+            <Text style={styles.sectionTitle}>Danh sách seller chờ duyệt</Text>
+            <Divider style={styles.divider} />
+            <FlatList
+              data={pendingSellers}
+              keyExtractor={(item) => item.id.toString()}
+              renderItem={({ item }) => (
+                <View style={styles.detailRow}>
+                  <Text style={styles.label}>{item.username} ({item.approval_status})
+                  </Text>
+                  <Button
+                    style={styles.value}
+                    mode="contained"
+                    onPress={() => approveSeller(item.id)}
+                  >
+                    Xác nhận
+                  </Button>
+                </View>
+              )}
+            />
+          </Card.Content>
+        </Card>
+      )}
 
       <Button mode="outlined" onPress={logout} style={styles.logoutButton}>
         Đăng xuất
