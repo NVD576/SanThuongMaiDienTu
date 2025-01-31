@@ -4,65 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="edb1882b-57c9-4d48-900c-3edc62689eda" name="Changes" comment="a">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Trading/etradings/tradings/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/Trading/etradings/tradings/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Trading/etradings/tradings/serializers.py" beforeDir="false" afterPath="$PROJECT_DIR$/Trading/etradings/tradings/serializers.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Trading/etradings/tradings/static/avatars/1000000033.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Trading/etradings/tradings/static/avatars/220d220bb4fe9189281b91b37e1e36f2.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Trading/etradings/tradings/static/avatars/33.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Trading/etradings/tradings/static/avatars/89341c0462a28dbe2c755ae593e4c96c.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Trading/etradings/tradings/static/avatars/Screenshot_2024-11-23_110548.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Trading/etradings/tradings/static/avatars/Screenshot_2024-11-23_110548_uCmfJn7.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Trading/etradings/tradings/static/avatars/Screenshot_2024-11-28_000249.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Trading/etradings/tradings/static/avatars/Screenshot_2024-11-28_000249_ZUxplhO.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Trading/etradings/tradings/static/avatars/Screenshot_2025-01-11_222035.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Trading/etradings/tradings/static/products/2025/01/25/Screenshot_2024-11-23_094109.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Trading/etradings/tradings/static/products/2025/01/26/220d220bb4fe9189281b91b37e1e36f2.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Trading/etradings/tradings/static/products/2025/01/26/220d220bb4fe9189281b91b37e1e36f2_EgYfYR7.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Trading/etradings/tradings/static/products/2025/01/26/345325375_614164800773055_1752320221137727736_n.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Trading/etradings/tradings/static/products/2025/01/26/Screenshot_2024-12-04_105250.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Trading/etradings/tradings/static/products/2025/01/27/1.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Trading/etradings/tradings/static/products/2025/01/27/2.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Trading/etradings/tradings/static/products/2025/01/27/4.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Trading/etradings/tradings/static/products/2025/01/27/4_aKleInR.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Trading/etradings/tradings/static/products/2025/01/27/6.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Trading/etradings/tradings/static/products/2025/01/27/Chuong.ico" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Trading/etradings/tradings/static/products/2025/01/27/a.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Trading/etradings/tradings/static/products/2025/01/27/co-nhung-5-1233.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Trading/etradings/tradings/static/products/2025/01/27/âcc.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Trading/etradings/tradings/static/products/2025/01/28/3.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Trading/etradings/tradings/static/products/2025/01/28/345325375_614164800773055_1752320221137727736_n.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Trading/etradings/tradings/static/products/2025/01/28/387458342_369685298790747_1001182479962027991_n.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Trading/etradings/tradings/static/products/2025/01/28/4.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Trading/etradings/tradings/static/products/2025/01/28/4_sqFXSO9.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Trading/etradings/tradings/static/products/2025/01/28/89341c0462a28dbe2c755ae593e4c96c.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Trading/etradings/tradings/static/products/2025/01/28/caicuoihk12024.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Trading/etradings/tradings/static/products/2025/01/28/download.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Trading/etradings/tradings/static/products/2025/01/29/387458342_369685298790747_1001182479962027991_n.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Trading/etradings/tradings/static/stores/2025/01/19/89341c0462a28dbe2c755ae593e4c96c.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Trading/etradings/tradings/static/stores/2025/01/21/325423255_1240684773460283_2162629821836190146_n.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Trading/etradings/tradings/static/stores/2025/01/21/89341c0462a28dbe2c755ae593e4c96c.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Trading/etradings/tradings/static/stores/2025/01/21/89341c0462a28dbe2c755ae593e4c96c_ZRB77pI.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Trading/etradings/tradings/static/stores/2025/01/22/345325375_614164800773055_1752320221137727736_n.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Trading/etradings/tradings/static/stores/2025/01/22/345325375_614164800773055_1752320221137727736_n_BbAyR5G.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Trading/etradings/tradings/static/stores/2025/01/23/220d220bb4fe9189281b91b37e1e36f2.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Trading/etradings/tradings/static/stores/2025/01/23/325423255_1240684773460283_2162629821836190146_n.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Trading/etradings/tradings/static/stores/2025/01/24/Screenshot_2024-12-13_223457.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Trading/etradings/tradings/static/stores/2025/01/25/89341c0462a28dbe2c755ae593e4c96c.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Trading/etradings/tradings/static/stores/2025/01/25/Screenshot_2024-11-23_110548.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Trading/etradings/tradings/static/stores/2025/01/27/220d220bb4fe9189281b91b37e1e36f2.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Trading/etradings/tradings/static/stores/2025/01/27/345325375_614164800773055_1752320221137727736_n.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Trading/etradings/tradings/static/stores/2025/01/27/359769858_1435533230577225_8958654889379783905_n.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Trading/etradings/tradings/static/stores/2025/01/30/0106_hinh-nen-4k-may-tinh4.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Trading/etradings/tradings/static/stores/2025/01/30/345325375_614164800773055_1752320221137727736_n.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Trading/etradings/tradings/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/Trading/etradings/tradings/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Trading/etradings/tradings/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/Trading/etradings/tradings/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tradingmobileapp/components/User/Login.js" beforeDir="false" afterPath="$PROJECT_DIR$/tradingmobileapp/components/User/Login.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tradingmobileapp/components/User/Register.js" beforeDir="false" afterPath="$PROJECT_DIR$/tradingmobileapp/components/User/Register.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tradingmobileapp/components/User/UserProfile.js" beforeDir="false" afterPath="$PROJECT_DIR$/tradingmobileapp/components/User/UserProfile.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tradingmobileapp/configs/APIs.js" beforeDir="false" afterPath="$PROJECT_DIR$/tradingmobileapp/configs/APIs.js" afterDir="false" />
-    </list>
+    <list default="true" id="edb1882b-57c9-4d48-900c-3edc62689eda" name="Changes" comment="a" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -336,7 +278,31 @@
       <option name="project" value="LOCAL" />
       <updated>1738289357034</updated>
     </task>
-    <option name="localTasksCounter" value="24" />
+    <task id="LOCAL-00024" summary="a">
+      <option name="closed" value="true" />
+      <created>1738298682129</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1738298682129</updated>
+    </task>
+    <task id="LOCAL-00025" summary="a">
+      <option name="closed" value="true" />
+      <created>1738326421099</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1738326421099</updated>
+    </task>
+    <task id="LOCAL-00026" summary="a">
+      <option name="closed" value="true" />
+      <created>1738326437724</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1738326437724</updated>
+    </task>
+    <option name="localTasksCounter" value="27" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
