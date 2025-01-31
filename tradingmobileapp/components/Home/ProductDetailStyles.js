@@ -258,6 +258,41 @@ const ProductDetailStyles = StyleSheet.create({
     textAlign: "center",
     fontWeight: "bold",
   },
+  reviewItem: {
+    padding: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: '#ccc',
+    marginBottom: 10,
+  },
+  reviewUser: {
+    fontWeight: 'bold',
+  },
+  reviewComment: {
+    marginVertical: 5,
+  },
+  repliesContainer: {
+    marginLeft: 20, // Thụt vào bình luận trả lời
+  },
+  replyItem: {
+    padding: 5,
+    marginLeft: 20,
+    borderBottomWidth: 1,
+    borderBottomColor: '#e0e0e0',
+    marginBottom: 5,
+  },
+  replyUser: {
+    fontWeight: 'bold',
+  },
+  replyComment: {
+    marginVertical: 5,
+  },
+  replyButton: {
+    marginTop: 5,
+    padding: 5,
+    backgroundColor: '#f1f1f1',
+    borderRadius: 5,
+  },
+  
 });
 
 export default ProductDetailStyles;

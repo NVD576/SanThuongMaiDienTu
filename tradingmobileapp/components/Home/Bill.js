@@ -83,6 +83,19 @@ const Bill = ({ route }) => {
 
       console.log("✅ Order đã được cập nhật thành completed");
 
+      // for (const item of orderItems) {
+      //   const updateStockForm = new FormData();
+      //   updateStockForm.append("product_id", item.product); // ID của sản phẩm
+      //   updateStockForm.append("quantity", item.quantity); // Số lượng cần giảm
+  
+      //   await APIs.post(endpoints["update-stock"], updateStockForm, {
+      //     headers: { "Content-Type": "multipart/form-data" },
+      //   });
+  
+      //   console.log(`✅ Số lượng tồn kho của sản phẩm ${item.product} đã được giảm.`);
+      // }
+
+
       console.log("✅ Phản hồi từ API:", response.data);
   
       // Xóa giỏ hàng trong AsyncStorage sau khi thanh toán thành công

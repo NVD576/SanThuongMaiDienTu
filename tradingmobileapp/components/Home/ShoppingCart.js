@@ -83,6 +83,9 @@ const ShoppingCart = () => {
             });
           }
   
+          
+
+
           // Chuyển đến trang hóa đơn
           navigation.navigate("Bill", { orderId: orderId });
         } else {

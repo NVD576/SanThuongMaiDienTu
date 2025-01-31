@@ -13,7 +13,7 @@ from rest_framework.views import APIView
 import django_filters
 from rest_framework.permissions import BasePermission
 
-from .models import Store, User, Product, Category, Review, Transaction, Order, Chat, OrderItem
+from .models import *
 from .serializers import StoreSerializer, UserSerializer, ProductSerializer, CategorySerializer, ReviewSerializer, TransactionSerializer, OrderSerializer, OrderItemSerializer, ChatSerializer
 
 
