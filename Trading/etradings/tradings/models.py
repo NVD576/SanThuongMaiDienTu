@@ -18,7 +18,7 @@ class User(AbstractUser):
         ('rejected', 'Rejected'),
     )
     avatar = models.ImageField(upload_to='avatars/', null=True, blank=True)
-    role = models.CharField(max_length=10, choices=ROLE_CHOICES, default='buyer')
+    role = models.CharField(max_length=10, choices=ROLE_CHOICES, default='admin')
     approval_status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='approved')
 
     def __str__(self):
@@ -134,7 +134,6 @@ class Order(models.Model):
 class OrderItem(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='order_items')
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='order_items')
-    store = models.ForeignKey(Store, on_delete=models.CASCADE, related_name='order_items')  # Thêm liên kết đến cửa hàng
     quantity = models.PositiveIntegerField()
     price = models.DecimalField(max_digits=10, decimal_places=2)
 

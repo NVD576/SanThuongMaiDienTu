@@ -88,7 +88,6 @@ const ProductDetails = ({ route }) => {
 
             orderItemsForm.append('order', orderId);
             orderItemsForm.append('product', productId);
-            orderItemsForm.append('store', store.id);
             orderItemsForm.append('quantity', quantity);
             orderItemsForm.append('price', parseFloat(product.price).toFixed(2));
             
