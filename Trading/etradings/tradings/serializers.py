@@ -8,12 +8,17 @@ class UserSerializer(ModelSerializer):
         model = User
         fields = ['id','first_name','last_name','email','username','password','role','avatar','approval_status']
         # fields ="__all__"
-        # extra_kwargs = {
-        #     'password':{'write_only': 'true'}
-        # }
+        extra_kwargs = {
+            'password':{'write_only': 'True'}
+        }
 
 
     def create(self, validated_data):
+        role = validated_data.get('role', 'buyer').lower()
+
+        # Nếu user đăng ký là seller thì đặt approval_status thành 'pending'
+        if role == 'seller':
+            validated_data['approval_status'] = 'pending'
         user = User(**validated_data)
         user.set_password(validated_data['password'])
         user.save()

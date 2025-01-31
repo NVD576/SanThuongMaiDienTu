@@ -30,6 +30,8 @@ urlpatterns = [
     path('o/token/', TokenView.as_view(), name='token'),
     path('api/register/', views.RegisterUserView.as_view(), name='register'),
     path('manage_sellers/', views.manage_sellers, name='get-manage_sellers'),
+    path('manage_sellers/<int:pk>/', views.manage_sellers, name='manage_seller'),
+
 
 
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
