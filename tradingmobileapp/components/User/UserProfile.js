@@ -7,13 +7,10 @@ import styles from "./UserProfileStyles";
 import { BASE_URL } from "../../configs/APIs";
 import { MyDispatchContext, MyUserContext } from "../../configs/UserContexts";
 
-
 const UserProfile = () => {
   const { user } = useContext(MyUserContext);
   const dispatch = useContext(MyDispatchContext);
   const nav = useNavigation();
-
-  console.log(BASE_URL);
 
   const [pendingSellers, setPendingSellers] = useState([]);
   const [showPendingSellers, setShowPendingSellers] = useState(false);
@@ -135,14 +132,24 @@ const UserProfile = () => {
       </Card>
 
       {user?.role === "seller" && (
-        <Button
-          mode="contained"
-          onPress={() => nav.navigate("CreateStore")} // Chuyển đến màn hình tạo cửa hàng
-          style={styles.createStoreButton}
-        >
-          Tạo cửa hàng
-        </Button>
+        <>
+          <Button
+            mode="contained"
+            onPress={() => nav.navigate("CreateStore")} // Chuyển đến màn hình tạo cửa hàng
+            style={styles.createStoreButton}
+          >
+            Tạo cửa hàng
+          </Button>
+          <Button
+            mode="contained"
+            onPress={() => nav.navigate("AddProduct")} // Chuyển đến màn hình thêm sản phẩm
+            style={styles.addProductButton}
+          >
+            Thêm sản phẩm
+          </Button>
+        </>
       )}
+
       {user?.role === "employee" && (
         <Button
           mode="contained"

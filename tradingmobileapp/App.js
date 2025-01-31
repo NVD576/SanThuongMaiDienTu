@@ -18,6 +18,7 @@ import ShoppingCart from './components/Home/ShoppingCart';
 import Bill from './components/Home/Bill';
 import ProductComparison from './components/Home/ProductComparison ';
 import CreateStore from "./components/Home/CreateStore";
+import AddProduct from "./components/Home/AddProduct"; 
 
 const Stack = createStackNavigator();
 
@@ -55,7 +56,7 @@ export default function App() {
               <Stack.Screen name="Bill" component={Bill}/>
               <Stack.Screen name="ProductComparison" component={ProductComparison}/>
               <Stack.Screen name="CreateStore" component={CreateStore} />
-
+              <Stack.Screen name="AddProduct" component={AddProduct} />
             </Stack.Navigator>
           </View>
         </MyDispatchContext.Provider>
