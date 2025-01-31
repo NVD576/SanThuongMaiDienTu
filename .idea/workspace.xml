@@ -4,7 +4,36 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="edb1882b-57c9-4d48-900c-3edc62689eda" name="Changes" comment="a" />
+    <list default="true" id="edb1882b-57c9-4d48-900c-3edc62689eda" name="Changes" comment="a">
+      <change afterPath="$PROJECT_DIR$/Trading/etradings/tradings/migrations/0016_alter_order_payment_method.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Trading/etradings/tradings/migrations/0017_alter_order_total_price.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Trading/etradings/tradings/migrations/0018_alter_order_total_price.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Trading/etradings/tradings/migrations/0019_order_store.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Trading/etradings/tradings/migrations/0020_remove_order_store.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Trading/etradings/tradings/static/avatars/89341c0462a28dbe2c755ae593e4c96c.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Trading/etradings/tradings/static/products/2025/01/28/3.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Trading/etradings/tradings/static/products/2025/01/28/345325375_614164800773055_1752320221137727736_n.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Trading/etradings/tradings/static/products/2025/01/28/387458342_369685298790747_1001182479962027991_n.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Trading/etradings/tradings/static/products/2025/01/28/4_sqFXSO9.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Trading/etradings/tradings/static/products/2025/01/28/89341c0462a28dbe2c755ae593e4c96c.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Trading/etradings/tradings/static/products/2025/01/28/caicuoihk12024.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Trading/etradings/tradings/static/products/2025/01/28/download.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Trading/etradings/tradings/static/products/2025/01/29/387458342_369685298790747_1001182479962027991_n.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Trading/etradings/tradings/static/products/2025/01/30/220d220bb4fe9189281b91b37e1e36f2.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Trading/etradings/tradings/static/products/2025/01/30/359769858_1435533230577225_8958654889379783905_n.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Trading/etradings/tradings/static/products/2025/01/30/AC.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Trading/etradings/tradings/static/products/2025/01/30/asdas.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Trading/etradings/tradings/static/products/2025/01/30/chu6.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Trading/etradings/tradings/static/stores/2025/01/30/0106_hinh-nen-4k-may-tinh4.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Trading/etradings/tradings/static/stores/2025/01/30/345325375_614164800773055_1752320221137727736_n.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Trading/etradings/etradings/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/Trading/etradings/etradings/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Trading/etradings/tradings/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/Trading/etradings/tradings/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Trading/etradings/tradings/serializers.py" beforeDir="false" afterPath="$PROJECT_DIR$/Trading/etradings/tradings/serializers.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tradingmobileapp/components/Home/ProductDetails.js" beforeDir="false" afterPath="$PROJECT_DIR$/tradingmobileapp/components/Home/ProductDetails.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tradingmobileapp/components/Home/ShoppingCart.js" beforeDir="false" afterPath="$PROJECT_DIR$/tradingmobileapp/components/Home/ShoppingCart.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tradingmobileapp/components/User/Login.js" beforeDir="false" afterPath="$PROJECT_DIR$/tradingmobileapp/components/User/Login.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tradingmobileapp/configs/APIs.js" beforeDir="false" afterPath="$PROJECT_DIR$/tradingmobileapp/configs/APIs.js" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -33,23 +62,23 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Python.main.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;D:/NVD/LTHD/SanThuongMaiDienTu&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Python.main.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "Merging main",
+    "ignore.virus.scanning.warn.message": "true",
+    "last_opened_file_path": "D:/NVD/LTHD/SanThuongMaiDienTu",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RunManager">
     <configuration name="main" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
       <module name="SanThuongMaiDienTu" />
@@ -270,7 +299,15 @@
       <option name="project" value="LOCAL" />
       <updated>1738257771472</updated>
     </task>
-    <option name="localTasksCounter" value="23" />
+    <task id="LOCAL-00023" summary="a">
+      <option name="closed" value="true" />
+      <created>1738289357034</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1738289357034</updated>
+    </task>
+    <option name="localTasksCounter" value="24" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
