@@ -4,16 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="edb1882b-57c9-4d48-900c-3edc62689eda" name="Changes" comment="a">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Trading/etradings/tradings/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/Trading/etradings/tradings/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tradingmobileapp/components/Home/Bill.js" beforeDir="false" afterPath="$PROJECT_DIR$/tradingmobileapp/components/Home/Bill.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tradingmobileapp/components/Home/ProductDetailStyles.js" beforeDir="false" afterPath="$PROJECT_DIR$/tradingmobileapp/components/Home/ProductDetailStyles.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tradingmobileapp/components/Home/ProductDetails.js" beforeDir="false" afterPath="$PROJECT_DIR$/tradingmobileapp/components/Home/ProductDetails.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tradingmobileapp/components/Home/ShoppingCart.js" beforeDir="false" afterPath="$PROJECT_DIR$/tradingmobileapp/components/Home/ShoppingCart.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tradingmobileapp/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/tradingmobileapp/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tradingmobileapp/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/tradingmobileapp/package.json" afterDir="false" />
-    </list>
+    <list default="true" id="edb1882b-57c9-4d48-900c-3edc62689eda" name="Changes" comment="a" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -295,7 +286,23 @@
       <option name="project" value="LOCAL" />
       <updated>1738298682129</updated>
     </task>
-    <option name="localTasksCounter" value="25" />
+    <task id="LOCAL-00025" summary="a">
+      <option name="closed" value="true" />
+      <created>1738326421099</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1738326421099</updated>
+    </task>
+    <task id="LOCAL-00026" summary="a">
+      <option name="closed" value="true" />
+      <created>1738326437724</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1738326437724</updated>
+    </task>
+    <option name="localTasksCounter" value="27" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
