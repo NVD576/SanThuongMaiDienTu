@@ -81,8 +81,7 @@ class ProductSerializer(ModelSerializer):
     reviews = ReviewSerializer(many=True, read_only=True)
     class Meta:
         model = Product
-        fields = ["id","store","name","description","price","category","stock_quantity","rating","image", 'reviews']
-
+        fields = "__all__"
     # def get_image(self, obj):
     #     if obj.image:
     #         # Trả về đường dẫn đầy đủ với STATIC_URL

@@ -75,7 +75,6 @@ const ShoppingCart = () => {
             const orderItemForm = new FormData();
             orderItemForm.append("order", orderId);
             orderItemForm.append("product", item.id);
-            orderItemForm.append("store", item.store);
             orderItemForm.append("quantity", item.quantity);
             orderItemForm.append("price", parseFloat(item.price).toFixed(2));
   
