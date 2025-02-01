@@ -3,6 +3,8 @@ from . import views
 from . admin import admin_site
 from rest_framework.routers import DefaultRouter
 from oauth2_provider.views import TokenView
+from .views import SalesStatisticsView
+
 
 
 router = DefaultRouter()
@@ -31,7 +33,5 @@ urlpatterns = [
     path('api/register/', views.RegisterUserView.as_view(), name='register'),
     path('manage_sellers/', views.manage_sellers, name='get-manage_sellers'),
     path('manage_sellers/<int:pk>/', views.manage_sellers, name='manage_seller'),
-
-
-
+    path('sales-statistics/', SalesStatisticsView.as_view(), name='sales-statistics'),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

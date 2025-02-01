@@ -15,10 +15,15 @@ export const endpoints = {
     'order':'/orders/',
     'order-item':'/orderItems/',
     'transactions':'/transactions/',
+    'sales-statistics':'/sales-statistics/',
 }
 
 export const authApis = async () => {
     const token = await AsyncStorage.getItem('token');
+    if (!token) {
+        console.error("Token không tồn tại");
+        throw new Error("Token không tồn tại");
+      }
     return axios.create({
         baseURL: BASE_URL,
         headers:{

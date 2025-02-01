@@ -27,8 +27,8 @@ const Login = ({ navigation }) => {
             console.log("Trying to login...");
     
             const res = await APIs.post(endpoints['login'], {
-                client_id: "G7tQg6CuWKjqoQAdO3GRAkwk22HFED1j8mf650qz",
-                client_secret: "OIcCIMFTIPs53bopWumendWYxHlcpKpXbLDM2gmTIUF3G1NDxHej1UN0OBAMlMi907BKOTMu9Cn4Y99sc7Fqr08ksb0HiuCfnwsIqRNt10wt4Un3qNm0FrByRES6eCqJ",
+                client_id: "AGv0RLcfMmkHQpKNoyCik6k1zY4gtPxwNVX2rL1T",
+                client_secret: "5nydZRrG70NCmAtyXhMI2jF1HU0A2BnuvlA7NNNWWRBrOhYHfugl0JQU9CoMduBZf9sXsAQLJzdOQnLoFCBfVNaSlWgsJozoV6ZTTMBjiZjlJU5mTJu7MeYbMLnU6Y05",
 
                 grant_type: "password",
                 username: user.username,
@@ -40,7 +40,7 @@ const Login = ({ navigation }) => {
             });
 
             await AsyncStorage.setItem('token', res.data.access_token);
-            
+            console.log('Token saved:', res.data.access_token);
 
             const authAPI = await authApis();
             const userRes = await authAPI.get(endpoints['current-user']);

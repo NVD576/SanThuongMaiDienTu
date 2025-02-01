@@ -1,8 +1,4 @@
-from contextlib import nullcontext
 from rest_framework.decorators import api_view
-from MySQLdb.constants.CR import NULL_POINTER
-from django.shortcuts import render
-from rest_framework.exceptions import PermissionDenied
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets, permissions, generics, status
 from rest_framework.decorators import action
@@ -10,9 +6,11 @@ from rest_framework.response import Response
 from rest_framework.status import HTTP_400_BAD_REQUEST, HTTP_200_OK
 from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.views import APIView
+from django.utils import timezone
+from rest_framework.exceptions import PermissionDenied
 import django_filters
 from rest_framework.permissions import BasePermission
-
+from django.db.models import Sum, Count, F, IntegerField, Case, When
 from .models import *
 from .serializers import StoreSerializer, UserSerializer, ProductSerializer, CategorySerializer, ReviewSerializer, TransactionSerializer, OrderSerializer, OrderItemSerializer, ChatSerializer
 
@@ -238,3 +236,108 @@ class ChatViewSet(viewsets.ModelViewSet):
     #     if self.action=='list':
     #         return [permissions.AllowAny()]
     #     return [permissions.IsAuthenticated()]
+
+class SalesStatisticsView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request, format=None):
+        now = timezone.now()
+
+        sales_month = OrderItem.objects.filter(
+            order__created_at__month=now.month,
+            order__status='completed'
+        ).aggregate(total_sales_month=Sum(F('quantity') * F('price')))
+
+        quarter = (now.month - 1) // 3 + 1
+        sales_quarter = OrderItem.objects.filter(
+            order__created_at__quarter=quarter,
+            order__status='completed'
+        ).aggregate(total_sales_quarter=Sum(F('quantity') * F('price')))
+
+        sales_year = OrderItem.objects.filter(
+            order__created_at__year=now.year,
+            order__status='completed'
+        ).aggregate(total_sales_year=Sum(F('quantity') * F('price')))
+
+        sales_month_value = sales_month.get('total_sales_month', 0) or 0
+        sales_quarter_value = sales_quarter.get('total_sales_quarter', 0) or 0
+        sales_year_value = sales_year.get('total_sales_year', 0) or 0
+
+        stores_stats = Store.objects.annotate(
+            total_sales_month=Sum(
+                Case(
+                    When(
+                        products__order_items__order__created_at__month=now.month,
+                        then=F('products__order_items__quantity') * F('products__order_items__price')
+                    ),
+                    default=0,
+                    output_field=IntegerField()
+                )
+            ),
+            total_sales_quarter=Sum(
+                Case(
+                    When(
+                        products__order_items__order__created_at__quarter=quarter,
+                        then=F('products__order_items__quantity') * F('products__order_items__price')
+                    ),
+                    default=0,
+                    output_field=IntegerField()
+                )
+            ),
+            total_sales_year=Sum(
+                Case(
+                    When(
+                        products__order_items__order__created_at__year=now.year,
+                        then=F('products__order_items__quantity') * F('products__order_items__price')
+                    ),
+                    default=0,
+                    output_field=IntegerField()
+                )
+            ),
+            total_products_sold_month=Sum(
+                Case(
+                    When(
+                        products__order_items__order__created_at__month=now.month,
+                        then=F('products__order_items__quantity')
+                    ),
+                    default=0,
+                    output_field=IntegerField()
+                )
+            ),
+            total_products_sold_quarter=Sum(
+                Case(
+                    When(
+                        products__order_items__order__created_at__quarter=quarter,
+                        then=F('products__order_items__quantity')
+                    ),
+                    default=0,
+                    output_field=IntegerField()
+                )
+            ),
+            total_products_sold_year=Sum(
+                Case(
+                    When(
+                        products__order_items__order__created_at__year=now.year,
+                        then=F('products__order_items__quantity')
+                    ),
+                    default=0,
+                    output_field=IntegerField()
+                )
+            )
+        )
+
+        return Response({
+            'sales_month': f"{sales_month_value} VND",
+            'sales_quarter': f"{sales_quarter_value} VND",
+            'sales_year': f"{sales_year_value} VND",
+            'stores_stats': list(stores_stats.values(
+                'name',
+                'total_sales_month',
+                'total_sales_quarter',
+                'total_sales_year',
+                'total_products_sold_month',
+                'total_products_sold_quarter',
+                'total_products_sold_year'
+            ))
+        })
+

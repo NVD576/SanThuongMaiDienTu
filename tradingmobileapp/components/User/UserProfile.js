@@ -180,6 +180,16 @@ const UserProfile = () => {
         </Card>
       )}
 
+      {user?.role === "admin" && (
+        <Button
+          mode="contained"
+          onPress={() => nav.navigate("SalesStatistics")}
+          style={styles.pendingSellersButton}
+        >
+          Xem Thống Kê
+        </Button>
+      )}
+
       <Button mode="outlined" onPress={logout} style={styles.logoutButton}>
         Đăng xuất
       </Button>
