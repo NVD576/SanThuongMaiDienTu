@@ -11,7 +11,7 @@ import { Button } from "react-native-paper";
 import * as ImagePicker from "expo-image-picker";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
-import { BASE_URL } from "../../configs/APIs";
+import APIs, { BASE_URL, endpoints } from "../../configs/APIs";
 import styles from "./CreateStoreStyles";
 
 const CreateStore = () => {
@@ -76,17 +76,13 @@ const CreateStore = () => {
         });
       }
 
-      const response = await fetch(`${BASE_URL}/stores/`, {
-        method: "POST",
+      const response = await APIs.post(endpoints['stores'], formData, {
         headers: {
-          "Content-Type": "multipart/form-data",
-          Authorization: `Bearer ${token}`,
+          'Content-Type': 'multipart/form-data',
         },
-        body: formData,
       });
 
       if (response.ok) {
-        const storeData = await response.json();
         Alert.alert("Thành công", "Cửa hàng đã được tạo!");
         navigation.goBack();
       } else {

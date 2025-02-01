@@ -16,8 +16,8 @@ import ShoppingCart from './components/Home/ShoppingCart';
 import Bill from './components/Home/Bill';
 import ProductComparison from './components/Home/ProductComparison ';
 import SalesStatistics from './components/User/SalesStatistics';
-// import CreateStore from "./components/Home/CreateStore";
-// import AddProduct from "./components/Home/AddProduct";
+import CreateStore from "./components/Home/CreateStore";
+import AddProduct from "./components/Home/AddProduct";
 import Statistics from "./components/User/Statistics"
 
 const Stack = createStackNavigator();
@@ -56,8 +56,8 @@ export default function App() {
               <Stack.Screen name="Bill" component={Bill}/>
               <Stack.Screen name="ProductComparison" component={ProductComparison}/>
               <Stack.Screen name="SalesStatistics" component={SalesStatistics}/>
-              {/* <Stack.Screen name="CreateStore" component={CreateStore} />
-              <Stack.Screen name="AddProduct" component={AddProduct} /> */}
+              <Stack.Screen name="CreateStore" component={CreateStore} />
+              <Stack.Screen name="AddProduct" component={AddProduct} />
               <Stack.Screen name='Statistics' component={Statistics}/>
             </Stack.Navigator>
           </View>
