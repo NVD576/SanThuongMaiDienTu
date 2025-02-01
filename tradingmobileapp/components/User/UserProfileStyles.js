@@ -58,6 +58,11 @@ const styles = StyleSheet.create({
     logoutButton: {
       marginTop: 16,
     },
+    createStoreButton: {
+      marginTop: 10,
+      backgroundColor: "#4CAF50", // Màu xanh lá
+    },
+    
   });
   
   export default styles;

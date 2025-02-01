@@ -4,12 +4,17 @@ import * as ImagePicker from 'expo-image-picker';
 import { useState } from "react";
 import APIs, { endpoints } from "../../configs/APIs";
 import { useNavigation } from "@react-navigation/native";
-import styles from "../User/RegisterStyles";
+// import styles from "../User/RegisterStyles";
 
 const Register = () => {
     const [user, setUser] = useState({
-        "username": "", "password": "", "email": "", "role": "buyer", 
-        "first_name": "", "last_name": "", "confirm": ""
+        "username": "",
+        "password": "",
+        "email": "",
+        "role": "buyer", 
+        "first_name": "",
+        "last_name": "", 
+        "confirm": ""
     });
     const [avatar, setAvatar] = useState(null);
     const [loading, setLoading] = useState(false);

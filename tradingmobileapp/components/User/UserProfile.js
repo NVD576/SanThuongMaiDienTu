@@ -6,22 +6,11 @@ import { Button, Card, Divider } from "react-native-paper";
 import styles from "./UserProfileStyles";
 import { BASE_URL } from "../../configs/APIs";
 import { MyDispatchContext, MyUserContext } from "../../configs/UserContexts";
-// import {
-//   Text,
-//   View,
-//   ScrollView,
-//   ActivityIndicator,
-
-//   Image,
-//   TouchableOpacity,
-// } from "react-native";
 
 const UserProfile = () => {
   const { user } = useContext(MyUserContext);
   const dispatch = useContext(MyDispatchContext);
   const nav = useNavigation();
-
-  console.log(BASE_URL);
 
   const [pendingSellers, setPendingSellers] = useState([]);
   const [showPendingSellers, setShowPendingSellers] = useState(false);
@@ -142,6 +131,25 @@ const UserProfile = () => {
         </Card.Content>
       </Card>
 
+      {user?.role === "seller" && (
+        <>
+          <Button
+            mode="contained"
+            onPress={() => nav.navigate("CreateStore")} // Chuyển đến màn hình tạo cửa hàng
+            style={styles.createStoreButton}
+          >
+            Tạo cửa hàng
+          </Button>
+          <Button
+            mode="contained"
+            onPress={() => nav.navigate("AddProduct")} // Chuyển đến màn hình thêm sản phẩm
+            style={styles.addProductButton}
+          >
+            Thêm sản phẩm
+          </Button>
+        </>
+      )}
+
       {user?.role === "employee" && (
         <Button
           mode="contained"
@@ -164,7 +172,8 @@ const UserProfile = () => {
               keyExtractor={(item) => item.id.toString()}
               renderItem={({ item }) => (
                 <View style={styles.detailRow}>
-                  <Text style={styles.label}>{item.username} ({item.approval_status})
+                  <Text style={styles.label}>
+                    {item.username} ({item.approval_status})
                   </Text>
                   <Button
                     style={styles.value}
