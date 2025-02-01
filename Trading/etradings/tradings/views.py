@@ -341,3 +341,173 @@ class SalesStatisticsView(APIView):
             ))
         })
 
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from django.utils import timezone
+from django.db.models import Sum, Case, When, F, IntegerField
+from .models import Store, Category
+
+class StatisticsView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, format=None):
+        user = request.user
+
+        # Kiểm tra nếu người dùng là seller
+        if user.role == 'seller':
+            # Nếu là seller, chỉ hiển thị thống kê của chính mình
+            stores_stats = Store.objects.filter(seller=user).annotate(
+                total_sales_month=Sum(
+                    Case(
+                        When(
+                            products__order_items__order__created_at__month=timezone.now().month,
+                            then=F('products__order_items__quantity') * F('products__order_items__price')
+                        ),
+                        default=0,
+                        output_field=IntegerField()
+                    )
+                ),
+                total_sales_quarter=Sum(
+                    Case(
+                        When(
+                            products__order_items__order__created_at__quarter=(timezone.now().month - 1) // 3 + 1,
+                            then=F('products__order_items__quantity') * F('products__order_items__price')
+                        ),
+                        default=0,
+                        output_field=IntegerField()
+                    )
+                ),
+                total_sales_year=Sum(
+                    Case(
+                        When(
+                            products__order_items__order__created_at__year=timezone.now().year,
+                            then=F('products__order_items__quantity') * F('products__order_items__price')
+                        ),
+                        default=0,
+                        output_field=IntegerField()
+                    )
+                )
+            )
+
+            categories_stats = Category.objects.filter(products__store__seller=user).annotate(
+                total_cates_month=Sum(
+                    Case(
+                        When(
+                            products__order_items__order__created_at__month=timezone.now().month,
+                            then=F('products__order_items__quantity') * F('products__order_items__price')
+                        ),
+                        default=0,
+                        output_field=IntegerField()
+                    )
+                ),
+                total_cates_quarter=Sum(
+                    Case(
+                        When(
+                            products__order_items__order__created_at__quarter=(timezone.now().month - 1) // 3 + 1,
+                            then=F('products__order_items__quantity') * F('products__order_items__price')
+                        ),
+                        default=0,
+                        output_field=IntegerField()
+                    )
+                ),
+                total_cates_year=Sum(
+                    Case(
+                        When(
+                            products__order_items__order__created_at__year=timezone.now().year,
+                            then=F('products__order_items__quantity') * F('products__order_items__price')
+                        ),
+                        default=0,
+                        output_field=IntegerField()
+                    )
+                )
+            ).distinct()
+
+        elif user.role == 'admin':
+            # Nếu là admin, hiển thị thống kê của tất cả người bán
+            stores_stats = Store.objects.all().annotate(
+                total_sales_month=Sum(
+                    Case(
+                        When(
+                            products__order_items__order__created_at__month=timezone.now().month,
+                            then=F('products__order_items__quantity') * F('products__order_items__price')
+                        ),
+                        default=0,
+                        output_field=IntegerField()
+                    )
+                ),
+                total_sales_quarter=Sum(
+                    Case(
+                        When(
+                            products__order_items__order__created_at__quarter=(timezone.now().month - 1) // 3 + 1,
+                            then=F('products__order_items__quantity') * F('products__order_items__price')
+                        ),
+                        default=0,
+                        output_field=IntegerField()
+                    )
+                ),
+                total_sales_year=Sum(
+                    Case(
+                        When(
+                            products__order_items__order__created_at__year=timezone.now().year,
+                            then=F('products__order_items__quantity') * F('products__order_items__price')
+                        ),
+                        default=0,
+                        output_field=IntegerField()
+                    )
+                )
+            )
+
+            categories_stats = Category.objects.all().annotate(
+                total_cates_month=Sum(
+                    Case(
+                        When(
+                            products__order_items__order__created_at__month=timezone.now().month,
+                            then=F('products__order_items__quantity') * F('products__order_items__price')
+                        ),
+                        default=0,
+                        output_field=IntegerField()
+                    )
+                ),
+                total_cates_quarter=Sum(
+                    Case(
+                        When(
+                            products__order_items__order__created_at__quarter=(timezone.now().month - 1) // 3 + 1,
+                            then=F('products__order_items__quantity') * F('products__order_items__price')
+                        ),
+                        default=0,
+                        output_field=IntegerField()
+                    )
+                ),
+                total_cates_year=Sum(
+                    Case(
+                        When(
+                            products__order_items__order__created_at__year=timezone.now().year,
+                            then=F('products__order_items__quantity') * F('products__order_items__price')
+                        ),
+                        default=0,
+                        output_field=IntegerField()
+                    )
+                )
+            ).distinct()
+
+        else:
+            return Response({"error": "Bạn không có quyền truy cập"}, status=403)
+
+        return Response({
+            'stores_stats': list(stores_stats.values(
+                'name',
+                'total_sales_month',
+                'total_sales_quarter',
+                'total_sales_year'
+            )),
+            'categories_stats': list(categories_stats.values(
+                'name',
+                'total_cates_month',
+                'total_cates_quarter',
+                'total_cates_year'
+            ))
+        })
+
+
+
