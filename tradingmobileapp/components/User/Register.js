@@ -4,7 +4,7 @@ import * as ImagePicker from 'expo-image-picker';
 import { useState } from "react";
 import APIs, { endpoints } from "../../configs/APIs";
 import { useNavigation } from "@react-navigation/native";
-// import styles from "../User/RegisterStyles";
+import styles from "../User/RegisterStyles";
 
 const Register = () => {
     const [user, setUser] = useState({
