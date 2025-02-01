@@ -1,11 +1,9 @@
 import React, { useEffect, useState, useReducer } from 'react';
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, AppState } from 'react-native';
+import { View, AppState } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
 import Home from './components/Home/Home';
-import StoreProducts from './components/Home/ProductDetails';
 import Login from './components/User/Login';
 import Default from './components/DefaultApp/Default';
 import { MyDispatchContext, MyUserContext } from './configs/UserContexts';
@@ -18,8 +16,9 @@ import ShoppingCart from './components/Home/ShoppingCart';
 import Bill from './components/Home/Bill';
 import ProductComparison from './components/Home/ProductComparison ';
 import SalesStatistics from './components/User/SalesStatistics';
-import CreateStore from "./components/Home/CreateStore";
-import AddProduct from "./components/Home/AddProduct";
+// import CreateStore from "./components/Home/CreateStore";
+// import AddProduct from "./components/Home/AddProduct";
+import Statistics from "./components/User/Statistics"
 
 const Stack = createStackNavigator();
 
@@ -57,8 +56,9 @@ export default function App() {
               <Stack.Screen name="Bill" component={Bill}/>
               <Stack.Screen name="ProductComparison" component={ProductComparison}/>
               <Stack.Screen name="SalesStatistics" component={SalesStatistics}/>
-              <Stack.Screen name="CreateStore" component={CreateStore} />
-              <Stack.Screen name="AddProduct" component={AddProduct} />
+              {/* <Stack.Screen name="CreateStore" component={CreateStore} />
+              <Stack.Screen name="AddProduct" component={AddProduct} /> */}
+              <Stack.Screen name='Statistics' component={Statistics}/>
             </Stack.Navigator>
           </View>
         </MyDispatchContext.Provider>

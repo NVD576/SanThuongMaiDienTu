@@ -147,6 +147,13 @@ const UserProfile = () => {
           >
             Thêm sản phẩm
           </Button>
+          <Button
+            mode="contained"
+            onPress={() => nav.navigate("Statistics")}
+            style={styles.pendingSellersButton}
+          >
+            Xem Thống Kê
+          </Button>
         </>
       )}
 
