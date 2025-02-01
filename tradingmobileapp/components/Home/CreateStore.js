@@ -38,7 +38,7 @@ const CreateStore = () => {
   // Lấy user_id từ AsyncStorage
   const getUserId = async () => {
     const userId = await AsyncStorage.getItem("user_id");
-    console.log("sfsdfds"+userId)
+    console.log("userID: "+userId)
     return parseInt(userId); // Đảm bảo trả về một số
   };
 
@@ -82,11 +82,11 @@ const CreateStore = () => {
         },
       });
 
-      if (response.ok) {
+      if (response.status === 201) {
         Alert.alert("Thành công", "Cửa hàng đã được tạo!");
         navigation.goBack();
       } else {
-        const errorData = await response.json();
+        // const errorData = await response.json();
         console.log("Lỗi kết nối:", errorData.message);
         Alert.alert("Lỗi", errorData.message || "Không thể tạo cửa hàng!");
       }

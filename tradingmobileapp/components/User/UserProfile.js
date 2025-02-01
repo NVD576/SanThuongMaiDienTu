@@ -147,6 +147,14 @@ const UserProfile = () => {
           >
             Thêm sản phẩm
           </Button>
+
+          <Button
+            mode="contained"
+            onPress={() => nav.navigate("UserProducts")} // Chuyển đến màn hình sản phẩm của người dùng
+            style={styles.viewProductsButton}
+          >
+            Xem sản phẩm của tôi
+          </Button>
           <Button
             mode="contained"
             onPress={() => nav.navigate("Statistics")}

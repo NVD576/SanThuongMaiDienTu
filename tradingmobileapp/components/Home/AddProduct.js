@@ -11,7 +11,7 @@ import {
 } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { BASE_URL } from "../../configs/APIs";
+import APIs, { authApis, endpoints } from "../../configs/APIs";
 import styles from "./AddProductStyles";
 import { Picker } from "@react-native-picker/picker";
 
@@ -28,10 +28,8 @@ const AddProduct = ({ navigation }) => {
 
   const fetchCategories = async () => {
     try {
-      const response = await fetch(`${BASE_URL}/categories/`);
-      const data = await response.json();
-      console.log("Danh sách danh mục: ", data.results); // Log danh sách categories từ "results"
-
+      const response = await APIs.get(endpoints.categories)
+      const data=response.data;
       if (Array.isArray(data.results) && data.results.length > 0) {
         setCategories(data.results); // Lấy dữ liệu từ "results"
       } else {
@@ -46,18 +44,21 @@ const AddProduct = ({ navigation }) => {
   const fetchStores = async () => {
     try {
       const userId = await AsyncStorage.getItem("user_id");
-      const response = await fetch(`${BASE_URL}/stores?seller=${userId}`);
-      const data = await response.json();
-      console.log("Danh sách cửa hàng: ", data.results); // Log danh sách stores từ "results"
+      console.log("userid: "+userId)
+      const response = await APIs.get(endpoints.stores, {
+        params: { seller: userId }
+      });
 
-      if (Array.isArray(data.results) && data.results.length > 0) {
-        setStores(data.results); // Lấy dữ liệu từ "results"
+      console.log("Danh sách danh mục: ", response.data.results); // Log danh sách categories từ "results"
+      if (Array.isArray(response.data.results) && response.data.results.length > 0) {
+        const filteredStores = response.data.results.filter(store => store.seller.toString() === userId);
+        setStores(filteredStores);
       } else {
-        setStores([]); // Nếu không có cửa hàng, gán mảng rỗng
+        setStores([]); 
       }
     } catch (error) {
       console.error("Lỗi khi tải cửa hàng:", error);
-      setStores([]); // Gán mảng rỗng nếu có lỗi
+      setStores([]); 
     }
   };
 
@@ -159,7 +160,17 @@ const AddProduct = ({ navigation }) => {
     fetchCategories();
     fetchStores();
   }, []);
+  useEffect(() => {
+    if (categories.length > 0) {
+      setSelectedCategory(categories[0].id);
+    }
+  }, [categories]);
 
+  useEffect(() => {
+    if (stores.length > 0) {
+      setSelectedStore(stores[0].id);
+    }
+  }, [stores]);
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Thêm Sản Phẩm</Text>
@@ -181,14 +192,15 @@ const AddProduct = ({ navigation }) => {
         placeholder="Giá sản phẩm"
         keyboardType="numeric"
         value={price}
-        onChangeText={setPrice}
+        onChangeText={(text) => setPrice(text.replace(/[^0-9]/g, ""))} // Chỉ giữ lại số
       />
+
       <TextInput
         style={styles.input}
         placeholder="Số lượng tồn kho"
         keyboardType="numeric"
         value={stockQuantity}
-        onChangeText={setStockQuantity}
+        onChangeText={(text) => setStockQuantity(text.replace(/[^0-9]/g, ""))} // Chỉ giữ lại số
       />
 
       <Text>Chọn Cửa Hàng</Text>
@@ -196,9 +208,13 @@ const AddProduct = ({ navigation }) => {
         selectedValue={selectedStore}
         onValueChange={(itemValue) => setSelectedStore(itemValue)}
       >
-        {stores.map((store) => (
-          <Picker.Item key={store.id} label={store.name} value={store.id} />
-        ))}
+        {stores.length > 0 ? (
+          stores.map((store) => (
+            <Picker.Item key={store.id} label={store.name} value={store.id} />
+          ))
+        ) : (
+          <Picker.Item label="Không có cửa hàng" value="" />
+        )}
       </Picker>
 
       <Text>Chọn Danh Mục</Text>
@@ -206,13 +222,17 @@ const AddProduct = ({ navigation }) => {
         selectedValue={selectedCategory}
         onValueChange={(itemValue) => setSelectedCategory(itemValue)}
       >
-        {categories.map((category) => (
-          <Picker.Item
-            key={category.id}
-            label={category.name}
-            value={category.id}
-          />
-        ))}
+        {categories.length > 0 ? (
+          categories.map((category) => (
+            <Picker.Item
+              key={category.id}
+              label={category.name}
+              value={category.id}
+            />
+          ))
+        ) : (
+          <Picker.Item label="Không có danh mục" value="" />
+        )}
       </Picker>
 
       <TouchableOpacity onPress={pickImage}>

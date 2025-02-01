@@ -19,6 +19,8 @@ import SalesStatistics from './components/User/SalesStatistics';
 import CreateStore from "./components/Home/CreateStore";
 import AddProduct from "./components/Home/AddProduct";
 import Statistics from "./components/User/Statistics"
+import UserProducts from "./components/User/UserProducts";
+
 
 const Stack = createStackNavigator();
 
@@ -27,18 +29,18 @@ export default function App() {
   const [appState, setAppState] = useState(AppState.currentState);
 
   useEffect(() => {
-    const appStateListener = AppState.addEventListener('change', (nextAppState) => {
-      if (nextAppState === 'background') {
-        // Ứng dụng chuyển sang chế độ nền, xóa `user_id` ở đây
-        AsyncStorage.removeItem('user_id');
+    const appStateListener = AppState.addEventListener("change", async (nextAppState) => {
+      if (nextAppState === "inactive" || nextAppState === "background") {
+        console.log("Ứng dụng vào nền, nhưng không xóa user_id");
+      } else if (nextAppState === "active") {
+        console.log("Ứng dụng đang hoạt động");
       }
-      setAppState(nextAppState);
     });
-
+  
     return () => {
       appStateListener.remove();
     };
-  }, [appState]);
+  }, []);
 
   return (
     <NavigationContainer>
@@ -59,6 +61,7 @@ export default function App() {
               <Stack.Screen name="CreateStore" component={CreateStore} />
               <Stack.Screen name="AddProduct" component={AddProduct} />
               <Stack.Screen name='Statistics' component={Statistics}/>
+              <Stack.Screen name="UserProducts" component={UserProducts} />
             </Stack.Navigator>
           </View>
         </MyDispatchContext.Provider>
