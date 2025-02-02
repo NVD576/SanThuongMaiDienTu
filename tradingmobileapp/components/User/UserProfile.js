@@ -6,6 +6,8 @@ import { Button, Card, Divider } from "react-native-paper";
 import styles from "./UserProfileStyles";
 import { BASE_URL } from "../../configs/APIs";
 import { MyDispatchContext, MyUserContext } from "../../configs/UserContexts";
+import db from "../../configs/firebase";
+import { ref, get, child, onValue } from "firebase/database";
 
 const UserProfile = () => {
   const { user } = useContext(MyUserContext);
@@ -14,6 +16,9 @@ const UserProfile = () => {
 
   const [pendingSellers, setPendingSellers] = useState([]);
   const [showPendingSellers, setShowPendingSellers] = useState(false);
+  const [unreadMessages, setUnreadMessages] = useState(0);
+  const [chatUsers, setChatUsers] = useState([]);
+  const [showChatUsers, setShowChatUsers] = useState(false);
 
   const logout = async () => {
     await AsyncStorage.removeItem("user_id");
@@ -25,7 +30,7 @@ const UserProfile = () => {
   // Lấy danh sách seller có approval_status = "pending"
   const fetchPendingSellers = async () => {
     try {
-      const token = await AsyncStorage.getItem("token"); // Lấy token từ AsyncStorage
+      const token = await AsyncStorage.getItem("token");
       if (!token) {
         console.error("Không tìm thấy token, vui lòng đăng nhập lại.");
         return;
@@ -35,7 +40,7 @@ const UserProfile = () => {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`, // Thêm token vào header
+          Authorization: `Bearer ${token}`,
         },
       });
 
@@ -81,6 +86,71 @@ const UserProfile = () => {
     }
   };
 
+  // Lấy danh sách người nhắn tin từ Firebase
+  useEffect(() => {
+    const fetchChatUsers = async () => {
+      const userId = await AsyncStorage.getItem("user_id");
+  
+      if (!userId) return;
+  
+      const messagesRef = ref(db, `messages/${userId}`);
+  
+      onValue(messagesRef, (snapshot) => {
+        if (snapshot.exists()) {
+          const data = snapshot.val();
+          console.log("Tin nhắn nhận được:", data);
+  
+          const users = new Set();
+  
+          // Duyệt qua các tin nhắn
+          Object.keys(data).forEach((message) => {
+            users.add(message);
+          });
+  
+          console.log("Danh sách người nhắn tin:", Array.from(users));
+          setChatUsers(Array.from(users));
+        } else {
+          console.log("Không có tin nhắn nào.");
+          setChatUsers([]);
+        }
+      });
+    };
+  
+    fetchChatUsers();
+  }, []);
+
+
+
+  useEffect(() => {
+    console.log("Danh sách người nhắn tin:", chatUsers);
+  }, [chatUsers]);
+  // Fetch unread messages count
+  useEffect(() => {
+    const fetchUnreadMessages = async () => {
+      const userId = await AsyncStorage.getItem("user_id");
+
+      if (!userId) return;
+
+      const messagesRef = ref(db, `messages/${userId}`);
+      onValue(messagesRef, (snapshot) => {
+        if (snapshot.exists()) {
+          const messages = snapshot.val();
+          const unreadCount = Object.values(messages).reduce((count, msg) => {
+            if (msg.read === false) {
+              count++;
+            }
+            return count;
+          }, 0);
+          setUnreadMessages(unreadCount);
+        } else {
+          setUnreadMessages(0);
+        }
+      });
+    };
+
+    fetchUnreadMessages();
+  }, []);
+
   useEffect(() => {
     if (user?.role === "employee") {
       fetchPendingSellers();
@@ -108,6 +178,7 @@ const UserProfile = () => {
         </Card.Content>
       </Card>
 
+      {/* Info Card */}
       <Card style={styles.card}>
         <Card.Content>
           <Text style={styles.sectionTitle}>Thông tin cá nhân</Text>
@@ -135,22 +206,21 @@ const UserProfile = () => {
         <>
           <Button
             mode="contained"
-            onPress={() => nav.navigate("CreateStore")} // Chuyển đến màn hình tạo cửa hàng
+            onPress={() => nav.navigate("CreateStore")}
             style={styles.createStoreButton}
           >
             Tạo cửa hàng
           </Button>
           <Button
             mode="contained"
-            onPress={() => nav.navigate("AddProduct")} // Chuyển đến màn hình thêm sản phẩm
+            onPress={() => nav.navigate("AddProduct")}
             style={styles.addProductButton}
           >
             Thêm sản phẩm
           </Button>
-
           <Button
             mode="contained"
-            onPress={() => nav.navigate("UserProducts")} // Chuyển đến màn hình sản phẩm của người dùng
+            onPress={() => nav.navigate("UserProducts")}
             style={styles.viewProductsButton}
           >
             Xem sản phẩm của tôi
@@ -165,6 +235,52 @@ const UserProfile = () => {
         </>
       )}
 
+      {/* Chat button */}
+      {user?.role !== "admin" && (
+        <Button
+          mode="contained"
+          onPress={() => {
+            setShowChatUsers(!showChatUsers); // Lật trạng thái hiển thị danh sách người nhắn
+          }}
+          style={styles.receiveMessagesButton}
+        >
+          {unreadMessages > 0
+            ? `Bạn có ${unreadMessages} tin nhắn chưa đọc`
+            : chatUsers.length > 0
+            ? `Có ${chatUsers.length} người đã nhắn tin`
+            : "Nhận tin nhắn"}
+        </Button>
+      )}
+
+      {/* Hiển thị danh sách người nhắn tin */}
+      {showChatUsers && chatUsers.length > 0 && (
+        <Card style={styles.card}>
+          <Card.Content>
+            <Text style={styles.sectionTitle}>Danh sách người nhắn tin</Text>
+            <Divider style={styles.divider} />
+            <FlatList
+              data={chatUsers}
+              keyExtractor={(item) => item}
+              renderItem={({ item }) => (
+                <View style={styles.detailRow}>
+                  <Text style={styles.label}>Người dùng: {item}</Text>
+                  <Button
+                    style={styles.value}
+                    mode="contained"
+                    onPress={() =>
+                      nav.navigate("ChatScreen", { userId2: item })
+                    }
+                  >
+                    Chat ngay
+                  </Button>
+                </View>
+              )}
+            />
+          </Card.Content>
+        </Card>
+      )}
+
+      {/* Pending Sellers for employee */}
       {user?.role === "employee" && (
         <Button
           mode="contained"
@@ -188,14 +304,14 @@ const UserProfile = () => {
               renderItem={({ item }) => (
                 <View style={styles.detailRow}>
                   <Text style={styles.label}>
-                    {item.username} ({item.approval_status})
+                    Seller: {item.first_name} {item.last_name}
                   </Text>
                   <Button
                     style={styles.value}
                     mode="contained"
                     onPress={() => approveSeller(item.id)}
                   >
-                    Xác nhận
+                    Duyệt
                   </Button>
                 </View>
               )}
@@ -204,17 +320,7 @@ const UserProfile = () => {
         </Card>
       )}
 
-      {user?.role === "admin" && (
-        <Button
-          mode="contained"
-          onPress={() => nav.navigate("SalesStatistics")}
-          style={styles.pendingSellersButton}
-        >
-          Xem Thống Kê
-        </Button>
-      )}
-
-      <Button mode="outlined" onPress={logout} style={styles.logoutButton}>
+      <Button mode="contained" onPress={logout}>
         Đăng xuất
       </Button>
     </View>

@@ -57,7 +57,6 @@ const ProductDetails = ({ route }) => {
   const loadUserId = async () => {
     try {
       const storedUserId = await AsyncStorage.getItem("user_id");
-      console.log(storedUserId);
       if (storedUserId) {
         setUserId(storedUserId);
         setIsLoggedIn(true);
@@ -413,16 +412,25 @@ const ProductDetails = ({ route }) => {
           </View>
           <TouchableOpacity
             style={ProductDetailStyles.chatButton}
-            onPress={() =>
-              navigation.navigate("ChatScreen", { storeId: store.id })
-            }
+            onPress={() => {
+              if (!isLoggedIn) {
+                Alert.alert(
+                  "Thông báo",
+                  "Bạn cần đăng nhập để trò chuyện với người bán"
+                );
+                return;
+              }
+              navigation.navigate("ChatScreen", {
+                storeId: store.id,
+                userId2: store.seller,
+              });
+            }}
           >
             <Text style={ProductDetailStyles.chatButtonText}>
               Chat with Seller
             </Text>
           </TouchableOpacity>
 
-          
           {store && (
             <View style={ProductDetailStyles.storeContainer}>
               <Text style={ProductDetailStyles.storeHeader}>

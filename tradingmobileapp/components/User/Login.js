@@ -44,7 +44,6 @@ const Login = ({ navigation }) => {
 
             const authAPI = await authApis();
             const userRes = await authAPI.get(endpoints['current-user']);
-            console.info("Current user:", userRes.data);
             await AsyncStorage.setItem("user_id", userRes.data.id.toString());
             const storedCart = await AsyncStorage.getItem(`shoppingCart_${userRes.data.id}`);
             if (storedCart) {
@@ -67,7 +66,6 @@ const Login = ({ navigation }) => {
                 routes: [{ name: "Home" }]
             });
         } catch (ex) {
-            console.error("Login failed:", ex.response ? ex.response.data : ex.message);
             Alert.alert("Đăng nhập thất bại", "Tên đăng nhập hoặc mật khẩu không đúng.");
         } finally {
             setLoading(false);
