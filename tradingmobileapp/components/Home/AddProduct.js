@@ -11,7 +11,7 @@ import {
 } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import APIs, { authApis, endpoints } from "../../configs/APIs";
+import APIs, { authApis, endpoints, BASE_URL } from "../../configs/APIs";
 import styles from "./AddProductStyles";
 import { Picker } from "@react-native-picker/picker";
 
