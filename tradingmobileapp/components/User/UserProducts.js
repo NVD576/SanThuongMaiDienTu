@@ -1,12 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, FlatList, Image, StyleSheet } from "react-native";
+import { View, Text, FlatList, Image } from "react-native";
 import { Button, Card, Divider } from "react-native-paper";
 import APIs, { endpoints } from "../../configs/APIs";
 import AsyncStorage from "@react-native-async-storage/async-storage"; 
+import styles from "../User/UserProductStyles";
+import { useNavigation, useIsFocused } from "@react-navigation/native";
 
 const UserProducts = () => {
   const [products, setProducts] = useState([]);
   const [stores, setStores] = useState([]);
+  const nav = useNavigation();
+  const isFocused = useIsFocused();
 
   const fetchStores = async () => {
     try {
@@ -23,7 +27,7 @@ const UserProducts = () => {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        params: { "seller": userId },
+        params: { seller: userId },
       });
 
       if (response.status === 200) {
@@ -67,8 +71,10 @@ const UserProducts = () => {
   };
 
   useEffect(() => {
-    fetchStores();
-  }, []);
+    if (isFocused) {
+      fetchStores();
+    }
+  }, [isFocused]);
 
   useEffect(() => {
     if (stores.length > 0) {
@@ -90,8 +96,7 @@ const UserProducts = () => {
               <Text style={styles.productPrice}>{item.price} VND</Text>
               <Divider style={styles.divider} />
               <View style={styles.buttonContainer}>
-                <Button mode="contained" style={styles.editButton}>Chỉnh sửa</Button>
-                <Button mode="outlined" style={styles.deleteButton}>Xóa</Button>
+                <Button mode="contained" style={styles.editButton} onPress={() => nav.navigate("ProductSetting", {productId: item.id})}>Chỉnh sửa</Button>
               </View>
             </Card.Content>
           </Card>
@@ -100,56 +105,5 @@ const UserProducts = () => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 10,
-    backgroundColor: "gray"
-  },
-  title: {
-    fontSize: 20,
-    marginBottom: 10,
-    fontWeight: "bold",
-  },
-  card: {
-    marginBottom: 15,
-    borderRadius: 10,
-    elevation: 3,
-  },
-  image: {
-    height: 150,
-    borderTopLeftRadius: 10,
-    borderTopRightRadius: 10,
-  },
-  cardContent: {
-    padding: 10,
-  },
-  productName: {
-    fontSize: 16,
-    fontWeight: "bold",
-    marginBottom: 5,
-  },
-  productPrice: {
-    fontSize: 14,
-    color: "#4CAF50",
-    marginBottom: 10,
-  },
-  divider: {
-    marginVertical: 10,
-  },
-  buttonContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-  },
-  editButton: {
-    flex: 1,
-    marginRight: 5,
-  },
-  deleteButton: {
-    flex: 1,
-    marginLeft: 5,
-  },
-});
 
 export default UserProducts;

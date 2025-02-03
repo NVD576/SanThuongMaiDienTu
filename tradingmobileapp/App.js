@@ -21,6 +21,7 @@ import AddProduct from "./components/Home/AddProduct";
 import Statistics from "./components/User/Statistics"
 import UserProducts from "./components/User/UserProducts";
 import ChatScreen from "./components/Home/ChatScreen";
+import ProductSetting from "./components/User/ProductSetting";
 
 const Stack = createStackNavigator();
 
@@ -63,6 +64,7 @@ export default function App() {
               <Stack.Screen name='Statistics' component={Statistics}/>
               <Stack.Screen name="UserProducts" component={UserProducts} />
               <Stack.Screen name="ChatScreen" component={ChatScreen} />
+              <Stack.Screen name="ProductSetting" component={ProductSetting}/>
             </Stack.Navigator>
           </View>
         </MyDispatchContext.Provider>

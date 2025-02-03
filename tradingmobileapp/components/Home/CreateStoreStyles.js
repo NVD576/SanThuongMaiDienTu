@@ -1,6 +1,6 @@
 import { StyleSheet } from "react-native";
 
-export default StyleSheet.create({
+const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
@@ -14,28 +14,37 @@ export default StyleSheet.create({
   },
   input: {
     height: 50,
-    borderColor: "#ccc",
+    borderColor: "#e0e0e0",
     borderWidth: 1,
-    borderRadius: 8,
-    paddingHorizontal: 10,
-    marginBottom: 10,
+    borderRadius: 12,
+    paddingLeft: 15,
+    fontSize: 16,
+    backgroundColor: "#fff",
+    marginBottom: 20,
   },
   imagePicker: {
+    width: "100%",
     height: 150,
-    borderWidth: 1,
-    borderColor: "#ccc",
-    borderRadius: 8,
+    backgroundColor: "#f0f0f0",
+    borderRadius: 12,
     justifyContent: "center",
     alignItems: "center",
-    marginBottom: 10,
+    marginBottom: 30,
+    borderColor: "#e0e0e0",
+    borderWidth: 1,
   },
   image: {
-    width: "100%",
-    height: "100%",
-    borderRadius: 8,
+    width: 120,
+    height: 120,
+    borderRadius: 12,
   },
   createButton: {
-    marginTop: 10,
-    backgroundColor: "#3498db",
+    backgroundColor: "#4CAF50",
+    paddingVertical: 15,
+    borderRadius: 12,
+    alignItems: "center",
+    marginTop: 30,
   },
 });
+
+export default styles;
