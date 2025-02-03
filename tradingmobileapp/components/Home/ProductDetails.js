@@ -20,7 +20,7 @@ import { MyUserContext } from "../../configs/UserContexts";
 LogBox.ignoreLogs([
   "Warning: Star: Support for defaultProps will be removed from function components in a future major release. Use JavaScript default parameters instead.",
   "Warning: TapRating: Support for defaultProps will be removed from function components in a future major release. Use JavaScript default parameters instead.",
-  "Warning: Text strings must be rendered within a <Text> component."
+  "Warning: Text strings must be rendered within a <Text> component.",
 ]);
 
 const ProductDetails = ({ route }) => {
@@ -57,7 +57,6 @@ const ProductDetails = ({ route }) => {
   const loadUserId = async () => {
     try {
       const storedUserId = await AsyncStorage.getItem("user_id");
-      console.log(storedUserId);
       if (storedUserId) {
         setUserId(storedUserId);
         setIsLoggedIn(true);
@@ -75,8 +74,6 @@ const ProductDetails = ({ route }) => {
     loadProductDetails();
   }, [productId]);
 
-
-  
   const handleBuyNow = async () => {
     if (!isLoggedIn) {
       Alert.alert("Thông báo", "Bạn cần đăng nhập để sử dụng tính năng này");
@@ -253,12 +250,12 @@ const ProductDetails = ({ route }) => {
 
   const groupReviewsByParent = (reviews) => {
     const commentMap = {}; // Using an object to map reviews by ID
-    
+
     // First, create the map of all reviews
     reviews.forEach((review) => {
       commentMap[review.id] = { ...review, responses: [] };
     });
-  
+
     // Then, associate replies with their parent comment
     reviews.forEach((review) => {
       if (review.parent_review) {
@@ -268,47 +265,48 @@ const ProductDetails = ({ route }) => {
         }
       }
     });
-  
+
     // Now filter out parent comments and sort them by date
     const grouped = Object.values(commentMap)
       .filter((review) => review.parent_review === null) // Only root comments
       .sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
-  
+
     // Sort the replies within each parent comment
     grouped.forEach((review) => {
-      review.responses.sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
+      review.responses.sort(
+        (a, b) => new Date(a.created_at) - new Date(b.created_at)
+      );
     });
-  
+
     return grouped;
   };
-  
-  
-
 
   const renderReviewItem = ({ item }) => {
     // Kiểm tra nếu bình luận có parent_review (không phải bình luận gốc) thì không hiển thị
     if (item.parent_review !== null) {
       return null;
     }
-  
+
     return (
       <View style={ProductDetailStyles.reviewItem}>
         {/* Bình luận gốc */}
         <Text style={ProductDetailStyles.reviewUser}>{item.user}</Text>
         <Text style={ProductDetailStyles.reviewComment}>{item.comment}</Text>
-  
+
         {/* Các phản hồi */}
         {item.responses && item.responses.length > 0 && (
           <View style={{ marginLeft: 20 }}>
             {item.responses.map((reply) => (
               <View key={reply.id} style={ProductDetailStyles.replyItem}>
                 <Text style={ProductDetailStyles.replyUser}>{reply.user}</Text>
-                <Text style={ProductDetailStyles.replyComment}>{reply.comment}</Text>
+                <Text style={ProductDetailStyles.replyComment}>
+                  {reply.comment}
+                </Text>
               </View>
             ))}
           </View>
         )}
-  
+
         {/* Nút trả lời */}
         {isLoggedIn && (
           <TouchableOpacity
@@ -318,7 +316,7 @@ const ProductDetails = ({ route }) => {
             <Text style={ProductDetailStyles.replyButtonText}>Trả lời</Text>
           </TouchableOpacity>
         )}
-  
+
         {/* Ô nhập phản hồi */}
         {replyToCommentId === item.id && isLoggedIn && (
           <View style={ProductDetailStyles.addReplyContainer}>
@@ -340,10 +338,6 @@ const ProductDetails = ({ route }) => {
       </View>
     );
   };
-  
-  
-  
-  
 
   const postReply = async () => {
     if (!isLoggedIn) {
@@ -354,7 +348,7 @@ const ProductDetails = ({ route }) => {
       Alert.alert("Lỗi", "Vui lòng nhập nội dung bình luận!");
       return;
     }
-  
+
     try {
       const payload = {
         user: userId,
@@ -363,7 +357,7 @@ const ProductDetails = ({ route }) => {
         rating: rating,
         parent_review: replyToCommentId, // Thêm ID bình luận gốc
       };
-  
+
       await APIs.post(endpoints["reviews"], payload);
       Alert.alert("Thành công", "Bình luận của bạn đã được gửi!");
       setComment("");
@@ -375,7 +369,6 @@ const ProductDetails = ({ route }) => {
       Alert.alert("Lỗi", "Không thể gửi bình luận. Vui lòng thử lại!");
     }
   };
-  
 
   if (loading) {
     return (
@@ -417,6 +410,26 @@ const ProductDetails = ({ route }) => {
               {item.description || "Mô tả sản phẩm chưa được cập nhật."}
             </Text>
           </View>
+          <TouchableOpacity
+            style={ProductDetailStyles.chatButton}
+            onPress={() => {
+              if (!isLoggedIn) {
+                Alert.alert(
+                  "Thông báo",
+                  "Bạn cần đăng nhập để trò chuyện với người bán"
+                );
+                return;
+              }
+              navigation.navigate("ChatScreen", {
+                storeId: store.id,
+                userId2: store.seller,
+              });
+            }}
+          >
+            <Text style={ProductDetailStyles.chatButtonText}>
+              Chat with Seller
+            </Text>
+          </TouchableOpacity>
 
           {store && (
             <View style={ProductDetailStyles.storeContainer}>

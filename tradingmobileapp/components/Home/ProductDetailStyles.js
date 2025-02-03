@@ -292,7 +292,18 @@ const ProductDetailStyles = StyleSheet.create({
     backgroundColor: '#f1f1f1',
     borderRadius: 5,
   },
-  
+   // Chat Button Style
+   chatButton: {
+    backgroundColor: "#4CAF50",
+    padding: 10,
+    borderRadius: 5,
+    marginTop: 20,
+  },
+  chatButtonText: {
+    color: "#fff",
+    textAlign: "center",
+    fontSize: 16,
+  },
 });
 
 export default ProductDetailStyles;

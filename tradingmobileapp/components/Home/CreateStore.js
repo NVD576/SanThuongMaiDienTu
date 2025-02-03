@@ -38,7 +38,6 @@ const CreateStore = () => {
   // Lấy user_id từ AsyncStorage
   const getUserId = async () => {
     const userId = await AsyncStorage.getItem("user_id");
-    console.log("userID: "+userId)
     return parseInt(userId); // Đảm bảo trả về một số
   };
 

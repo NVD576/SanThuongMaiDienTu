@@ -20,7 +20,7 @@ import CreateStore from "./components/Home/CreateStore";
 import AddProduct from "./components/Home/AddProduct";
 import Statistics from "./components/User/Statistics"
 import UserProducts from "./components/User/UserProducts";
-
+import ChatScreen from "./components/Home/ChatScreen";
 
 const Stack = createStackNavigator();
 
@@ -62,6 +62,7 @@ export default function App() {
               <Stack.Screen name="AddProduct" component={AddProduct} />
               <Stack.Screen name='Statistics' component={Statistics}/>
               <Stack.Screen name="UserProducts" component={UserProducts} />
+              <Stack.Screen name="ChatScreen" component={ChatScreen} />
             </Stack.Navigator>
           </View>
         </MyDispatchContext.Provider>
