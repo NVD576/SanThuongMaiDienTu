@@ -57,12 +57,6 @@ const styles = StyleSheet.create({
     marginRight: 6,
     borderRadius: 8,
   },
-  deleteButton: {
-    flex: 1,
-    borderColor: "#f44336",
-    borderWidth: 1,
-    borderRadius: 8,
-  },
 });
 
 export default styles;

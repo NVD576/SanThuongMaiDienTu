@@ -61,7 +61,7 @@ const Register = () => {
             Alert.alert("Thành công", "Đăng ký thành công.");
             nav.goBack();
         } catch (error) {
-            Alert.alert("Lỗi", error.response?.data?.message || "Đăng ký thất bại.");
+            Alert.alert("Lỗi", error.response?.data?.message || "Tên đăng nhập đã tồn tại.");
         } finally {
             setLoading(false);
         }

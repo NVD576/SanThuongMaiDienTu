@@ -271,7 +271,7 @@ const ProductDetailStyles = StyleSheet.create({
     marginVertical: 5,
   },
   repliesContainer: {
-    marginLeft: 20, // Thụt vào bình luận trả lời
+    marginLeft: 20,
   },
   replyItem: {
     padding: 5,
@@ -292,7 +292,6 @@ const ProductDetailStyles = StyleSheet.create({
     backgroundColor: '#f1f1f1',
     borderRadius: 5,
   },
-   // Chat Button Style
    chatButton: {
     backgroundColor: "#4CAF50",
     padding: 10,

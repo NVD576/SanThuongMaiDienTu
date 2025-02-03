@@ -4,10 +4,13 @@ import { Button, Card, Divider } from "react-native-paper";
 import APIs, { endpoints } from "../../configs/APIs";
 import AsyncStorage from "@react-native-async-storage/async-storage"; 
 import styles from "../User/UserProductStyles";
+import { useNavigation, useIsFocused } from "@react-navigation/native";
 
 const UserProducts = () => {
   const [products, setProducts] = useState([]);
   const [stores, setStores] = useState([]);
+  const nav = useNavigation();
+  const isFocused = useIsFocused();
 
   const fetchStores = async () => {
     try {
@@ -68,8 +71,10 @@ const UserProducts = () => {
   };
 
   useEffect(() => {
-    fetchStores();
-  }, []);
+    if (isFocused) {
+      fetchStores();
+    }
+  }, [isFocused]);
 
   useEffect(() => {
     if (stores.length > 0) {
@@ -91,8 +96,7 @@ const UserProducts = () => {
               <Text style={styles.productPrice}>{item.price} VND</Text>
               <Divider style={styles.divider} />
               <View style={styles.buttonContainer}>
-                <Button mode="contained" style={styles.editButton}>Chỉnh sửa</Button>
-                <Button mode="outlined" style={styles.deleteButton}>Xóa</Button>
+                <Button mode="contained" style={styles.editButton} onPress={() => nav.navigate("ProductSetting", {productId: item.id})}>Chỉnh sửa</Button>
               </View>
             </Card.Content>
           </Card>
