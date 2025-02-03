@@ -104,6 +104,8 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     paddingVertical: 10,
   },
+
+
 });
 
 export default styles;

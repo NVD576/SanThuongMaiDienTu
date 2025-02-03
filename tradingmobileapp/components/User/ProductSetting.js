@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { View, Text, TextInput, TouchableOpacity, Image, StyleSheet, Alert, ActivityIndicator } from "react-native";
+import { View, Text, TextInput,ScrollView, TouchableOpacity, Image, StyleSheet, Alert, ActivityIndicator } from "react-native";
 import APIs, { authApis, endpoints } from "../../configs/APIs";
 import styles from "../User/ProductSettingStyles";
 
@@ -110,6 +110,11 @@ const ProductSetting = ({ route, navigation }) => {
     }
 
     return (
+        <ScrollView
+              contentContainerStyle={{ flexGrow: 1 }}
+              keyboardShouldPersistTaps="handled"
+              nestedScrollEnabled={true}
+            >
         <View style={styles.container}>
             <Text style={styles.title}>Chỉnh sửa sản phẩm</Text>
 
@@ -140,6 +145,7 @@ const ProductSetting = ({ route, navigation }) => {
                 <Text style={styles.deleteText}>Xóa sản phẩm</Text>
             </TouchableOpacity>
         </View>
+        </ScrollView>
     );
 };
 

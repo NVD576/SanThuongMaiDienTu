@@ -4,7 +4,18 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="edb1882b-57c9-4d48-900c-3edc62689eda" name="Changes" comment="a" />
+    <list default="true" id="edb1882b-57c9-4d48-900c-3edc62689eda" name="Changes" comment="a">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tradingmobileapp/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/tradingmobileapp/App.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tradingmobileapp/components/DefaultApp/DefaultStyles.js" beforeDir="false" afterPath="$PROJECT_DIR$/tradingmobileapp/components/DefaultApp/DefaultStyles.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tradingmobileapp/components/Home/ChatScreen.js" beforeDir="false" afterPath="$PROJECT_DIR$/tradingmobileapp/components/Home/ChatScreen.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tradingmobileapp/components/User/Login.js" beforeDir="false" afterPath="$PROJECT_DIR$/tradingmobileapp/components/User/Login.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tradingmobileapp/components/User/ProductSetting.js" beforeDir="false" afterPath="$PROJECT_DIR$/tradingmobileapp/components/User/ProductSetting.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tradingmobileapp/components/User/Register.js" beforeDir="false" afterPath="$PROJECT_DIR$/tradingmobileapp/components/User/Register.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tradingmobileapp/components/User/UserProfile.js" beforeDir="false" afterPath="$PROJECT_DIR$/tradingmobileapp/components/User/UserProfile.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tradingmobileapp/components/User/UserProfileStyles.js" beforeDir="false" afterPath="$PROJECT_DIR$/tradingmobileapp/components/User/UserProfileStyles.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tradingmobileapp/configs/APIs.js" beforeDir="false" afterPath="$PROJECT_DIR$/tradingmobileapp/configs/APIs.js" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -326,7 +337,23 @@
       <option name="project" value="LOCAL" />
       <updated>1738384949918</updated>
     </task>
-    <option name="localTasksCounter" value="30" />
+    <task id="LOCAL-00030" summary="a">
+      <option name="closed" value="true" />
+      <created>1738592160088</created>
+      <option name="number" value="00030" />
+      <option name="presentableId" value="LOCAL-00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1738592160088</updated>
+    </task>
+    <task id="LOCAL-00031" summary="a">
+      <option name="closed" value="true" />
+      <created>1738592179363</created>
+      <option name="number" value="00031" />
+      <option name="presentableId" value="LOCAL-00031" />
+      <option name="project" value="LOCAL" />
+      <updated>1738592179363</updated>
+    </task>
+    <option name="localTasksCounter" value="32" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

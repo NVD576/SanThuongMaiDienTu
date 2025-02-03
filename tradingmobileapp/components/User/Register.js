@@ -61,15 +61,18 @@ const Register = () => {
             Alert.alert("Thành công", "Đăng ký thành công.");
             nav.goBack();
         } catch (error) {
-            Alert.alert("Lỗi", error.response?.data?.message || "Tên đăng nhập đã tồn tại.");
+            console.log("Lỗi đăng ký:", error.response?.data || error.message);
+            Alert.alert("Lỗi", error.response?.data?.message || "Thong tin khong hop le.");
         } finally {
             setLoading(false);
         }
     };
 
     return (
-        <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-            <ScrollView contentContainerStyle={styles.container}>
+        
+            <ScrollView contentContainerStyle={styles.container}
+            keyboardShouldPersistTaps="handled"
+            nestedScrollEnabled={true}>
                 <Text style={styles.title}>Đăng ký tài khoản</Text>
                 <TextInput mode="outlined" label="Tên" value={user.first_name} onChangeText={(t) => updateUser(t, 'first_name')} style={styles.input} />
                 <TextInput mode="outlined" label="Họ và tên lót" value={user.last_name} onChangeText={(t) => updateUser(t, 'last_name')} style={styles.input} />
@@ -93,7 +96,7 @@ const Register = () => {
                     Đăng ký
                 </Button>
             </ScrollView>
-        </KeyboardAvoidingView>
+        
     );
 };
 

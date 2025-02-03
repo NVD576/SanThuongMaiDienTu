@@ -32,9 +32,9 @@ export default function App() {
   useEffect(() => {
     const appStateListener = AppState.addEventListener("change", async (nextAppState) => {
       if (nextAppState === "inactive" || nextAppState === "background") {
-        console.log("Ứng dụng vào nền, nhưng không xóa user_id");
+        // console.log("Ứng dụng vào nền, nhưng không xóa user_id");
       } else if (nextAppState === "active") {
-        console.log("Ứng dụng đang hoạt động");
+        // console.log("Ứng dụng đang hoạt động");
       }
     });
   

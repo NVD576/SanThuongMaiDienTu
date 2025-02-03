@@ -133,7 +133,9 @@ const ChatScreen = ({ route }) => {
         <TouchableOpacity style={styles.sendButton} onPress={sendMessage}>
           <Animated.View style={{ opacity: fadeAnim }}>
             <Ionicons name="send" size={24} color="white" />
+            <View>Gui</View>
           </Animated.View>
+          
         </TouchableOpacity>
       </View>
     </KeyboardAvoidingView>
