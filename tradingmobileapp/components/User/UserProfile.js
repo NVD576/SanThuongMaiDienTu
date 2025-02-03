@@ -320,7 +320,7 @@ const UserProfile = () => {
         </Card>
       )}
 
-      <Button mode="contained" onPress={logout}>
+      <Button mode="contained" onPress={logout} style={styles.logoutButton}>
         Đăng xuất
       </Button>
     </View>

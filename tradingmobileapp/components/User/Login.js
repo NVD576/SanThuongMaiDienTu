@@ -27,9 +27,8 @@ const Login = ({ navigation }) => {
             console.log("Trying to login...");
     
             const res = await APIs.post(endpoints['login'], {
-                client_id: "utwiObUkAqZq7CdZ15JPVegzdGvHqLBZnKXkVfrc",
-                client_secret: "ovUhk6GvUyQB9WNmOfPZ4YJUhBHu8IfXICFgGTANJkxqzG1bcIqfrfF2ARjczzDwwquoGNtn2HglwLieG3ovPxSBtFK8Dfv8tKEhSz2CLbeQPkTFe1CsrvW3q5ASGLhb",
-
+                client_id: "AGv0RLcfMmkHQpKNoyCik6k1zY4gtPxwNVX2rL1T",
+                client_secret: "5nydZRrG70NCmAtyXhMI2jF1HU0A2BnuvlA7NNNWWRBrOhYHfugl0JQU9CoMduBZf9sXsAQLJzdOQnLoFCBfVNaSlWgsJozoV6ZTTMBjiZjlJU5mTJu7MeYbMLnU6Y05",
                 grant_type: "password",
                 username: user.username,
                 password: user.password,
@@ -44,7 +43,6 @@ const Login = ({ navigation }) => {
 
             const authAPI = await authApis();
             const userRes = await authAPI.get(endpoints['current-user']);
-            console.info("Current user:", userRes.data);
             await AsyncStorage.setItem("user_id", userRes.data.id.toString());
             const storedCart = await AsyncStorage.getItem(`shoppingCart_${userRes.data.id}`);
             if (storedCart) {
@@ -67,60 +65,54 @@ const Login = ({ navigation }) => {
                 routes: [{ name: "Home" }]
             });
         } catch (ex) {
-            console.error("Login failed:", ex.response ? ex.response.data : ex.message);
             Alert.alert("Đăng nhập thất bại", "Tên đăng nhập hoặc mật khẩu không đúng.");
         } finally {
             setLoading(false);
         }
     };
 
-  return (
-    <LinearGradient colors={["#6a11cb", "#2575fc"]} style={styles.container}>
-      <View style={styles.form}>
-        <Text style={styles.title}>Đăng nhập</Text>
 
-        <View style={styles.inputContainer}>
-          <Ionicons name="person-outline" size={20} color="#888" style={styles.icon} />
-          <TextInput
-            style={styles.input}
-            placeholder="Tên đăng nhập"
-            placeholderTextColor="#ccc"
-            value={user.username}
-            onChangeText={(t) => updateUser(t, "username")}
-          />
+
+    const register=()=>{
+
+    }
+    return (
+        <View style={styles.container}>
+            <Text style={styles.title}>Đăng nhập</Text>
+
+            <TextInput
+                style={styles.input}
+                placeholder="Tên đăng nhập"
+                placeholderTextColor="#888"
+                keyboardType="default"
+                autoCapitalize="none"
+                value={user.username}
+                onChangeText={t => updateUser(t, "username")}
+            />
+
+            <TextInput
+                style={styles.input}
+                placeholder="Mật khẩu"
+                placeholderTextColor="#888"
+                secureTextEntry={true}
+                value={user.password}
+                onChangeText={t => updateUser(t, "password")}
+            />
+
+            <TouchableOpacity
+                style={[styles.button, loading && { backgroundColor: "#999" }]}
+                onPress={login}
+                disabled={loading}
+            >
+                <Text style={styles.buttonText}>{loading ? "Đang xử lý..." : "Đăng nhập"}</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity style={styles.row}>
+                <Text style={styles.forgotPassword}>Quên mật khẩu?</Text>
+                <Text onPress={() => navigation.navigate("Register")} style={styles.register}>Đăng ký</Text>
+            </TouchableOpacity>
         </View>
-
-        <View style={styles.inputContainer}>
-          <Ionicons name="lock-closed-outline" size={20} color="#888" style={styles.icon} />
-          <TextInput
-            style={styles.input}
-            placeholder="Mật khẩu"
-            placeholderTextColor="#ccc"
-            secureTextEntry={true}
-            value={user.password}
-            onChangeText={(t) => updateUser(t, "password")}
-          />
-        </View>
-
-        {error ? <Text style={styles.errorText}>{error}</Text> : null}
-
-        <TouchableOpacity
-          style={[styles.button, loading && { backgroundColor: "#999" }]}
-          onPress={login}
-          disabled={loading}
-        >
-          {loading ? <ActivityIndicator color="#fff" /> : <Text style={styles.buttonText}>Đăng nhập</Text>}
-        </TouchableOpacity>
-
-        <View style={styles.footer}>
-          <Text style={styles.forgotPassword}>Quên mật khẩu?</Text>
-          <Text onPress={() => navigation.navigate("Register")} style={styles.register}>
-            Đăng ký
-          </Text>
-        </View>
-      </View>
-    </LinearGradient>
-  );
+    );
 };
 
 export default Login;

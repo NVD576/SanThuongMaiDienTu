@@ -300,7 +300,8 @@ const ProductDetailStyles = StyleSheet.create({
     marginTop: 20,
   },
   chatButtonText: {
-    color: "#fff",
+    color: "#FFFFFF",
+    fontWeight: "bold",
     textAlign: "center",
     fontSize: 16,
   },

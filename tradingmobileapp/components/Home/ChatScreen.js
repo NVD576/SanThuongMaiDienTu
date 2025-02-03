@@ -1,36 +1,36 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   View,
   TextInput,
-  Button,
+  TouchableOpacity,
   FlatList,
   Text,
-  StyleSheet,
-  Alert,
+  KeyboardAvoidingView,
+  Platform,
+  Animated,
 } from "react-native";
 import { ref, push, onValue, off, set } from "firebase/database";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import db from "../../configs/firebase";
+import styles from "../Home/ChatScreenStyles";
+import { Ionicons } from "@expo/vector-icons"; // Import icon gửi tin nhắn
 
-import { useNavigation } from "@react-navigation/native"; // Để điều hướng\
-
-const ChatScreen = ({ route, navigation }) => {
-  const { userId2 } = route.params; // Nhận userId2 từ params
+const ChatScreen = ({ route }) => {
+  const { userId2 } = route.params;
   const [messages, setMessages] = useState([]);
   const [text, setText] = useState("");
   const [userId, setUserId] = useState("");
 
-  // Lấy userId từ AsyncStorage
+  const fadeAnim = useRef(new Animated.Value(0)).current; // Hiệu ứng gửi tin nhắn
+
   useEffect(() => {
     const fetchUserId = async () => {
       const storedUserId = await AsyncStorage.getItem("user_id");
       setUserId(storedUserId);
     };
-
     fetchUserId();
-  }, []); // Chạy một lần khi component được mount
+  }, []);
 
-  // Lấy tin nhắn theo thời gian thực
   useEffect(() => {
     if (userId && userId2) {
       const messagesRef = ref(db, `messages/${userId}/${userId2}`);
@@ -43,58 +43,61 @@ const ChatScreen = ({ route, navigation }) => {
           }));
           setMessages(messagesArray);
 
-          // Cập nhật trạng thái "read" của tin nhắn chưa đọc
+          // Đánh dấu tin nhắn là đã đọc
           messagesArray.forEach((message) => {
-            if (!message.read ) {
+            if (!message.read) {
               const messageRef = ref(
                 db,
                 `messages/${userId}/${userId2}/${message.id}`
               );
-              set(messageRef, {
-                ...message,
-                read: true, // Đánh dấu là đã đọc
-              });
+              set(messageRef, { ...message, read: true });
             }
           });
         } else {
-          console.log("No data found");
           setMessages([]);
         }
       });
 
-      // Dọn dẹp listener khi component unmount hoặc userId, userId2 thay đổi
-      return () => {
-        off(messagesRef); // Hủy bỏ listener
-      };
+      return () => off(messagesRef);
     }
-  }, [userId, userId2]); // Re-run effect khi userId, userId2 thay đổi
+  }, [userId, userId2]);
 
-  // Gửi tin nhắn
   const sendMessage = () => {
     if (text.trim() === "") return;
-
     const timestamp = new Date().toISOString();
-
-    const messagesRef1 = ref(db, `messages/${userId}/${userId2}`);
-    const messagesRef2 = ref(db, `messages/${userId2}/${userId}`);
-
     const newMessage = {
-      senderId: (userId),
+      senderId: userId,
       receiverId: userId2,
-      text: text,
-      timestamp: timestamp,
-      status: "sent", // Trạng thái ban đầu là "sent"
+      text,
+      timestamp,
+      status: "sent",
       read: false,
     };
 
-    push(messagesRef1, newMessage);
-    push(messagesRef2, newMessage);
+    push(ref(db, `messages/${userId}/${userId2}`), newMessage);
+    push(ref(db, `messages/${userId2}/${userId}`), newMessage);
+    setText("");
 
-    setText(""); // Reset ô nhập
+    // Hiệu ứng gửi tin nhắn
+    Animated.sequence([
+      Animated.timing(fadeAnim, {
+        toValue: 1,
+        duration: 200,
+        useNativeDriver: true,
+      }),
+      Animated.timing(fadeAnim, {
+        toValue: 0,
+        duration: 200,
+        useNativeDriver: true,
+      }),
+    ]).start();
   };
 
   return (
-    <View style={styles.container}>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      style={styles.container}
+    >
       <FlatList
         data={messages}
         keyExtractor={(item) => item.id}
@@ -103,15 +106,18 @@ const ChatScreen = ({ route, navigation }) => {
             style={[
               styles.messageContainer,
               item.senderId === userId ? styles.myMessage : styles.otherMessage,
-              item.read && item.receiverId === userId && styles.readMessage, // Thêm style cho tin nhắn đã đọc
+              item.read && item.receiverId === userId && styles.readMessage,
             ]}
           >
             <Text style={styles.userId}>
-              {item.senderId === userId ? "You" : "Customer"}
+              {item.senderId === userId ? "Bạn" : "Khách hàng"}
             </Text>
             <Text style={styles.messageText}>{item.text}</Text>
             <Text style={styles.timestamp}>
-              {new Date(item.timestamp).toLocaleTimeString()}
+              {new Date(item.timestamp).toLocaleTimeString()}{" "}
+              {item.read && item.senderId === userId && (
+                <Ionicons name="checkmark-done" size={14} color="green" />
+              )}
             </Text>
           </View>
         )}
@@ -124,47 +130,14 @@ const ChatScreen = ({ route, navigation }) => {
           onChangeText={setText}
           placeholder="Nhập tin nhắn..."
         />
-        <Button title="Gửi" onPress={sendMessage} />
+        <TouchableOpacity style={styles.sendButton} onPress={sendMessage}>
+          <Animated.View style={{ opacity: fadeAnim }}>
+            <Ionicons name="send" size={24} color="white" />
+          </Animated.View>
+        </TouchableOpacity>
       </View>
-    </View>
+    </KeyboardAvoidingView>
   );
 };
-
-const styles = StyleSheet.create({
-  container: { flex: 1, padding: 10, backgroundColor: "#f5f5f5" },
-  messageContainer: {
-    padding: 10,
-    marginVertical: 5,
-    borderRadius: 8,
-    maxWidth: "80%",
-  },
-  myMessage: {
-    alignSelf: "flex-end",
-    backgroundColor: "#007AFF",
-    color: "#fff",
-  },
-  otherMessage: {
-    alignSelf: "flex-start",
-    backgroundColor: "#ddd",
-  },
-  userId: { fontSize: 12, fontWeight: "bold", color: "#333" },
-  messageText: { fontSize: 16, color: "#333" },
-  timestamp: { fontSize: 10, color: "#999", marginTop: 5 },
-  inputContainer: {
-    flexDirection: "row",
-    padding: 10,
-    backgroundColor: "#fff",
-  },
-  input: {
-    flex: 1,
-    borderWidth: 1,
-    borderColor: "#ccc",
-    padding: 8,
-    borderRadius: 5,
-  },
-  readMessage: {
-    backgroundColor: "#e6e6e6", // Màu nền của tin nhắn đã đọc
-  },
-});
 
 export default ChatScreen;

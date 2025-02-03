@@ -3,15 +3,14 @@ import {
   View,
   Text,
   TextInput,
-  Button,
-  Alert,
   TouchableOpacity,
   Image,
-  Platform,
+  Button,
+  Alert,
 } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import APIs, { authApis, endpoints, BASE_URL } from "../../configs/APIs";
+import APIs, { endpoints, BASE_URL } from "../../configs/APIs";
 import styles from "./AddProductStyles";
 import { Picker } from "@react-native-picker/picker";
 
@@ -28,54 +27,51 @@ const AddProduct = ({ navigation }) => {
 
   const fetchCategories = async () => {
     try {
-      const response = await APIs.get(endpoints.categories)
-      const data=response.data;
+      const response = await APIs.get(endpoints.categories);
+      const data = response.data;
       if (Array.isArray(data.results) && data.results.length > 0) {
-        setCategories(data.results); // Lấy dữ liệu từ "results"
+        setCategories(data.results);
       } else {
-        setCategories([]); // Nếu không có danh mục, gán mảng rỗng
+        setCategories([]);
       }
     } catch (error) {
-      console.error("Lỗi khi tải danh mục:", error);
-      setCategories([]); // Gán mảng rỗng nếu có lỗi
+      console.error("Error loading categories:", error);
+      setCategories([]);
     }
   };
 
   const fetchStores = async () => {
     try {
       const userId = await AsyncStorage.getItem("user_id");
-      console.log("userid: "+userId)
       const response = await APIs.get(endpoints.stores, {
-        params: { seller: userId }
+        params: { seller: userId },
       });
-
-      console.log("Danh sách danh mục: ", response.data.results); // Log danh sách categories từ "results"
       if (Array.isArray(response.data.results) && response.data.results.length > 0) {
-        const filteredStores = response.data.results.filter(store => store.seller.toString() === userId);
+        const filteredStores = response.data.results.filter(
+          (store) => store.seller.toString() === userId
+        );
         setStores(filteredStores);
       } else {
-        setStores([]); 
+        setStores([]);
       }
     } catch (error) {
-      console.error("Lỗi khi tải cửa hàng:", error);
-      setStores([]); 
+      console.error("Error loading stores:", error);
+      setStores([]);
     }
   };
 
   const pickImage = async () => {
     let { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
     if (status !== "granted") {
-      alert("Bạn cần cấp quyền để chọn ảnh.");
+      alert("Permission to access the image library is required.");
       return;
     }
-
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
       aspect: [1, 1],
       quality: 0.8,
     });
-
     if (!result.canceled) {
       setAvatar(result.assets[0]);
     }
@@ -90,14 +86,13 @@ const AddProduct = ({ navigation }) => {
       !selectedStore ||
       !selectedCategory
     ) {
-      Alert.alert("Lỗi", "Vui lòng nhập đầy đủ thông tin sản phẩm!");
+      Alert.alert("Error", "Please fill in all product details!");
       return;
     }
-
     try {
       const token = await AsyncStorage.getItem("token");
       if (!token) {
-        Alert.alert("Lỗi", "Bạn chưa đăng nhập!");
+        Alert.alert("Error", "You are not logged in!");
         return;
       }
 
@@ -114,8 +109,7 @@ const AddProduct = ({ navigation }) => {
       if (avatar) {
         const filename = avatar.uri.split("/").pop();
         const match = /\.(\w+)$/.exec(filename);
-        const type = match ? `image/${match[1]}` : `image`;
-
+        const type = match ? `image/${match[1]}` : "image";
         formData.append("image", {
           uri: avatar.uri,
           name: filename,
@@ -133,26 +127,23 @@ const AddProduct = ({ navigation }) => {
       });
 
       const responseText = await response.text();
-      console.log("Response Text:", responseText);
       let responseData;
       try {
-        responseData = JSON.parse(responseText); // Try parsing the response text
+        responseData = JSON.parse(responseText);
       } catch (e) {
         console.error("Error parsing response:", e);
-        responseData = {}; // Fallback if JSON parsing fails
+        responseData = {};
       }
+
       if (response.ok) {
-        // const successData = await response.json();
-        Alert.alert("Thành công", "Sản phẩm đã được thêm!");
+        Alert.alert("Success", "Product has been added!");
         navigation.goBack();
       } else {
-        // const errorData = await response.json();
-        Alert.alert("Lỗi", responseData.message || "Không thể thêm sản phẩm!");
-        console.log(responseData.message);
+        Alert.alert("Error", responseData.message || "Failed to add product!");
       }
     } catch (error) {
-      console.error("Lỗi kết nối:", error);
-      Alert.alert("Lỗi", "Không thể kết nối đến server!");
+      console.error("Connection error:", error);
+      Alert.alert("Error", "Unable to connect to server!");
     }
   };
 
@@ -160,6 +151,7 @@ const AddProduct = ({ navigation }) => {
     fetchCategories();
     fetchStores();
   }, []);
+
   useEffect(() => {
     if (categories.length > 0) {
       setSelectedCategory(categories[0].id);
@@ -171,9 +163,10 @@ const AddProduct = ({ navigation }) => {
       setSelectedStore(stores[0].id);
     }
   }, [stores]);
+
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Thêm Sản Phẩm</Text>
+      <Text style={styles.title}>Thêm sản phẩm</Text>
 
       <TextInput
         style={styles.input}
@@ -183,67 +176,66 @@ const AddProduct = ({ navigation }) => {
       />
       <TextInput
         style={styles.input}
-        placeholder="Mô tả sản phẩm"
+        placeholder="Mô tả"
         value={description}
         onChangeText={setDescription}
       />
       <TextInput
         style={styles.input}
-        placeholder="Giá sản phẩm"
+        placeholder="Giá"
         keyboardType="numeric"
         value={price}
-        onChangeText={(text) => setPrice(text.replace(/[^0-9]/g, ""))} // Chỉ giữ lại số
+        onChangeText={(text) => setPrice(text.replace(/[^0-9]/g, ""))}
       />
-
       <TextInput
         style={styles.input}
         placeholder="Số lượng tồn kho"
         keyboardType="numeric"
         value={stockQuantity}
-        onChangeText={(text) => setStockQuantity(text.replace(/[^0-9]/g, ""))} // Chỉ giữ lại số
+        onChangeText={(text) => setStockQuantity(text.replace(/[^0-9]/g, ""))}
       />
 
-      <Text>Chọn Cửa Hàng</Text>
+      <Text style={styles.label}>Cửa hàng</Text>
       <Picker
         selectedValue={selectedStore}
         onValueChange={(itemValue) => setSelectedStore(itemValue)}
+        style={styles.picker}
       >
         {stores.length > 0 ? (
           stores.map((store) => (
             <Picker.Item key={store.id} label={store.name} value={store.id} />
           ))
         ) : (
-          <Picker.Item label="Không có cửa hàng" value="" />
+          <Picker.Item label="No stores available" value="" />
         )}
       </Picker>
 
-      <Text>Chọn Danh Mục</Text>
+      <Text style={styles.label}>Danh mục</Text>
       <Picker
         selectedValue={selectedCategory}
         onValueChange={(itemValue) => setSelectedCategory(itemValue)}
+        style={styles.picker}
       >
         {categories.length > 0 ? (
           categories.map((category) => (
-            <Picker.Item
-              key={category.id}
-              label={category.name}
-              value={category.id}
-            />
+            <Picker.Item key={category.id} label={category.name} value={category.id} />
           ))
         ) : (
-          <Picker.Item label="Không có danh mục" value="" />
+          <Picker.Item label="No categories available" value="" />
         )}
       </Picker>
 
-      <TouchableOpacity onPress={pickImage}>
+      <TouchableOpacity style={styles.imagePicker} onPress={pickImage}>
         {avatar ? (
           <Image source={{ uri: avatar.uri }} style={styles.image} />
         ) : (
-          <Text>Chọn ảnh đại diện</Text>
+          <Text style={styles.imageText}>Chọn ảnh</Text>
         )}
       </TouchableOpacity>
 
-      <Button title="Thêm sản phẩm" onPress={addProduct} />
+      <TouchableOpacity style={styles.button} onPress={addProduct}>
+        <Text style={styles.buttonText}>Thêm sản phẩm</Text>
+      </TouchableOpacity>
     </View>
   );
 };
