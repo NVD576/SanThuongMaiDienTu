@@ -31,7 +31,7 @@ const Bill = ({ route }) => {
       const filteredOrderItems = orderItemsData.filter(item => item.order === orderId);
       setOrderItems(filteredOrderItems);
     } catch (error) {
-      console.error("Error loading order details:", error);
+      // console.error("Error loading order details:", error);
     }
   };
 
@@ -64,6 +64,7 @@ const Bill = ({ route }) => {
 
   const handlePayment = async () => {
     try {
+      const token = await AsyncStorage.getItem('token');
       // Gửi thông tin thanh toán
       const form = new FormData();
       form.append('order', orderId);
@@ -71,11 +72,12 @@ const Bill = ({ route }) => {
       form.append('method', selectedPaymentMethod);
       form.append('status', "Đã thanh toán");
   
-      console.log("🔍 Dữ liệu gửi đi:", form);
+      // console.log("🔍 Dữ liệu gửi đi:", form);
   
       const response = await APIs.post(endpoints['transactions'], form, {
         headers: {
           'Content-Type': 'multipart/form-data',
+          'Authorization': `Bearer ${token}`,
         },
       });
   
@@ -85,18 +87,20 @@ const Bill = ({ route }) => {
 
       // for (const item of orderItems) {
       //   const updateStockForm = new FormData();
+      //   console.log("item: "+ item);
       //   updateStockForm.append("product_id", item.product); // ID của sản phẩm
-      //   updateStockForm.append("quantity", item.quantity); // Số lượng cần giảm
+      //   updateStockForm.append("stock_quantity", item.quantity); // Số lượng cần giảm
   
-      //   await APIs.post(endpoints["update-stock"], updateStockForm, {
+      //   await APIs.patch(endpoints["products"]+ item.product, updateStockForm, {
       //     headers: { "Content-Type": "multipart/form-data" },
+      //     'Authorization': `Bearer ${token}`,
       //   });
   
-      //   console.log(`✅ Số lượng tồn kho của sản phẩm ${item.product} đã được giảm.`);
+      //   // console.log(`✅ Số lượng tồn kho của sản phẩm ${item.product} đã được giảm.`);
       // }
 
 
-      console.log("✅ Phản hồi từ API:", response.data);
+      // console.log("✅ Phản hồi từ API:", response.data);
   
       // Xóa giỏ hàng trong AsyncStorage sau khi thanh toán thành công
       await AsyncStorage.removeItem(`shoppingCart_${user.id}`);
@@ -107,7 +111,7 @@ const Bill = ({ route }) => {
       // Quay lại màn hình trước
       navigation.goBack();
     } catch (ex) {
-      console.error("❌ Failed:", ex.response ? ex.response.data : ex.message);
+      console.error("❌ Failed:",  ex.message);
       Alert.alert("Thông báo", "Đã xảy ra lỗi, vui lòng thử lại!");
     }
   };
