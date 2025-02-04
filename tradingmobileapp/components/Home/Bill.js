@@ -64,7 +64,6 @@ const Bill = ({ route }) => {
 
   const handlePayment = async () => {
     try {
-      const token = await AsyncStorage.getItem('token');
       // Gửi thông tin thanh toán
       const form = new FormData();
       form.append('order', orderId);
@@ -74,16 +73,26 @@ const Bill = ({ route }) => {
   
       // console.log("🔍 Dữ liệu gửi đi:", form);
   
-      const response = await APIs.post(endpoints['transactions'], form, {
+      const api = await authApis();
+      await api.post(endpoints['transactions'], form, {
         headers: {
           'Content-Type': 'multipart/form-data',
-          'Authorization': `Bearer ${token}`,
         },
       });
   
       await APIs.patch(`${endpoints['order']}${orderId}/`, { status: "completed" });
 
       console.log("✅ Order đã được cập nhật thành completed");
+
+      for (const item of orderItems){
+        const res = await APIs.get(endpoints['product-details'](item.product));
+        const count = parseInt(res.data.stock_quantity) - parseInt(item.quantity);
+        console.log("Số lượng đã mua: ", item.quantity);
+        console.log("Số lượng trong kho: ", res.data.stock_quantity);
+        console.log("Số lượng đã trừ: ", count);
+        await api.patch(endpoints['product-details'](item.product), { stock_quantity: count.toString()});
+        console.log("Thanh đổi số lượng trong kho thành công");
+      }
 
       // for (const item of orderItems) {
       //   const updateStockForm = new FormData();

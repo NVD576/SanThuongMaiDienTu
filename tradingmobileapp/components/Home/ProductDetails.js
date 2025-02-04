@@ -12,7 +12,7 @@ import {
 } from "react-native";
 import ProductDetailStyles from "./ProductDetailStyles";
 import APIs, { endpoints } from "../../configs/APIs";
-import { useNavigation } from "@react-navigation/native";
+import { useIsFocused, useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { AirbnbRating } from "react-native-ratings";
 import { MyUserContext } from "../../configs/UserContexts";
@@ -38,6 +38,7 @@ const ProductDetails = ({ route }) => {
   const navigation = useNavigation();
   const { user } = useContext(MyUserContext);
   const { productId } = route.params;
+  const isFocused = useIsFocused();
 
   const loadProductDetails = async () => {
     try {
@@ -70,9 +71,12 @@ const ProductDetails = ({ route }) => {
   };
 
   useEffect(() => {
-    loadUserId();
-    loadProductDetails();
-  }, [productId]);
+    if (isFocused) {
+      loadUserId();
+      loadProductDetails();
+    }
+  }, [isFocused, productId]);
+  
 
   const handleBuyNow = async () => {
     if (!isLoggedIn) {
@@ -521,10 +525,10 @@ const ProductDetails = ({ route }) => {
 
               <AirbnbRating
                 count={5}
-                rating={rating}
+                defaultRating={rating || 5}
                 size={30}
                 onFinishRating={(rate) => setRating(rate)}
-                fullStarColor="gold"
+                selectedColor="gold"
               />
               <TextInput
                 style={ProductDetailStyles.commentInput}

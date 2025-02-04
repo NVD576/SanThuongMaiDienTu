@@ -27,8 +27,8 @@ const Login = ({ navigation }) => {
             console.log("Trying to login...");
     
             const res = await APIs.post(endpoints['login'], {
-                client_id: "utwiObUkAqZq7CdZ15JPVegzdGvHqLBZnKXkVfrc",
-                client_secret: "ovUhk6GvUyQB9WNmOfPZ4YJUhBHu8IfXICFgGTANJkxqzG1bcIqfrfF2ARjczzDwwquoGNtn2HglwLieG3ovPxSBtFK8Dfv8tKEhSz2CLbeQPkTFe1CsrvW3q5ASGLhb",
+                client_id: "AGv0RLcfMmkHQpKNoyCik6k1zY4gtPxwNVX2rL1T",
+                client_secret: "5nydZRrG70NCmAtyXhMI2jF1HU0A2BnuvlA7NNNWWRBrOhYHfugl0JQU9CoMduBZf9sXsAQLJzdOQnLoFCBfVNaSlWgsJozoV6ZTTMBjiZjlJU5mTJu7MeYbMLnU6Y05",
                 grant_type: "password",
                 username: user.username,
                 password: user.password,
@@ -46,7 +46,7 @@ const Login = ({ navigation }) => {
 
             if (userRes.data.approval_status === 'rejected'||userRes.data.approval_status === 'pending') {
                 Alert.alert("Đang chờ xét duyệt", "Tài khoản của bạn đang được xét duyệt, vui lòng liên hệ quản trị viên.");
-                return; // Ngừng quá trình đăng nhập
+                return;
             }
 
             await AsyncStorage.setItem("user_id", userRes.data.id.toString());

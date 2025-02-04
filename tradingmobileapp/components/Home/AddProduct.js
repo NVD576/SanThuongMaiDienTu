@@ -10,9 +10,10 @@ import {
 } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import APIs, { endpoints, BASE_URL } from "../../configs/APIs";
+import APIs, { endpoints, authApis } from "../../configs/APIs";
 import styles from "./AddProductStyles";
 import { Picker } from "@react-native-picker/picker";
+import { useNavigation } from "@react-navigation/native";
 
 const AddProduct = ({ navigation }) => {
   const [name, setName] = useState("");
@@ -24,6 +25,7 @@ const AddProduct = ({ navigation }) => {
   const [stores, setStores] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("");
   const [selectedStore, setSelectedStore] = useState("");
+  const nav = useNavigation();
 
   const fetchCategories = async () => {
     try {
@@ -117,30 +119,15 @@ const AddProduct = ({ navigation }) => {
         });
       }
 
-      const response = await fetch(`${BASE_URL}/products/`, {
-        method: "POST",
+      const api = await authApis();
+      await api.post(endpoints["products"], formData, {
         headers: {
           "Content-Type": "multipart/form-data",
-          Authorization: `Bearer ${token}`,
         },
-        body: formData,
       });
-
-      const responseText = await response.text();
-      let responseData;
-      try {
-        responseData = JSON.parse(responseText);
-      } catch (e) {
-        console.error("Error parsing response:", e);
-        responseData = {};
-      }
-
-      if (response.ok) {
-        Alert.alert("Success", "Product has been added!");
-        navigation.goBack();
-      } else {
-        Alert.alert("Error", responseData.message || "Failed to add product!");
-      }
+      
+      Alert.alert("Thành công","Sản phẩm đã được thêm vào!");
+      nav.goBack();
     } catch (error) {
       console.error("Connection error:", error);
       Alert.alert("Error", "Unable to connect to server!");

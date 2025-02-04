@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, FlatList, Image } from "react-native";
 import { Button, Card, Divider } from "react-native-paper";
-import APIs, { endpoints } from "../../configs/APIs";
+import APIs, { authApis, endpoints } from "../../configs/APIs";
 import AsyncStorage from "@react-native-async-storage/async-storage"; 
 import styles from "../User/UserProductStyles";
 import { useNavigation, useIsFocused } from "@react-navigation/native";
@@ -50,12 +50,8 @@ const UserProducts = () => {
         return;
       }
 
-      const response = await APIs.get(endpoints.products, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const api = await authApis();
+      const response = await api.get(endpoints['products']);
 
       if (response.status === 200) {
         const filteredProducts = response.data.results.filter(product =>
