@@ -341,15 +341,8 @@ class SalesStatisticsView(APIView):
             ))
         })
 
-from rest_framework.permissions import IsAuthenticated
-from rest_framework.response import Response
-from rest_framework.views import APIView
-from django.utils import timezone
-from django.db.models import Sum, Case, When, F, IntegerField
-from .models import Store, Category
-
 class StatisticsView(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request, format=None):
         user = request.user

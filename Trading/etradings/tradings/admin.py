@@ -1,5 +1,5 @@
 from django.contrib import admin
-from django.db.models import Count, Sum
+from django.db.models import Count, Sum, Case, When, F, IntegerField, DecimalField
 from django.template.response import TemplateResponse
 from django.utils.html import mark_safe
 from django.contrib.auth import get_user_model
@@ -8,9 +8,10 @@ from django.utils.html import format_html
 from .models import *
 from ckeditor_uploader.widgets import CKEditorUploadingWidget
 from django.urls import path
-from django.utils.timezone import now
+from django.utils import timezone
 from datetime import datetime, timedelta
 from .models import Store, Order, OrderItem
+import json
 import pandas as pd
 from django.http import HttpResponse
 # Register your models here.
@@ -107,52 +108,45 @@ class StoreAppAdminSite(admin.AdminSite):
     def get_urls(self):
         return [
             path('store-stats/', self.store_stats),
-            path('store-stats/export/', self.export_stats),
         ] + super().get_urls()
 
     def store_stats(self, request):
-        # Lọc theo thời gian
-        time_filter = request.GET.get('time_period', 'month')
-        current_year = now().year
-        current_month = now().month
-        start_date, end_date = None, None
+        now = timezone.now()
+        quarter = (now.month - 1) // 3 + 1
 
-        if time_filter == 'month':
-            start_date = datetime(current_year, current_month, 1)
-            end_date = start_date + timedelta(days=30)
-        elif time_filter == 'quarter':
-            quarter = (current_month - 1) // 3 + 1
-            start_date = datetime(current_year, 3 * (quarter - 1) + 1, 1)
-            end_date = start_date + timedelta(days=90)
-        elif time_filter == 'year':
-            start_date = datetime(current_year, 1, 1)
-            end_date = datetime(current_year, 12, 31)
+        def decimal_to_float(value):
+            return float(value) if value else 0
 
-        # Thống kê số lượng sản phẩm và doanh số theo cửa hàng
-        stats = Store.objects.annotate(
-            product_count=Count('products'),
-            total_sales=Sum('order__total_amount', filter=Order.objects.filter(created_at__range=(start_date, end_date)))
-        ).values("name", "rating", "product_count", "total_sales")
 
-        store_count = Store.objects.count()
+        orders_data = {
+            "month": Order.objects.filter(created_at__month=now.month, status='completed').count(),
+            "quarter": Order.objects.filter(created_at__quarter=quarter, status='completed').count(),
+            "year": Order.objects.filter(created_at__year=now.year, status='completed').count(),
+        }
 
-        return TemplateResponse(request, 'admin/store-stats.html', {
-            'store_count': store_count,
-            'stats': stats,
-            'time_filter': time_filter
-        })
+        stores_stats = Store.objects.annotate(
+            total_sales=Sum(F('products__order_items__quantity') * F('products__order_items__price')),
+            total_orders=Count('products__order_items__order', distinct=True),
+            total_products_sold=Sum('products__order_items__quantity')
+        ).values('name', 'total_sales', 'total_orders', 'total_products_sold')
 
-    def export_stats(self, request):
-        stats = Store.objects.annotate(
-            product_count=Count('products'),
-            total_sales=Sum('order__total_amount')
-        ).values("name", "rating", "product_count", "total_sales")
+        stores_data = [
+            {
+                "name": store["name"],
+                "total_sales": decimal_to_float(store["total_sales"]),
+                "total_orders": store["total_orders"],
+                "total_products_sold": store["total_products_sold"],
+            }
+            for store in stores_stats
+        ]
 
-        df = pd.DataFrame(stats)
-        response = HttpResponse(content_type='application/vnd.ms-excel')
-        response['Content-Disposition'] = 'attachment; filename="store_stats.xlsx"'
-        df.to_excel(response, index=False)
-        return response
+        context = {
+            "orders_data": json.dumps(orders_data),
+            "stores_data": json.dumps(stores_data),
+        }
+
+        return TemplateResponse(request, "admin/store-stats.html", context)
+
 
 admin_site = StoreAppAdminSite('MyApp')
 

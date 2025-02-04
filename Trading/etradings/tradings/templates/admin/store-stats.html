@@ -1,37 +1,50 @@
-{% extends 'admin/base_site.html' %}
-
+{% extends "admin/base_site.html" %}
 {% block content %}
-<h1>Thống kê cửa hàng</h1>
-<p><strong>Số lượng cửa hàng:</strong> {{ store_count }}</p>
+<h1>📊 Báo cáo thống kê</h1>
 
-<!-- Bộ lọc thời gian -->
-<form method="get">
-    <label for="time_period">Thống kê theo:</label>
-    <select name="time_period" id="time_period" onchange="this.form.submit()">
-        <option value="month" {% if time_filter=='month' %}selected{% endif %}>Tháng</option>
-        <option value="quarter" {% if time_filter=='quarter' %}selected{% endif %}>Quý</option>
-        <option value="year" {% if time_filter=='year' %}selected{% endif %}>Năm</option>
-    </select>
-</form>
+<!-- Biểu đồ thống kê số đơn hàng -->
+<canvas id="ordersChart"></canvas>
 
-<table border="1">
-    <thead>
-        <tr>
-            <th>Tên cửa hàng</th>
-            <th>Xếp hạng</th>
-            <th>Số sản phẩm</th>
-            <th>Tổng doanh số</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for p in stats %}
-        <tr>
-            <td><strong>{{ p.name }}</strong></td>
-            <td>{{ p.rating }}</td>
-            <td>{{ p.product_count }}</td>
-            <td>{{ p.total_sales|default:0 }} VND</td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
+<!-- Biểu đồ thống kê số sản phẩm đã bán -->
+<canvas id="productsChart"></canvas>
+
+<!-- Biểu đồ doanh số các cửa hàng -->
+<canvas id="storesChart"></canvas>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    var ordersData = JSON.parse('{{ orders_data|safe }}');
+    var storesData = JSON.parse('{{ stores_data|safe }}');
+
+    var ctxOrders = document.getElementById('ordersChart').getContext('2d');
+    new Chart(ctxOrders, {
+        type: 'bar',
+        data: {
+            labels: ['Tháng', 'Quý', 'Năm'],
+            datasets: [{
+                label: 'Số đơn hàng',
+                data: [ordersData.month, ordersData.quarter, ordersData.year],
+                backgroundColor: ['#ff6384', '#36a2eb', '#ffce56']
+            }]
+        }
+    });
+
+
+    var storeNames = storesData.map(store => store.name);
+    var storeSales = storesData.map(store => store.total_sales);
+
+    var ctxStores = document.getElementById('storesChart').getContext('2d');
+    new Chart(ctxStores, {
+        type: 'pie',
+        data: {
+            labels: storeNames,
+            datasets: [{
+                label: 'Doanh thu (VNĐ)',
+                data: storeSales,
+                backgroundColor: ['#FF5733', '#33FF57', '#3357FF', '#F39C12', '#9B59B6']
+            }]
+        }
+    });
+</script>
+
 {% endblock %}
