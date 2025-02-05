@@ -347,9 +347,7 @@ class StatisticsView(APIView):
     def get(self, request, format=None):
         user = request.user
 
-        # Kiểm tra nếu người dùng là seller
         if user.role == 'seller':
-            # Nếu là seller, chỉ hiển thị thống kê của chính mình
             stores_stats = Store.objects.filter(seller=user).annotate(
                 total_sales_month=Sum(
                     Case(
@@ -416,8 +414,8 @@ class StatisticsView(APIView):
                 )
             ).distinct()
 
+        #admin hiển thị thống kê của toàn bộ người bán
         elif user.role == 'admin':
-            # Nếu là admin, hiển thị thống kê của tất cả người bán
             stores_stats = Store.objects.all().annotate(
                 total_sales_month=Sum(
                     Case(
