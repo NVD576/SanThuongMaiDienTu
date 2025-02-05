@@ -11,8 +11,8 @@ const SalesStatistics = () => {
   useEffect(() => {
     const fetchStats = async () => {
       try {
-        const authAPI = await authApis();
-        const response = await authAPI.get(endpoints['statistics']);
+        const api = await authApis();
+        const response = await api.get(endpoints['statistics']);
         setStats(response.data);
       } catch (error) {
         if (error.response && error.response.status === 403) {

@@ -131,11 +131,7 @@ const ChatScreen = ({ route }) => {
           placeholder="Nhập tin nhắn..."
         />
         <TouchableOpacity style={styles.sendButton} onPress={sendMessage}>
-          <Animated.View style={{ opacity: fadeAnim }}>
-            <Ionicons name="send" size={24} color="white" />
-            <View>Gui</View>
-          </Animated.View>
-          
+          <Ionicons name="send" size={24} color="black" />
         </TouchableOpacity>
       </View>
     </KeyboardAvoidingView>
