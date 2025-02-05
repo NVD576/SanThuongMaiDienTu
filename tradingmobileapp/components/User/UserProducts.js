@@ -44,27 +44,43 @@ const UserProducts = () => {
     try {
       const token = await AsyncStorage.getItem("token");
       const userId = await AsyncStorage.getItem("user_id");
-
+  
       if (!token) {
         console.error("Không tìm thấy token, vui lòng đăng nhập lại.");
         return;
       }
-
+  
       const api = await authApis();
-      const response = await api.get(endpoints['products']);
-
-      if (response.status === 200) {
-        const filteredProducts = response.data.results.filter(product =>
-          stores.some(store => store.id === product.store && store.seller === parseInt(userId))
-        );
-        setProducts(filteredProducts);
-      } else {
-        console.log("Lỗi khi lấy danh sách sản phẩm:", response.data);
+      let allProducts = [];
+      let page = 1;
+      let hasMore = true;
+  
+      while (hasMore) {
+        const response = await api.get(`${endpoints['products']}?page=${page}`);
+        
+        if (response.status === 200) {
+          const filteredProducts = response.data.results.filter(product =>
+            stores.some(store => store.id === product.store && store.seller === parseInt(userId))
+          );
+          allProducts = [...allProducts, ...filteredProducts];
+  
+          if (response.data.next === null) {
+            hasMore = false;
+          } else {
+            page += 1;
+          }
+        } else {
+          console.log("Lỗi khi lấy danh sách sản phẩm:", response.data);
+          hasMore = false;
+        }
       }
+  
+      setProducts(allProducts);
     } catch (error) {
       console.error("Lỗi kết nối:", error);
     }
   };
+  
 
   useEffect(() => {
     if (isFocused) {
