@@ -25,29 +25,40 @@ const Home = () => {
   const navigation = useNavigation();
 
   const loadProducts = async () => {
-    if (page > 0) {
-      try {
-        setLoading(true);
-        let url = `${endpoints["products"]}?page=${page}`;
-        if (cateId !== null) {
-          url = `${endpoints["products"]}?category=${cateId}&page=${page}`;
-        }
-        let res = await APIs.get(url);
-  
-        if (res.data.results.length > 0) {
-          setProducts((prev) => (page === 1 ? res.data.results : [...prev, ...res.data.results]));
-        } else {
-          setPage(0); // Không có sản phẩm nữa
-        }
-      } catch (error) {
+    try {
+      setLoading(true);
+      let url = `${endpoints["products"]}?page=${page}`;
+      if (cateId !== null) {
+        url = `${endpoints["products"]}?category=${cateId}&page=${page}`;
+      }
+      let res = await APIs.get(url);
+
+      if (res.data.results.length > 0) {
+        setProducts((prev) => (page === 1 ? res.data.results : [...prev, ...res.data.results]));
+      } else {
+        setPage(0);
+      }
+
+      if (res.data.next === null)
+        setPage(0);
+    } catch (error) {
+      if (error.response?.status === 404) {
+        console.warn("Không tìm thấy sản phẩm, nhưng tiếp tục hiển thị danh sách.");
+      } else {
         console.error("Lỗi tải sản phẩm:", error.message);
-      } finally {
-        setLoading(false);
       }
     }
+     finally {
+      setLoading(false);
+    }
   };
-  
-  
+
+  useEffect(() => {
+    if (page !== 0) {
+      loadProducts();
+    }
+  }, [page]);
+
   const loadCategories = async () => {
     try {
       let res = await APIs.get(endpoints["categories"]);
@@ -70,12 +81,10 @@ const Home = () => {
     }
   };
 
-
   useFocusEffect(
     useCallback(() => {
-      setProducts([]); // Xóa danh sách cũ trước khi tải mới
-      setPage(1); // Reset về trang đầu
-      loadProducts();
+      setProducts([]);
+      setPage(1);
     }, [cateId])
   );
 
@@ -86,7 +95,7 @@ const Home = () => {
 
   const loadMore = () => {
     if (page > 0 && !loading) {
-      setPage((prevPage) => prevPage + 1);
+      setPage((prevPage) => (prevPage !== 0 ? prevPage + 1 : prevPage));
     }
   };
   
@@ -94,27 +103,18 @@ const Home = () => {
   return (
     <View style={HomeStyles.container}>
       <Text style={HomeStyles.title}>🛍️ Danh Sách Sản Phẩm</Text>
-
-      {/* Categories */}
-      <ScrollView
-        horizontal
-        style={HomeStyles.categoryScroll}
-        showsHorizontalScrollIndicator={false}
-      >
+      <ScrollView horizontal style={HomeStyles.categoryScroll} showsHorizontalScrollIndicator={false}>
         <TouchableOpacity
           onPress={() => {
-            setCateId(null); // Cập nhật danh mục là 'Tất cả'
-            setPage(1); // Reset về trang đầu
-            setProducts([]); // Xóa danh sách sản phẩm cũ
+            setCateId(null);
+            setPage(1);
+            setProducts([]);
           }}
         >
           <Chip
             icon="label-outline"
-            selected={cateId === null} // Đánh dấu Chip được chọn
-            style={[
-              HomeStyles.categoryChip,
-              cateId === null ? HomeStyles.selectedChip : null,
-            ]}
+            selected={cateId === null}
+            style={[HomeStyles.categoryChip, cateId === null ? HomeStyles.selectedChip : null]}
             textStyle={HomeStyles.categoryChipText}
           >
             Tất cả
@@ -124,18 +124,15 @@ const Home = () => {
           <TouchableOpacity
             key={c.id}
             onPress={() => {
-              setCateId(c.id); // Cập nhật cateId khi nhấn
-              setPage(1); // Reset về trang đầu
-              setProducts([]); // Xóa danh sách sản phẩm cũ
+              setCateId(c.id);
+              setPage(1);
+              setProducts([]);
             }}
           >
             <Chip
               icon="label-outline"
-              selected={cateId === c.id} // Đánh dấu Chip được chọn
-              style={[
-                HomeStyles.categoryChip,
-                cateId === c.id ? HomeStyles.selectedChip : null,
-              ]}
+              selected={cateId === c.id}
+              style={[HomeStyles.categoryChip, cateId === c.id ? HomeStyles.selectedChip : null]}
               textStyle={HomeStyles.categoryChipText}
             >
               {c.name}
@@ -143,17 +140,12 @@ const Home = () => {
           </TouchableOpacity>
         ))}
       </ScrollView>
-
-      {/* Products */}
-      {loading ? (
-        <ActivityIndicator
-          size="large"
-          color="#4CAF50"
-          style={HomeStyles.loading}
-        />
+      {loading && page === 1 ? (
+        <ActivityIndicator size="large" color="#4CAF50" style={HomeStyles.loading} />
       ) : (
         <FlatList
           onEndReached={loadMore}
+          onEndReachedThreshold={0.5}
           data={products}
           numColumns={2}
           keyExtractor={(item) => item.id.toString()}
@@ -161,19 +153,11 @@ const Home = () => {
           renderItem={({ item }) => (
             <TouchableOpacity
               style={HomeStyles.productCard}
-              onPress={() =>
-                navigation.navigate("ProductDetails", { productId: item.id })
-              }
+              onPress={() => navigation.navigate("ProductDetails", { productId: item.id })}
             >
-              <Image
-                source={{ uri: item.image }}
-                style={HomeStyles.productImage}
-                resizeMode="cover"
-              />
+              <Image source={{ uri: item.image }} style={HomeStyles.productImage} resizeMode="cover" />
               <View style={HomeStyles.productInfo}>
-                <Text style={HomeStyles.productName} numberOfLines={1}>
-                  {item.name}
-                </Text>
+                <Text style={HomeStyles.productName} numberOfLines={1}>{item.name}</Text>
                 <View style={HomeStyles.ratingContainer}>
                   {[...Array(5)].map((_, index) => (
                     <FontAwesome
@@ -185,9 +169,7 @@ const Home = () => {
                   ))}
                 </View>
                 <Text>Giá: {item.price} VND</Text>
-                <Text style={HomeStyles.storeName}>
-                  {stores[item.store] || "Cửa hàng không xác định"}
-                </Text>
+                <Text style={HomeStyles.storeName}>{stores[item.store] || "Cửa hàng không xác định"}</Text>
               </View>
             </TouchableOpacity>
           )}

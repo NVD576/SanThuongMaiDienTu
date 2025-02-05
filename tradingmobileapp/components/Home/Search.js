@@ -17,18 +17,18 @@ const Search = () => {
   const loadProducts = async () => {
     if (page > 0) {
       try {
-        const url = `${endpoints["products"]}?page=${page}`;
-        const res = await APIs.get(url);
+        let url = `${endpoints["products"]}?page=${page}`;
+        let res = await APIs.get(url);
   
         if (res.data.results.length > 0) {
           setProducts((prev) => (page > 1 ? [...prev, ...res.data.results] : res.data.results));
           setFilteredProducts((prev) => (page > 1 ? [...prev, ...res.data.results] : res.data.results));
   
           if (res.data.next === null) {
-            setPage(0); 
+            setPage(null); 
           }
         } else {
-          setPage(0);
+          setPage(null);
         }
       } catch (error) {
         console.error("Lỗi khi tải sản phẩm:", error);

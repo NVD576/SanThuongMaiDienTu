@@ -83,6 +83,13 @@ const ProductDetails = ({ route }) => {
       Alert.alert("Thông báo", "Bạn cần đăng nhập để sử dụng tính năng này");
       return;
     }
+
+    const stockQuantityRes = await APIs.get(endpoints['product-details'](productId));
+    if (stockQuantityRes.data.stock_quantity === 0){
+      Alert.alert("Thông báo","Sản phẩm đã hết hàng");
+      return;
+    }
+
     const totalPrice = product.price * quantity;
     const form = new FormData();
     form.append("user", user.id.toString());
@@ -123,6 +130,12 @@ const ProductDetails = ({ route }) => {
   const handleAddToCart = async () => {
     if (!isLoggedIn) {
       Alert.alert("Thông báo", "Bạn cần đăng nhập để thực hiện hành động này");
+      return;
+    }
+
+    const stockQuantityRes = await APIs.get(endpoints['product-details'](productId));
+    if (stockQuantityRes.data.stock_quantity === 0){
+      Alert.alert("Thông báo","Sản phẩm đã hết hàng");
       return;
     }
 

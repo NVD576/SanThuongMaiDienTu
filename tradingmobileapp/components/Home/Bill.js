@@ -31,7 +31,7 @@ const Bill = ({ route }) => {
       const filteredOrderItems = orderItemsData.filter(item => item.order === orderId);
       setOrderItems(filteredOrderItems);
     } catch (error) {
-      // console.error("Error loading order details:", error);
+      console.error("Error loading order details:", error);
     }
   };
 
@@ -46,7 +46,7 @@ const Bill = ({ route }) => {
   const renderOrderItem = ({ item }) => (
     <View style={styles.orderItemContainer}>
       <Text style={styles.productName}>Sản phẩm ID: {item.product}</Text>
-      <Text style={styles.productPrice}>Giá: ${item.price}</Text>
+      <Text style={styles.productPrice}>Giá: ${item.price} VND</Text>
       <Text style={styles.productQuantity}>Số lượng: {item.quantity}</Text>
       <Text style={styles.itemTotalPrice}>
         Tổng giá: ${(item.price * item.quantity).toFixed(2)}
@@ -94,30 +94,10 @@ const Bill = ({ route }) => {
         console.log("Thanh đổi số lượng trong kho thành công");
       }
 
-      // for (const item of orderItems) {
-      //   const updateStockForm = new FormData();
-      //   console.log("item: "+ item);
-      //   updateStockForm.append("product_id", item.product); // ID của sản phẩm
-      //   updateStockForm.append("stock_quantity", item.quantity); // Số lượng cần giảm
-  
-      //   await APIs.patch(endpoints["products"]+ item.product, updateStockForm, {
-      //     headers: { "Content-Type": "multipart/form-data" },
-      //     'Authorization': `Bearer ${token}`,
-      //   });
-  
-      //   // console.log(`✅ Số lượng tồn kho của sản phẩm ${item.product} đã được giảm.`);
-      // }
-
-
-      // console.log("✅ Phản hồi từ API:", response.data);
-  
-      // Xóa giỏ hàng trong AsyncStorage sau khi thanh toán thành công
       await AsyncStorage.removeItem(`shoppingCart_${user.id}`);
       
-      // Thông báo thanh toán thành công
       Alert.alert("Thông báo", "Thanh toán thành công!");
   
-      // Quay lại màn hình trước
       navigation.goBack();
     } catch (ex) {
       console.error("❌ Failed:",  ex.message);
@@ -133,7 +113,7 @@ const Bill = ({ route }) => {
       <View style={styles.orderInfo}>
         <Text style={styles.infoText}>Mã đơn hàng: {order.id}</Text>
         <Text style={styles.infoText}>Ngày tạo: {formatDate(order.created_at)}</Text>
-        <Text style={styles.infoText}>Tổng giá trị: ${order.total_price}</Text>
+        <Text style={styles.infoText}>Tổng giá trị: ${order.total_price} VND</Text>
         <Text style={styles.infoText}>Trạng thái: {order.status}</Text>
       </View>
 
@@ -161,7 +141,7 @@ const Bill = ({ route }) => {
       />
 
       <View style={styles.totalContainer}>
-        <Text style={styles.totalText}>Tổng giá trị đơn hàng: ${order.total_price}</Text>
+        <Text style={styles.totalText}>Tổng giá trị đơn hàng: ${order.total_price} VND</Text>
       </View>
 
       {/* Nút thanh toán */}
