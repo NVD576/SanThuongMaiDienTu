@@ -21,6 +21,10 @@ class User(AbstractUser):
     role = models.CharField(max_length=10, choices=ROLE_CHOICES, default='buyer')
     approval_status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='approved')
 
+    def save(self, *args, **kwargs):
+        if self.is_superuser:  # Nếu là superuser thì role luôn là 'admin'
+            self.role = 'admin'
+        super().save(*args, **kwargs)
     def __str__(self):
         return self.username
 
@@ -84,6 +88,7 @@ class Product(models.Model):
 
     def __str__(self):
         return self.name
+
 
 
 # Review Model
