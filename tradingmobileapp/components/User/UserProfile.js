@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useContext } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
-import { View, Text, Image,  ScrollView } from "react-native";
+import { View, Text, Image, ScrollView } from "react-native";
 import { Button, Card, Divider } from "react-native-paper";
 import styles from "./UserProfileStyles";
 import { BASE_URL } from "../../configs/APIs";
@@ -62,7 +62,7 @@ const UserProfile = () => {
         console.error("Không tìm thấy token, vui lòng đăng nhập lại.");
         return;
       }
-  
+
       const response = await fetch(`${BASE_URL}/manage_sellers/${sellerId}/`, {
         method: "PATCH",
         headers: {
@@ -71,7 +71,7 @@ const UserProfile = () => {
         },
         body: JSON.stringify({ status: "approved" }),
       });
-  
+
       if (response.ok) {
         console.log(`Seller ${sellerId} đã được duyệt.`);
         setPendingSellers((prevSellers) =>
@@ -85,7 +85,6 @@ const UserProfile = () => {
       console.error("Lỗi kết nối:", error);
     }
   };
-  
 
   const rejectSeller = async (sellerId) => {
     try {
@@ -94,7 +93,7 @@ const UserProfile = () => {
         console.error("Không tìm thấy token, vui lòng đăng nhập lại.");
         return;
       }
-  
+
       const response = await fetch(`${BASE_URL}/manage_sellers/${sellerId}/`, {
         method: "PATCH",
         headers: {
@@ -103,7 +102,7 @@ const UserProfile = () => {
         },
         body: JSON.stringify({ status: "rejected" }),
       });
-  
+
       if (response.ok) {
         console.log(`Seller ${sellerId} đã bị từ chối.`);
         setPendingSellers((prevSellers) =>
@@ -117,7 +116,7 @@ const UserProfile = () => {
       console.error("Lỗi kết nối:", error);
     }
   };
-  
+
   // Lấy danh sách người nhắn tin từ Firebase
   useEffect(() => {
     const fetchChatUsers = async () => {
@@ -135,6 +134,7 @@ const UserProfile = () => {
 
           // Duyệt qua các tin nhắn
           Object.keys(data).forEach((message) => {
+            if (userId == message) return;
             users.add(message);
           });
 
@@ -149,9 +149,6 @@ const UserProfile = () => {
 
     fetchChatUsers();
   }, []);
-
-
-  
 
   useEffect(() => {
     const fetchUnreadMessages = async () => {
@@ -259,15 +256,25 @@ const UserProfile = () => {
               Xem sản phẩm của tôi
             </Button>
             <Button
-              mode="contained"
-              onPress={() => nav.navigate("Statistics")}
-              style={styles.pendingSellersButton}
-            >
-              Xem Thống Kê
-            </Button>
+                  mode="contained"
+                  onPress={() => nav.navigate("Statistics")}
+                  style={styles.pendingSellersButton}
+                >
+                  Xem Thống Kê
+                </Button>
           </>
         )}
-
+            {user?.role === "admin"  && (
+              <>
+                <Button
+                  mode="contained"
+                  onPress={() => nav.navigate("Statistics")}
+                  style={styles.pendingSellersButton}
+                >
+                  Xem Thống Kê
+                </Button>
+              </>
+            )}
         {/* Chat button */}
         {user?.role !== "admin" && (
           <Button
@@ -322,42 +329,41 @@ const UserProfile = () => {
           </Button>
         )}
 
-{showPendingSellers && (
-  <Card style={styles.card}>
-    <Card.Content>
-      <Text style={styles.sectionTitle}>
-        Danh sách seller chờ duyệt
-      </Text>
-      <Divider style={styles.divider} />
-      {pendingSellers.map((item, index) => (
-        <View key={index} style={styles.detailRow}>
-          <Text style={styles.label}>
-            UserName: {item.username} {'\n'}
-            email: {item.email}
-          </Text>
+        {showPendingSellers && (
+          <Card style={styles.card}>
+            <Card.Content>
+              <Text style={styles.sectionTitle}>
+                Danh sách seller chờ duyệt
+              </Text>
+              <Divider style={styles.divider} />
+              {pendingSellers.map((item, index) => (
+                <View key={index} style={styles.detailRow}>
+                  <Text style={styles.label}>
+                    UserName: {item.username} {"\n"}
+                    email: {item.email}
+                  </Text>
 
-          <View style={styles.buttonRow}>
-            <Button
-              style={styles.approveButton}
-              mode="contained"
-              onPress={() => approveSeller(item.id)}
-            >
-              Duyệt
-            </Button>
-            <Button
-              style={styles.rejectButton}
-              mode="outlined"
-              onPress={() => rejectSeller(item.id)}
-            >
-              Từ chối
-            </Button>
-          </View>
-        </View>
-      ))}
-    </Card.Content>
-  </Card>
-)}
-
+                  <View style={styles.buttonRow}>
+                    <Button
+                      style={styles.approveButton}
+                      mode="contained"
+                      onPress={() => approveSeller(item.id)}
+                    >
+                      Duyệt
+                    </Button>
+                    <Button
+                      style={styles.rejectButton}
+                      mode="outlined"
+                      onPress={() => rejectSeller(item.id)}
+                    >
+                      Từ chối
+                    </Button>
+                  </View>
+                </View>
+              ))}
+            </Card.Content>
+          </Card>
+        )}
 
         <Button mode="contained" onPress={logout} style={styles.logoutButton}>
           Đăng xuất

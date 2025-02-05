@@ -76,7 +76,6 @@ const ProductDetails = ({ route }) => {
       loadProductDetails();
     }
   }, [isFocused, productId]);
-  
 
   const handleBuyNow = async () => {
     if (!isLoggedIn) {
@@ -84,9 +83,11 @@ const ProductDetails = ({ route }) => {
       return;
     }
 
-    const stockQuantityRes = await APIs.get(endpoints['product-details'](productId));
-    if (stockQuantityRes.data.stock_quantity === 0){
-      Alert.alert("Thông báo","Sản phẩm đã hết hàng");
+    const stockQuantityRes = await APIs.get(
+      endpoints["product-details"](productId)
+    );
+    if (stockQuantityRes.data.stock_quantity === 0) {
+      Alert.alert("Thông báo", "Sản phẩm đã hết hàng");
       return;
     }
 
@@ -133,9 +134,11 @@ const ProductDetails = ({ route }) => {
       return;
     }
 
-    const stockQuantityRes = await APIs.get(endpoints['product-details'](productId));
-    if (stockQuantityRes.data.stock_quantity === 0){
-      Alert.alert("Thông báo","Sản phẩm đã hết hàng");
+    const stockQuantityRes = await APIs.get(
+      endpoints["product-details"](productId)
+    );
+    if (stockQuantityRes.data.stock_quantity === 0) {
+      Alert.alert("Thông báo", "Sản phẩm đã hết hàng");
       return;
     }
 
@@ -307,7 +310,16 @@ const ProductDetails = ({ route }) => {
     return (
       <View style={ProductDetailStyles.reviewItem}>
         {/* Bình luận gốc */}
-        <Text style={ProductDetailStyles.reviewUser}>{item.user}</Text>
+        <Text style={ProductDetailStyles.reviewUser}>
+          {item.user} 
+        </Text>
+        <View style={ProductDetailStyles.ratingContainer}>
+          {Array.from({ length: item.rating }).map((_, index) => (
+            <Text key={index} style={ProductDetailStyles.star}>
+              ⭐
+            </Text>
+          ))}
+        </View>
         <Text style={ProductDetailStyles.reviewComment}>{item.comment}</Text>
 
         {/* Các phản hồi */}

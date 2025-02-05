@@ -263,9 +263,19 @@ const ProductDetailStyles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: '#ccc',
     marginBottom: 10,
+    marginVertical: 8,
+    borderRadius: 10,
+    shadowColor: "#000",
+    shadowOpacity: 0.1,
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 4,
+    elevation: 3,
   },
   reviewUser: {
     fontWeight: 'bold',
+    fontSize: 16,
+    fontWeight: "bold",
+    color: "#333",
   },
   reviewComment: {
     marginVertical: 5,
@@ -303,6 +313,17 @@ const ProductDetailStyles = StyleSheet.create({
     fontWeight: "bold",
     textAlign: "center",
     fontSize: 16,
+  },
+  ratingContainer: {
+    flexDirection: "row",
+  },
+  star: {
+    fontSize: 18,
+    color: "#FFD700", // Màu vàng đẹp hơn
+  },
+  reviewComment: {
+    fontSize: 14,
+    color: "#555",
   },
 });
 

@@ -74,8 +74,13 @@ const ChatScreen = ({ route }) => {
       read: false,
     };
 
-    push(ref(db, `messages/${userId}/${userId2}`), newMessage);
-    push(ref(db, `messages/${userId2}/${userId}`), newMessage);
+    if (userId != userId2) {
+      push(ref(db, `messages/${userId}/${userId2}`), newMessage);
+      push(ref(db, `messages/${userId2}/${userId}`), newMessage);
+    }
+    else{
+      push(ref(db, `messages/${userId}/${userId2}`), newMessage);
+    }
     setText("");
 
     // Hiệu ứng gửi tin nhắn

@@ -43,6 +43,7 @@ const Home = () => {
         setPage(0);
     } catch (error) {
       if (error.response?.status === 404) {
+        
         console.warn("Không tìm thấy sản phẩm, nhưng tiếp tục hiển thị danh sách.");
       } else {
         console.error("Lỗi tải sản phẩm:", error.message);
