@@ -147,12 +147,3 @@ class Transaction(models.Model):
     status = models.CharField(max_length=50)
     created_at = models.DateTimeField(auto_now_add=True)
 
-
-
-# Chat Model
-class Chat(models.Model):
-    sender = models.ForeignKey(User, on_delete=models.CASCADE, related_name='sent_messages')
-    receiver = models.ForeignKey(User, on_delete=models.CASCADE, related_name='received_messages')
-    message = models.TextField()
-    timestamp = models.DateTimeField(auto_now_add=True)
-
